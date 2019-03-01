@@ -19,7 +19,9 @@ class Login extends React.Component {
     };
     api.post("/login.php", {
       params: data,
-    });
+    }).then((data) =>
+      console.log(data)
+    );
     e.preventDefault();
   };
 

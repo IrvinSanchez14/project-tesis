@@ -1,5 +1,5 @@
 import axios from 'axios';
 
 export default axios.create({
-  baseURL: 'http://localhost/api-jws/api'
+  baseURL: 'http://localhost/~irvinsanchez/api-jws/api'
 });
