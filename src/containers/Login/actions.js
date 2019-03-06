@@ -18,11 +18,13 @@ export const loginuser = user => dispatch => {
       localStorage.setItem("token", jwt);
       setAuthToken(jwt);
       const decoded = jwt_decode(jwt);
-      console.log(decoded);
       dispatch(loginOk(true));
       dispatch(setCurrentUser(decoded.data));
+      dispatch(loginOk(false));
+      dispatch(isAuthenticated(true));
     })
     .catch(err => {
+      dispatch(loginOk(true));
       dispatch(errorLogin(false));
     });
 };
@@ -45,6 +47,13 @@ export const errorLogin = err => {
   return {
     type: ACTIONS.ERROR_LOGIN,
     err: err,
+  };
+};
+
+export const isAuthenticated = auth => {
+  return {
+    type: ACTIONS.IS_AUTHENTICATED,
+    auth: auth,
   };
 };
 
