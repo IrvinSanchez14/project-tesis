@@ -8,7 +8,7 @@ class InputText extends React.Component {
         id={this.props.id}
         type={this.props.type}
         name={this.props.name}
-        defaultValue={this.props.value}
+        onChange={this.props.onChange}
       />
     );
   }
@@ -18,7 +18,7 @@ InputText.propTypes = {
   id: PropTypes.string.isRequired,
   name: PropTypes.string,
   type: PropTypes.string.isRequired,
-  defaultValue: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default InputText;
