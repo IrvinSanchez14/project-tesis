@@ -1,0 +1,30 @@
+.menuHeader {
+	position: relative;
+	vertical-align: middle;
+	line-height: 1;
+	text-decoration: none;
+	-webkit-tap-highlight-color: transparent;
+	flex: 0 0 auto;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	background: 0 0;
+	padding: 0.92857143em 1.14285714em;
+	text-transform: none;
+	color: #e7edea;
+	font-weight: 400;
+	-webkit-transition: background 0.1s ease, color 0.1s ease, -webkit-box-shadow 0.1s ease;
+	-webkit-transition: background 0.1s ease, box-shadow 0.1s ease, color 0.1s ease;
+	transition: background 0.1s ease, box-shadow 0.1s ease, color 0.1s ease;
+}
+
+.menuHeader:before {
+	position: absolute;
+	content: '';
+	top: 0;
+	right: 0;
+	height: 100%;
+	width: 1px;
+	background: rgba(255, 255, 255, 0.08);
+}

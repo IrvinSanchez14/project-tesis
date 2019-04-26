@@ -1,14 +1,9 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
 
 class Welcome extends React.Component {
-  render() {
-    return (
-      <div>
-        <Link to="/login">Login </Link>
-      </div>
-    );
-  }
+	render() {
+		return <h1>Pagina bienvenida</h1>;
+	}
 }
 
 export default Welcome;

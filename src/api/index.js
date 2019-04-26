@@ -1,5 +1,5 @@
-import axios from "axios";
+import axios from 'axios';
 
 export default axios.create({
-  baseURL: "http://localhost/api-jws/api",
+	baseURL: 'http://localhost/tesis/api-jws/api',
 });
