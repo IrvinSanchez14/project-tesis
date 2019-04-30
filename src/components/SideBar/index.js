@@ -86,12 +86,7 @@ class SideBarMenu extends React.Component {
 							height: '60px',
 						}}
 					>
-						<Button primary onClick={this.props.saveButton} style={estilos.btnStyle}>
-							Guardar
-						</Button>
-						<Button negative style={estilos.btnStyle} onClick={this.props.sidebarStateFalse}>
-							Cancelar
-						</Button>
+		
 					</div>
 				</Sidebar>
 				<Sidebar.Pusher>

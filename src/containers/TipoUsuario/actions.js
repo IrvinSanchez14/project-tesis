@@ -1,4 +1,5 @@
 import * as ACTIONS from './constants';
+import api from '../../api';
 
 export const setTipoUsuarioData = datosTipoUsuario => {
 	return {
@@ -30,3 +31,9 @@ export function sagaread(authParams) {
 export function authError(error) {
 	return { type: 'AUTH_ERROR', error };
 }
+
+export const editTipousuario = (formValues) => async dispatch => {
+	const response = await api.put(`tipoUsuario/update.php`, formValues);
+  
+	dispatch({ type: ACTIONS.EDIT_TIPOUSUARIO, payload: response.data });
+  };
