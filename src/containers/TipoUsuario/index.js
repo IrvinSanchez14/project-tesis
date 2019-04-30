@@ -1,9 +1,11 @@
+import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import TableData from '../../components/TableData';
 import SideBarMenu from '../../components/SideBar';
+import FrmTipoUsuario from '../../components/Forms/frmTipoUsuario';
 
 import { fetchTipoUsuario, idSelectedTipoUsuario, setTipoUsuarioData } from './actions';
 import { dataTipoUsuario, getDataId, getDataBodyId } from './selectors';
@@ -51,6 +53,7 @@ class TipoUsuario extends React.Component {
 
 	render() {
 		const arr = [];
+		const frmTipoUsuarios = [];
 		if (this.props.dataTipoUsuario) {
 			arr.push(
 				<TableData
@@ -59,6 +62,16 @@ class TipoUsuario extends React.Component {
 					ejemplo={this.datosTabla()}
 					getIDtable={this.getIDtable}
 					key="idTableTipoUsuario"
+				/>
+			);
+			frmTipoUsuarios.push(
+				<FrmTipoUsuario
+					key="frmTipoUsuario"
+					initialValues={_.pick(
+						this.props.getDataBodyId ? this.props.getDataBodyId : undefined,
+						'Nombre',
+						'Descripcion'
+					)}
 				/>
 			);
 			return (
@@ -71,6 +84,7 @@ class TipoUsuario extends React.Component {
 						headSide={this.props.getDataId ? this.props.getDataId : undefined}
 						bodySide={this.props.getDataBodyId ? this.props.getDataBodyId : undefined}
 						saveButton={this.getDataTable}
+						frmTable={frmTipoUsuarios}
 					/>
 				</div>
 			);
@@ -102,7 +116,7 @@ TipoUsuario.propTypes = {
 	idSelectedTipoUsuario: PropTypes.func,
 	stateSideBarMenu: PropTypes.bool,
 	getDataId: PropTypes.array,
-	getDataBodyId: PropTypes.array,
+	getDataBodyId: PropTypes.object,
 	setTipoUsuarioData: PropTypes.object,
 };
 

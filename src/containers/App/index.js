@@ -1,39 +1,26 @@
 import React from 'react';
-import { Link, BrowserRouter as Router } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { Router, Route, Switch } from 'react-router-dom';
 
-import PageAdmin from '../../components/PageAdmin';
+import history from '../../history';
+import Header from '../../components/Header';
 
-import { stateSideBarMenu } from './selectors';
+import Welcome from '../Welcome';
+import TipoUsuario from '../TipoUsuario';
 
-class App extends React.Component {
-	menu = () => {
-		if (localStorage.jwtToken) {
-			return <Link to="/tipoUsuario">Admin Tipo Usuario </Link>;
-		} else {
-			return <Link to="/login">Login </Link>;
-		}
-	};
-	render() {
-		return (
-			<Router>
-				<div key="id1" id="id1">
-					<PageAdmin id="id" />
+const App = () => {
+	return (
+		<div className="ui container">
+			<Router history={history}>
+				<div>
+					<Header />
+					<Switch>
+						<Route path="/" exact component={Welcome} />
+						<Route path="/TipoUsuario" exact component={TipoUsuario} />
+					</Switch>
 				</div>
 			</Router>
-		);
-	}
-}
-
-export function mapStateToProps(state, props) {
-	return {
-		stateSideBarMenu: stateSideBarMenu(state, props),
-	};
-}
-
-App.propTypes = {
-	stateSideBarMenu: PropTypes.bool,
+		</div>
+	);
 };
 
-export default connect(mapStateToProps)(App);
+export default App;

@@ -31,7 +31,7 @@ class TableData extends React.Component {
 
 	render() {
 		return (
-			<Table celled>
+			<Table celled selectable>
 				<Table.Header>
 					<Table.Row>
 						{this.props.header.map(head => {

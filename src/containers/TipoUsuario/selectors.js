@@ -29,6 +29,7 @@ export const getDataBodyId = createSelector(
 	getIdTipoUsuario,
 	(dataTipo, idTipoUsuario) => {
 		let dataBody;
+		let d;
 		if (dataTipo) {
 			dataBody = [];
 			dataTipo.forEach(data => {
@@ -37,9 +38,13 @@ export const getDataBodyId = createSelector(
 						Nombre: data.Nombre,
 						Descripcion: data.Descripcion,
 					});
+					d = {
+						Nombre: data.Nombre,
+						Descripcion: data.Descripcion,
+					};
 				}
 			});
 		}
-		return dataBody;
+		return d;
 	}
 );

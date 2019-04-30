@@ -1,10 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form';
 import { Menu, Form, Sidebar, Checkbox, Segment, Button } from 'semantic-ui-react';
 
 import { sidebarStateFalse } from '../../containers/App/actions';
+
+const estilos = {
+	btnStyle: {
+		float: 'right',
+		width: '155px',
+	},
+};
 
 class SideBarMenu extends React.Component {
 	state = { visible: false };
@@ -20,12 +26,12 @@ class SideBarMenu extends React.Component {
 			let estado = [];
 			this.props.headSide.map(data => {
 				if (data.estado === '0') {
-					estado.push(<Checkbox onClick={() => this.changeState()} checked toggle />);
+					estado.push(<Checkbox key={`checkBox`} onClick={() => this.changeState()} checked toggle />);
 				} else {
 					estado.push(<Checkbox toggle />);
 				}
 				TODO.push(
-					<div>
+					<div key="headID">
 						<div>
 							<h3>{data.id}</h3>
 						</div>
@@ -44,7 +50,7 @@ class SideBarMenu extends React.Component {
 			this.props.bodySide.map(data => {
 				let children = [];
 				for (let prop in data) {
-					children.push(<Form.Input fluid label={prop} value={data[prop]} />);
+					children.push(<Form.Input key={`form${prop}`} fluid label={prop} value={data[prop]} />);
 				}
 				body.push(children);
 				return data;
@@ -66,11 +72,11 @@ class SideBarMenu extends React.Component {
 					vertical
 					visible={this.props.SideBarVisible}
 					width="thin"
-					style={{ width: '35%', backgroundColor: '#04B431' }}
+					style={{ width: '35%', backgroundColor: 'white', borderLeft: 'red solid' }}
 				>
 					<Menu.Item as="a">{this.headerSide()}</Menu.Item>
 					<Menu.Item as="a">
-						<div>{this.BodySide()}</div>
+						<div>{this.props.frmTable}</div>
 					</Menu.Item>
 					<div
 						style={{
@@ -78,13 +84,14 @@ class SideBarMenu extends React.Component {
 							bottom: '0',
 							width: '100%',
 							height: '60px',
-							background: 'rgb(4, 180, 49)',
 						}}
 					>
-						<Button primary onClick={this.props.saveButton}>
+						<Button primary onClick={this.props.saveButton} style={estilos.btnStyle}>
 							Guardar
 						</Button>
-						<Button secondary>Cancelar</Button>
+						<Button negative style={estilos.btnStyle} onClick={this.props.sidebarStateFalse}>
+							Cancelar
+						</Button>
 					</div>
 				</Sidebar>
 				<Sidebar.Pusher>

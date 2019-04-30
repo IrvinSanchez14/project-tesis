@@ -1,5 +1,4 @@
 import * as ACTIONS from './constants';
-import api from '../../api';
 
 export const setTipoUsuarioData = datosTipoUsuario => {
 	return {
