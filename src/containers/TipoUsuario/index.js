@@ -2,12 +2,21 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Container } from 'semantic-ui-react';
 
 import TableData from '../../components/TableData';
 import SideBarMenu from '../../components/SideBar';
 import FrmTipoUsuario from '../../components/Forms/frmTipoUsuario';
+import { sidebarStateFalse } from '../App/actions';
+import api from '../../api';
 
-import { fetchTipoUsuario, idSelectedTipoUsuario, setTipoUsuarioData } from './actions';
+import {
+	fetchTipoUsuario,
+	idSelectedTipoUsuario,
+	setTipoUsuarioData,
+	editTipousuario,
+	creacionRegistro,
+} from './actions';
 import { dataTipoUsuario, getDataId, getDataBodyId } from './selectors';
 
 import { sidebarState } from '../App/actions';
@@ -16,7 +25,6 @@ import { stateSideBarMenu } from '../App/selectors';
 class TipoUsuario extends React.Component {
 	componentDidMount() {
 		this.props.fetchTipoUsuario();
-		this.getDataTable();
 	}
 
 	headTable = () => {
@@ -35,7 +43,7 @@ class TipoUsuario extends React.Component {
 				0: tipoUsuario.IdTipoUsuario,
 				1: tipoUsuario.Nombre,
 				2: tipoUsuario.Descripcion,
-				3: tipoUsuario.Estado,
+				3: tipoUsuario.Estado === '0' ? 'Disponible' : 'Inactivo',
 			});
 			return tipoUsuario;
 		});
@@ -47,13 +55,75 @@ class TipoUsuario extends React.Component {
 		this.props.idSelectedTipoUsuario(id);
 	};
 
+	crearRegistro = () => {
+		this.props.creacionRegistro();
+		this.props.sidebarState();
+	};
+
 	getDataTable = () => {
-		return console.log('click', this.props.fetchTipoUsuario());
+		return this.props.fetchTipoUsuario();
+	};
+
+	onSubmit = formValues => {
+		if (formValues.flag === 'create') {
+			api.post('/tipoUsuario/create.php', formValues).then(
+				data => this.props.fetchTipoUsuario(),
+				this.props.sidebarStateFalse()
+			);
+		} else {
+			api.put('/tipoUsuario/update.php', formValues).then(
+				data => this.props.fetchTipoUsuario(),
+				this.props.sidebarStateFalse()
+			);
+		}
+	};
+
+	onChangeStateButton = check => {
+		const updateState = {
+			IdTipoUsuario: check.id,
+			Estado: `${check.state}`,
+		};
+		api.put('/tipoUsuario/updateState.php', updateState).then(data => this.props.fetchTipoUsuario());
+	};
+
+	frmTableTipo = () => {
+		const frmTipoUsuarios = [];
+		if (this.props.getDataBodyId === undefined) {
+			frmTipoUsuarios.push(
+				<FrmTipoUsuario
+					key="frmTipoUsuario"
+					onSubmit={this.onSubmit}
+					initialValues={_.pick(
+						this.props.getDataBodyId ? this.props.getDataBodyId : undefined,
+						'IdTipoUsuario',
+						'Nombre',
+						'Descripcion',
+						'Estado'
+					)}
+					createData={true}
+				/>
+			);
+		} else {
+			frmTipoUsuarios.push(
+				<FrmTipoUsuario
+					key="frmTipoUsuario"
+					onSubmit={this.onSubmit}
+					initialValues={_.pick(
+						this.props.getDataBodyId ? this.props.getDataBodyId : undefined,
+						'IdTipoUsuario',
+						'Nombre',
+						'Descripcion',
+						'Estado'
+					)}
+					createData={false}
+				/>
+			);
+		}
+		return frmTipoUsuarios;
 	};
 
 	render() {
 		const arr = [];
-		const frmTipoUsuarios = [];
 		if (this.props.dataTipoUsuario) {
 			arr.push(
 				<TableData
@@ -64,27 +134,20 @@ class TipoUsuario extends React.Component {
 					key="idTableTipoUsuario"
 				/>
 			);
-			frmTipoUsuarios.push(
-				<FrmTipoUsuario
-					key="frmTipoUsuario"
-					initialValues={_.pick(
-						this.props.getDataBodyId ? this.props.getDataBodyId : undefined,
-						'Nombre',
-						'Descripcion'
-					)}
-				/>
-			);
 			return (
 				<div>
-					<h1>tabla</h1>
-					<button onClick={this.getDataTable}>GET</button>
+					<h1>Tipo de Usuario</h1>
+					<button className="ui blue button" onClick={this.crearRegistro}>
+						Crear nuevo registro
+					</button>
 					<SideBarMenu
 						content={arr}
 						SideBarVisible={this.props.stateSideBarMenu}
 						headSide={this.props.getDataId ? this.props.getDataId : undefined}
 						bodySide={this.props.getDataBodyId ? this.props.getDataBodyId : undefined}
 						saveButton={this.getDataTable}
-						frmTable={frmTipoUsuarios}
+						frmTable={this.frmTableTipo()}
+						onClick={this.onChangeStateButton}
 					/>
 				</div>
 			);
@@ -107,6 +170,9 @@ export const actions = {
 	fetchTipoUsuario,
 	sidebarState,
 	idSelectedTipoUsuario,
+	editTipousuario,
+	sidebarStateFalse,
+	creacionRegistro,
 };
 
 TipoUsuario.propTypes = {

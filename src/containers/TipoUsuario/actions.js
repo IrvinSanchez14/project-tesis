@@ -1,5 +1,4 @@
 import * as ACTIONS from './constants';
-import api from '../../api';
 
 export const setTipoUsuarioData = datosTipoUsuario => {
 	return {
@@ -11,6 +10,12 @@ export const setTipoUsuarioData = datosTipoUsuario => {
 export function fetchTipoUsuario() {
 	return {
 		type: ACTIONS.FETCH_TIPOUSUARIO,
+	};
+}
+
+export function editTipo() {
+	return {
+		type: ACTIONS.EDIT_TIPO,
 	};
 }
 
@@ -32,8 +37,16 @@ export function authError(error) {
 	return { type: 'AUTH_ERROR', error };
 }
 
-export const editTipousuario = (formValues) => async dispatch => {
-	const response = await api.put(`tipoUsuario/update.php`, formValues);
-  
-	dispatch({ type: ACTIONS.EDIT_TIPOUSUARIO, payload: response.data });
-  };
+export function editTipousuario(formValues) {
+	return {
+		type: ACTIONS.EDIT_TIPOUSUARIO,
+		data: formValues,
+	};
+}
+
+export function creacionRegistro() {
+	return {
+		type: ACTIONS.CREACION_REGISTRO,
+		erase: undefined,
+	};
+}

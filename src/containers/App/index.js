@@ -9,7 +9,7 @@ import TipoUsuario from '../TipoUsuario';
 
 const App = () => {
 	return (
-		<div className="ui container">
+		<div>
 			<Router history={history}>
 				<div>
 					<Header />

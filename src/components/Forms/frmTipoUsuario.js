@@ -1,14 +1,6 @@
 import React from 'react';
+import { fromJS } from 'immutable';
 import { Field, reduxForm } from 'redux-form/immutable';
-import { Button } from 'semantic-ui-react';
-
-
-const estilos = {
-	btnStyle: {
-		float: 'right',
-		width: '155px',
-	},
-};
 
 class FrmTipoUsuario extends React.Component {
 	renderError({ error, touched }) {
@@ -33,43 +25,36 @@ class FrmTipoUsuario extends React.Component {
 	};
 
 	onSubmit = formValues => {
-		this.props.onSubmit(formValues);
+		let data;
+		if (this.props.createData) {
+			data = fromJS({
+				flag: 'create',
+			});
+		} else {
+			data = fromJS({
+				flag: 'update',
+			});
+		}
+
+		const newData = formValues.mergeDeep(data);
+		this.props.onSubmit(newData.toJS());
 	};
 
 	render() {
 		return (
 			<form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
+				{this.props.createData ? <Field name="IdTipoUsuario" component={this.renderInput} label="ID" /> : null}
 				<Field name="Nombre" component={this.renderInput} label="Nombre" />
 				<Field name="Descripcion" component={this.renderInput} label="Descripcion" />
-				<Field name="Descripcion" component={this.renderInput} label="Descripcion" />
-				<Field name="Descripcion" component={this.renderInput} label="Descripcion" />
-				<Field name="Descripcion" component={this.renderInput} label="Descripcion" />
-				<Field name="Descripcion" component={this.renderInput} label="Descripcion" />
-				<Field name="Descripcion" component={this.renderInput} label="Descripcion" />
-				<Field name="Descripcion" component={this.renderInput} label="Descripcion" />
-				<Field name="Descripcion" component={this.renderInput} label="Descripcion" />
-				<Field name="Descripcion" component={this.renderInput} label="Descripcion" />
-				<Field name="Descripcion" component={this.renderInput} label="Descripcion" />
-				<Field name="Descripcion" component={this.renderInput} label="Descripcion" />
-				<Field name="Descripcion" component={this.renderInput} label="Descripcion" />
-				<Field name="Descripcion" component={this.renderInput} label="Descripcion" />
-				<Field name="Descripcion" component={this.renderInput} label="Descripcion" />
-				<Field name="Descripcion" component={this.renderInput} label="Descripcion" />
 				<div
-						style={{
-				
-							bottom: '0',
-							width: '100%',
-							height: '60px',
-						}}
-					>
-						<Button primary onClick={this.props.saveButton} style={estilos.btnStyle}>
-							Guardar
-						</Button>
-						<Button negative style={estilos.btnStyle} onClick={this.props.sidebarStateFalse}>
-							Cancelar
-						</Button>
-					</div>
+					style={{
+						bottom: '0',
+						width: '100%',
+						height: '60px',
+					}}
+				>
+					<button className="ui button primary">Guardar</button>
+				</div>
 			</form>
 		);
 	}

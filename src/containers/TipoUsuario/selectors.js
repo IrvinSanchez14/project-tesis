@@ -39,8 +39,10 @@ export const getDataBodyId = createSelector(
 						Descripcion: data.Descripcion,
 					});
 					d = {
+						IdTipoUsuario: data.IdTipoUsuario,
 						Nombre: data.Nombre,
 						Descripcion: data.Descripcion,
+						Estado: data.Estado,
 					};
 				}
 			});
