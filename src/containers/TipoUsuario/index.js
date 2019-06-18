@@ -2,7 +2,6 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Container } from 'semantic-ui-react';
 
 import TableData from '../../components/TableData';
 import SideBarMenu from '../../components/SideBar';
@@ -22,8 +21,13 @@ import { dataTipoUsuario, getDataId, getDataBodyId } from './selectors';
 import { sidebarState } from '../App/actions';
 import { stateSideBarMenu } from '../App/selectors';
 
+const auth = false;
+
 class TipoUsuario extends React.Component {
 	componentDidMount() {
+		if (auth) {
+			this.props.history.push('/');
+		}
 		this.props.fetchTipoUsuario();
 	}
 
