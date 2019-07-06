@@ -3,25 +3,44 @@ import { fromJS } from 'immutable';
 import * as ACTIONS from './constants';
 
 const initialState = fromJS({
-	userData: undefined,
-	loading: false,
-	isAuthenticated: false,
+	requesting: false,
+	successful: false,
+	messages: [],
+	errors: [],
 });
 
 export default function(state = initialState, action) {
 	switch (action.type) {
-		case ACTIONS.LOGIN_STATUS_OK: {
-			return state.set('loading', action.loading);
+		case ACTIONS.LOGIN_REQUESTING: {
+			return {
+				requesting: true,
+				successful: false,
+				messages: [],
+				errors: [],
+			};
 		}
-		case ACTIONS.SET_CURRENT_USER: {
-			return state.set('userData', action.user);
-		}
-		case ACTIONS.ERROR_LOGIN: {
-			return state.set('loading', action.err);
-		}
-		case ACTIONS.IS_AUTHENTICATED: {
-			return state.set('isAuthenticated', action.auth);
-		}
+		case ACTIONS.LOGIN_SUCCESS:
+			return {
+				requesting: false,
+				successful: true,
+				messages: [
+					{
+						body: `${action.response.data.message}`,
+					},
+				],
+				errors: [],
+			};
+		case ACTIONS.LOGOUT_SUCCESSFUL:
+			return {
+				requesting: false,
+				successful: false,
+				messages: [
+					{
+						body: `${action.message}`,
+					},
+				],
+				errors: [],
+			};
 		default:
 			return state;
 	}
