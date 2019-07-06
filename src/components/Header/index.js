@@ -71,7 +71,14 @@ class Header extends React.Component {
 						>
 							<Dropdown.Item>Tipo de Usuario</Dropdown.Item>
 						</Link>
-						<Dropdown.Item>Russian</Dropdown.Item>
+						<Link
+							to="/Empresa"
+							style={{
+								color: 'inherit',
+							}}
+						>
+							<Dropdown.Item>Empresa</Dropdown.Item>
+						</Link>
 						<Dropdown.Item>Spanish</Dropdown.Item>
 					</Dropdown.Menu>
 				</Dropdown>

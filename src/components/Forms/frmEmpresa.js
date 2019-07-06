@@ -2,7 +2,7 @@ import React from 'react';
 import { fromJS } from 'immutable';
 import { Field, reduxForm } from 'redux-form/immutable';
 
-class FrmTipoUsuario extends React.Component {
+class FrmEmpresa extends React.Component {
 	renderError({ error, touched }) {
 		if (touched && error) {
 			return (
@@ -43,9 +43,9 @@ class FrmTipoUsuario extends React.Component {
 	render() {
 		return (
 			<form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
-				{this.props.createData ? <Field name="IdEmpresa" component={this.renderInput} label="ID" /> : null}
+				{this.props.createData ? <Field name="IdTipoUsuario" component={this.renderInput} label="ID" /> : null}
 				<Field name="Nombre" component={this.renderInput} label="Nombre" />
-				<Field name="Descripcion" component={this.renderInput} label="Descripcion" />
+				<Field name="Razon_Social" component={this.renderInput} label="Razon Social" />
 				<div
 					style={{
 						bottom: '0',
@@ -72,7 +72,7 @@ const validate = values => {
 };
 
 export default reduxForm({
-	form: 'formTipoUsuario',
+	form: 'formEmpresa',
 	validate,
 	enableReinitialize: true,
-})(FrmTipoUsuario);
+})(FrmEmpresa);

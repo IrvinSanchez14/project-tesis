@@ -7,137 +7,109 @@ import AddIcon from '@material-ui/icons/Add';
 
 import TableData from '../../components/TableData';
 import SideBarMenu from '../../components/SideBar';
-import FrmTipoUsuario from '../../components/Forms/frmTipoUsuario';
 import { sidebarStateFalse } from '../App/actions';
+import FrmEmpresa from '../../components/Forms/frmEmpresa';
 import api from '../../api';
 
-import {
-	fetchTipoUsuario,
-	idSelectedTipoUsuario,
-	setTipoUsuarioData,
-	editTipousuario,
-	creacionRegistro,
-} from './actions';
-import { dataTipoUsuario, getDataId, getDataBodyId } from './selectors';
+import { fetchEmpresa, idSelectedEmpresa } from './actions';
+import { dataEmpresa, getDataId, getDataBodyId } from './selectors';
 
 import { sidebarState } from '../App/actions';
 import { stateSideBarMenu } from '../App/selectors';
 
 const auth = false;
 
-class TipoUsuario extends React.Component {
+class Empresa extends React.Component {
 	componentDidMount() {
 		if (auth) {
 			this.props.history.push('/');
 		}
-		this.props.fetchTipoUsuario();
+		this.props.fetchEmpresa();
+		console.log(this.props);
 	}
 
 	headTable = () => {
 		let headTable;
-		this.props.dataTipoUsuario.map(tipoUsuario => {
-			headTable = Object.keys(tipoUsuario);
-			return tipoUsuario;
+		this.props.dataEmpresa.map(empresa => {
+			headTable = Object.keys(empresa);
+			return empresa;
 		});
 		return headTable;
 	};
 
 	datosTabla = () => {
 		const dataTable = [];
-		this.props.dataTipoUsuario.map(tipoUsuario => {
+		this.props.dataEmpresa.map(empresa => {
 			dataTable.push({
-				0: tipoUsuario.IdTipoUsuario,
-				1: tipoUsuario.Nombre,
-				2: tipoUsuario.Descripcion,
-				3: tipoUsuario.Estado === '0' ? 'Disponible' : 'Inactivo',
+				0: empresa.IdEmpresa,
+				1: empresa.Nombre,
+				2: empresa.Razon_Social,
+				3: empresa.Direccion,
+				4: empresa.Telefono,
+				5: empresa.Correo,
+				6: empresa.Estado === '0' ? 'Disponible' : 'Inactivo',
+				7: empresa.FechaCreacion,
 			});
-			return tipoUsuario;
+			return empresa;
 		});
 		return dataTable;
 	};
 
 	getIDtable = id => {
 		this.props.sidebarState();
-		this.props.idSelectedTipoUsuario(id);
-	};
-
-	crearRegistro = () => {
-		this.props.creacionRegistro();
-		this.props.sidebarState();
+		this.props.idSelectedEmpresa(id);
 	};
 
 	getDataTable = () => {
-		return this.props.fetchTipoUsuario();
+		return this.props.fetchEmpresa();
 	};
 
-	onSubmit = formValues => {
-		if (formValues.flag === 'create') {
-			api.post('/tipoUsuario/create.php', formValues).then(
-				data => this.props.fetchTipoUsuario(),
-				this.props.sidebarStateFalse()
-			);
-		} else {
-			api.put('/tipoUsuario/update.php', formValues).then(
-				data => this.props.fetchTipoUsuario(),
-				this.props.sidebarStateFalse()
-			);
-		}
-	};
-
-	onChangeStateButton = check => {
-		const updateState = {
-			IdTipoUsuario: check.id,
-			Estado: `${check.state}`,
-		};
-		api.put('/tipoUsuario/updateState.php', updateState).then(data => this.props.fetchTipoUsuario());
-	};
-
-	frmTableTipo = () => {
-		const frmTipoUsuarios = [];
+	frmTableEmpresa = () => {
+		const frmEmpresa = [];
 		if (this.props.getDataBodyId === undefined) {
-			frmTipoUsuarios.push(
-				<FrmTipoUsuario
-					key="frmTipoUsuario"
+			frmEmpresa.push(
+				<FrmEmpresa
+					key="frmEmpresa"
 					onSubmit={this.onSubmit}
 					initialValues={_.pick(
 						this.props.getDataBodyId ? this.props.getDataBodyId : undefined,
-						'IdTipoUsuario',
+						'IdEmpresa',
 						'Nombre',
-						'Descripcion',
+						'Razon_Social',
 						'Estado'
 					)}
 					createData={true}
 				/>
 			);
 		} else {
-			frmTipoUsuarios.push(
-				<FrmTipoUsuario
-					key="frmTipoUsuario"
+			frmEmpresa.push(
+				<FrmEmpresa
+					key="frmEmpresa"
 					onSubmit={this.onSubmit}
 					initialValues={_.pick(
 						this.props.getDataBodyId ? this.props.getDataBodyId : undefined,
 						'IdTipoUsuario',
 						'Nombre',
-						'Descripcion',
+						'Razon_Social',
 						'Estado'
 					)}
 					createData={false}
 				/>
 			);
 		}
-		return frmTipoUsuarios;
+		return frmEmpresa;
 	};
 
 	render() {
 		const arr = [];
-		if (this.props.dataTipoUsuario) {
+		if (this.props.dataEmpresa) {
 			arr.push(
 				<TableData
 					header={this.headTable()}
-					dataTable={this.props.dataTipoUsuario}
+					dataTable={this.props.dataEmpresa}
 					ejemplo={this.datosTabla()}
 					getIDtable={this.getIDtable}
-					key="idTableTipoUsuario"
+					key="IdEmpresa"
 				/>
 			);
 			return (
@@ -158,7 +130,7 @@ class TipoUsuario extends React.Component {
 						headSide={this.props.getDataId ? this.props.getDataId : undefined}
 						bodySide={this.props.getDataBodyId ? this.props.getDataBodyId : undefined}
 						saveButton={this.getDataTable}
-						frmTable={this.frmTableTipo()}
+						frmTable={this.frmTableEmpresa()}
 						onClick={this.onChangeStateButton}
 					/>
 					<Fab
@@ -182,28 +154,25 @@ class TipoUsuario extends React.Component {
 
 export function mapStateToProps(state, props) {
 	return {
-		dataTipoUsuario: dataTipoUsuario(state, props),
+		dataEmpresa: dataEmpresa(state, props),
 		stateSideBarMenu: stateSideBarMenu(state, props),
 		getDataId: getDataId(state, props),
 		getDataBodyId: getDataBodyId(state, props),
-		setTipoUsuarioData: setTipoUsuarioData(state, props),
 	};
 }
 
 export const actions = {
-	fetchTipoUsuario,
+	fetchEmpresa,
 	sidebarState,
-	idSelectedTipoUsuario,
-	editTipousuario,
+	idSelectedEmpresa,
 	sidebarStateFalse,
-	creacionRegistro,
 };
 
-TipoUsuario.propTypes = {
-	fetchTipoUsuario: PropTypes.func,
-	dataTipoUsuario: PropTypes.array,
+Empresa.propTypes = {
+	fetchEmpresa: PropTypes.func,
+	dataEmpresa: PropTypes.array,
 	sidebarState: PropTypes.func,
-	idSelectedTipoUsuario: PropTypes.func,
+	idSelectedEmpresa: PropTypes.func,
 	stateSideBarMenu: PropTypes.bool,
 	getDataId: PropTypes.array,
 	getDataBodyId: PropTypes.object,
@@ -213,4 +182,4 @@ TipoUsuario.propTypes = {
 export default connect(
 	mapStateToProps,
 	actions
-)(TipoUsuario);
+)(Empresa);
