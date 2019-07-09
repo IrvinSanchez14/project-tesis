@@ -20,9 +20,13 @@ import Permisos from '../Permisos';
 import Estados from '../Estados';
 import PermisosUsuarios from '../PermisosUsuarios';
 import Usuarios from '../Usuarios';
+<<<<<<< HEAD
 import Porciones from '../Porciones';
 import ListaProducto from '../ListaProducto';
 import CambioPass from '../CambioPass';
+=======
+import Ejemplo1 from './../Ejemplo1';
+>>>>>>> src/containers/Ejemplo1
 
 const App = () => {
 	const local = JSON.parse(localStorage.getItem('userInfo'));
@@ -38,6 +42,7 @@ const App = () => {
 				<Route path="/" exact render={() => (isLoggedIn() ? <Welcome /> : <Login />)} />
 				<Route path="/TipoUsuario" exact component={TipoUsuario} />
 				<Route path="/Empresa" exact component={Empresa} />
+<<<<<<< HEAD
 				<Route path="/ListaExistente" exact component={ListaExistente} />
 				<Route path="/UnidadMedida" exact component={UnidadMedida} />
 				<Route path="/Sucursales" exact component={Sucursales} />
@@ -49,6 +54,7 @@ const App = () => {
 				<Route path="/Estados" exact component={Estados} />
 				<Route path="/PermisosUsuarios" exact component={PermisosUsuarios} />
 				<Route path="/Usuarios" exact component={Usuarios} />
+<<<<<<< HEAD
 				<Route path="/Porciones" exact component={Porciones} />
 				<Route path="/ListaProducto" exact component={ListaProducto} />
 				<Route
@@ -56,6 +62,11 @@ const App = () => {
 					exact
 					render={() => (!isRenuevaLoggin() ? <Redirect to="/" /> : <CambioPass />)}
 				/>
+=======
+=======
+				<Route path="/Ejemplo1" exact component={Ejemplo1} />
+>>>>>>> src/containers/Ejemplo1
+>>>>>>> src/containers/Ejemplo1
 				<Route exact path="/login" render={() => (isLoggedIn() ? <Redirect to="/" /> : <Login />)} />
 				<Route exact path="/recuperacion" render={() => (isLoggedIn() ? <Redirect to="/" /> : <Register />)} />
 			</Switch>
