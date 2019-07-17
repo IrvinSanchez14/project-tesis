@@ -17,7 +17,7 @@ export default function(state = initialState, action) {
 		case ACTIONS.LOGIN_WATCHER: {
 			return state.set('saga', action.payload);
 		}
-		case ACTIONS.CREACION_REGISTRO: {
+		case ACTIONS.CREACION_REGISTRO_EMPRESA: {
 			return state.set('idSelected', action.erase);
 		}
 		default:

@@ -46,7 +46,7 @@ export function editEmpresa(formValues) {
 
 export function creacionRegistro() {
 	return {
-		type: ACTIONS.CREACION_REGISTRO,
+		type: ACTIONS.CREACION_REGISTRO_EMPRESA,
 		erase: undefined,
 	};
 }

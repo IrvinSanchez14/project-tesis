@@ -25,6 +25,7 @@ class FrmEmpresa extends React.Component {
 	};
 
 	onSubmit = formValues => {
+		console.log(formValues.toJS());
 		let data;
 		if (this.props.createData) {
 			data = fromJS({
@@ -41,11 +42,14 @@ class FrmEmpresa extends React.Component {
 	};
 
 	render() {
+		console.log(this.props);
 		return (
 			<form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
-				{this.props.createData ? <Field name="IdTipoUsuario" component={this.renderInput} label="ID" /> : null}
 				<Field name="Nombre" component={this.renderInput} label="Nombre" />
 				<Field name="Razon_Social" component={this.renderInput} label="Razon Social" />
+				<Field name="Direccion" component={this.renderInput} label="Direccion" />
+				<Field name="Telefono" component={this.renderInput} label="Telefono" />
+				<Field name="Correo" component={this.renderInput} label="Correo" />
 				<div
 					style={{
 						bottom: '0',

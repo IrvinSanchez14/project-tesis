@@ -1,0 +1,5 @@
+por hacer:
+- crear un setTime para volver a cargar la data cuando se actualiza un registro
+- cambiar el mensaje de cambio de estado
+- crear CRUD-react de todas las tablas creadas en la API
+- verificar el funcionamiento de cada una

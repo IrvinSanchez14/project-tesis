@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Menu, Form, Sidebar, Segment } from 'semantic-ui-react';
+import { Menu, Form, Sidebar, Segment, Checkbox } from 'semantic-ui-react';
 
 import { sidebarStateFalse } from '../../containers/App/actions';
-import classCallCheck from 'babel-runtime/helpers/classCallCheck';
 
 const estilos = {
 	btnStyle: {
@@ -15,22 +14,19 @@ const estilos = {
 		fontSize: '24px',
 	},
 };
-console.log(window.innerWidth);
 
 class SideBarMenu extends React.Component {
 	state = { visible: false };
 
 	handleSidebarHide = () => this.props.sidebarStateFalse();
 
-	changeState = () => {};
-
-	toogleBox = () => {};
-
-	change = () => {
+	change = (id, state) => {
 		let datos = {
-			id: this.refs.check_me.id,
-			state: this.refs.check_me.checked,
+			id: id,
+			state: !state,
 		};
+		console.log(this.refs.check_me);
+		console.log(this.refs.check_me.checked);
 		this.props.onClick(datos);
 	};
 
@@ -39,8 +35,10 @@ class SideBarMenu extends React.Component {
 		if (this.props.headSide) {
 			let estado = [];
 			this.props.headSide.map(data => {
+				const checkData = data.estado === '0' ? true : false;
+				console.log(checkData);
 				TODO.push(
-					<div>
+					<div key={data.id}>
 						<div
 							id="contenedor"
 							style={{
@@ -58,16 +56,15 @@ class SideBarMenu extends React.Component {
 									textAlign: 'center',
 								}}
 							>
-								<div className="ui toggle checkbox">
-									<input
-										type="checkbox"
-										name="public"
-										ref="check_me"
-										id={data.id}
-										onClick={this.change}
-									/>
-									<label style={estilos.lblID}>{data.id}</label>
-								</div>
+								<Checkbox
+									toggle
+									id={data.id}
+									onClick={() => this.change(data.id, checkData)}
+									checked={checkData}
+									ref="check_me"
+									style={{ fontSize: '1.5em' }}
+									label={data.id}
+								/>
 							</div>
 							<div
 								id="fecha"
@@ -80,7 +77,7 @@ class SideBarMenu extends React.Component {
 									style={{
 										fontSize: '11px',
 									}}
-								>{`Fecha Creacion: 2019/05/13 22:00:00`}</div>
+								>{`Ultima Actualizacion: 2019/05/13 22:00:00`}</div>
 								<div
 									style={{
 										fontSize: '11px',
@@ -154,8 +151,11 @@ class SideBarMenu extends React.Component {
 						<div
 							style={{
 								right: '10px',
-								marginTop: '9px',
+								marginTop: '19px',
 								position: 'absolute',
+								color: '#FFF',
+								fontSize: '2em',
+								cursor: 'pointer',
 							}}
 							onClick={this.handleSidebarHide}
 						>

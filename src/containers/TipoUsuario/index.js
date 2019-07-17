@@ -72,10 +72,15 @@ class TipoUsuario extends React.Component {
 
 	onSubmit = formValues => {
 		if (formValues.flag === 'create') {
-			api.post('/tipoUsuario/create.php', formValues).then(
-				data => this.props.fetchTipoUsuario(),
-				this.props.sidebarStateFalse()
-			);
+			// eslint-disable-next-line no-restricted-globals
+			if (confirm('Esta seguro de guardar el siguiente Tipo de Usuario en la Base de Datos?')) {
+				api.post('/tipoUsuario/create.php', formValues).then(
+					data => this.props.fetchTipoUsuario(),
+					this.props.sidebarStateFalse()
+				);
+			} else {
+				return;
+			}
 		} else {
 			api.put('/tipoUsuario/update.php', formValues).then(
 				data => this.props.fetchTipoUsuario(),
@@ -89,7 +94,15 @@ class TipoUsuario extends React.Component {
 			IdTipoUsuario: check.id,
 			Estado: `${check.state}`,
 		};
-		api.put('/tipoUsuario/updateState.php', updateState).then(data => this.props.fetchTipoUsuario());
+		// eslint-disable-next-line no-restricted-globals
+		if (confirm('Esta seguro de cambiar el estado a Inactivo?')) {
+			api.put('/tipoUsuario/updateState.php', updateState).then(
+				data => this.props.sidebarStateFalse(),
+				this.props.fetchTipoUsuario()
+			);
+		} else {
+			return;
+		}
 	};
 
 	frmTableTipo = () => {
