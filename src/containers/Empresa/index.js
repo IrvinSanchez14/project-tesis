@@ -5,13 +5,14 @@ import { connect } from 'react-redux';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
+import api from '../../api';
+
 import TableData from '../../components/TableData';
 import SideBarMenu from '../../components/SideBar';
 import { sidebarStateFalse } from '../App/actions';
 import FrmEmpresa from '../../components/Forms/frmEmpresa';
-import api from '../../api';
 
-import { fetchEmpresa, idSelectedEmpresa } from './actions';
+import { fetchEmpresa, idSelectedEmpresa, creacionRegistro } from './actions';
 import { dataEmpresa, getDataId, getDataBodyId } from './selectors';
 
 import { sidebarState } from '../App/actions';
@@ -25,7 +26,6 @@ class Empresa extends React.Component {
 			this.props.history.push('/');
 		}
 		this.props.fetchEmpresa();
-		console.log(this.props);
 	}
 
 	headTable = () => {
@@ -64,6 +64,45 @@ class Empresa extends React.Component {
 		return this.props.fetchEmpresa();
 	};
 
+	crearRegistro = () => {
+		this.props.creacionRegistro();
+		this.props.sidebarState();
+	};
+
+	onSubmit = formValues => {
+		if (formValues.flag === 'create') {
+			// eslint-disable-next-line no-restricted-globals
+			if (confirm('Esta seguro de guardar la siguiente Empresa en la Base de Datos?')) {
+				api.post('/Empresas/create.php', formValues).then(
+					data => this.props.fetchEmpresa(),
+					this.props.sidebarStateFalse()
+				);
+			} else {
+				return;
+			}
+		} else {
+			api.put('/Empresas/update.php', formValues).then(
+				data => this.props.fetchEmpresa(),
+				this.props.sidebarStateFalse()
+			);
+		}
+	};
+
+	onChangeStateButton = check => {
+		const updateState = {
+			IdEmpresa: check.id,
+			Estado: `${check.state}`,
+		};
+		// eslint-disable-next-line no-restricted-globals
+		if (confirm('Esta seguro de cambiar el estado a Inactivo?')) {
+			api.put('/Empresas/updateState.php', updateState).then((
+				data //this.props.sidebarStateFalse(),
+			) => this.props.fetchEmpresa());
+		} else {
+			return;
+		}
+	};
+
 	frmTableEmpresa = () => {
 		const frmEmpresa = [];
 		if (this.props.getDataBodyId === undefined) {
@@ -76,6 +115,9 @@ class Empresa extends React.Component {
 						'IdEmpresa',
 						'Nombre',
 						'Razon_Social',
+						'Direccion',
+						'Telefono',
+						'Correo',
 						'Estado'
 					)}
 					createData={true}
@@ -88,9 +130,12 @@ class Empresa extends React.Component {
 					onSubmit={this.onSubmit}
 					initialValues={_.pick(
 						this.props.getDataBodyId ? this.props.getDataBodyId : undefined,
-						'IdTipoUsuario',
+						'IdEmpresa',
 						'Nombre',
 						'Razon_Social',
+						'Direccion',
+						'Telefono',
+						'Correo',
 						'Estado'
 					)}
 					createData={false}
@@ -166,6 +211,7 @@ export const actions = {
 	sidebarState,
 	idSelectedEmpresa,
 	sidebarStateFalse,
+	creacionRegistro,
 };
 
 Empresa.propTypes = {
@@ -177,6 +223,7 @@ Empresa.propTypes = {
 	getDataId: PropTypes.array,
 	getDataBodyId: PropTypes.object,
 	setTipoUsuarioData: PropTypes.object,
+	creacionRegistro: PropTypes.func,
 };
 
 export default connect(

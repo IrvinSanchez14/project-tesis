@@ -37,12 +37,17 @@ export const getDataBodyId = createSelector(
 					dataBody.push({
 						Nombre: data.Nombre,
 						Razon_Social: data.Razon_Social,
+						Direccion: data.Direccion,
+						Telefono: data.Telefono,
+						Correo: data.Correo,
 					});
 					d = {
 						IdEmpresa: data.IdEmpresa,
 						Nombre: data.Nombre,
 						Razon_Social: data.Razon_Social,
 						Direccion: data.Direccion,
+						Telefono: data.Telefono,
+						Correo: data.Correo,
 					};
 				}
 			});
