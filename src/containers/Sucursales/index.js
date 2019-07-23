@@ -1,63 +1,61 @@
 import _ from 'lodash';
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
 import api from '../../api';
-
 import TableData from '../../components/TableData';
 import SideBarMenu from '../../components/SideBar';
-import { sidebarStateFalse } from '../App/actions';
-import FrmEmpresa from '../../components/Forms/frmEmpresa';
+import FrmSucursal from '../../components/Forms/frmSucursal';
 
-import { fetchEmpresa, idSelectedEmpresa, creacionRegistro } from './actions';
-import { dataEmpresa, getDataId, getDataBodyId } from './selectors';
+import { fetchSucursal, idSelectedSucursal, creacionRegistro } from './actions';
+import { dataSucursal, getDataId, getDataBodyId } from './selectors';
 
-import { sidebarState } from '../App/actions';
+import { sidebarState, sidebarStateFalse } from '../App/actions';
 import { stateSideBarMenu } from '../App/selectors';
 
-class Empresa extends React.Component {
+class Sucursales extends Component {
 	componentDidMount() {
-		//this.props.history.push('/');
-		this.props.fetchEmpresa();
+		this.props.fetchSucursal();
+		console.log(this.props);
 	}
 
 	headTable = () => {
 		let headTable;
-		this.props.dataEmpresa.map(empresa => {
-			headTable = Object.keys(empresa);
-			return empresa;
+		this.props.dataSucursal.map(sucursal => {
+			headTable = Object.keys(sucursal);
+			return sucursal;
 		});
 		return headTable;
 	};
 
 	datosTabla = () => {
 		const dataTable = [];
-		this.props.dataEmpresa.map(empresa => {
+		this.props.dataSucursal.map(sucursal => {
 			dataTable.push({
-				0: empresa.IdEmpresa,
-				1: empresa.Nombre,
-				2: empresa.Razon_Social,
-				3: empresa.Direccion,
-				4: empresa.Telefono,
-				5: empresa.Correo,
-				6: empresa.Estado === '0' ? 'Disponible' : 'Inactivo',
-				7: empresa.FechaCreacion,
+				0: sucursal.IdSucursal,
+				1: sucursal.IdEmpresa,
+				2: sucursal.Nombre,
+				3: sucursal.Direccion,
+				4: sucursal.Telefono,
+				5: sucursal.IdEncargado,
+				6: sucursal.Estado === '0' ? 'Disponible' : 'Inactivo',
+				7: sucursal.FechaCreacion,
 			});
-			return empresa;
+			return sucursal;
 		});
 		return dataTable;
 	};
 
 	getIDtable = id => {
 		this.props.sidebarState();
-		this.props.idSelectedEmpresa(id);
+		this.props.idSelectedSucursal(id);
 	};
 
 	getDataTable = () => {
-		return this.props.fetchEmpresa();
+		return this.props.fetchSucursal();
 	};
 
 	crearRegistro = () => {
@@ -69,8 +67,8 @@ class Empresa extends React.Component {
 		if (formValues.flag === 'create') {
 			// eslint-disable-next-line no-restricted-globals
 			if (confirm('Esta seguro de guardar la siguiente Empresa en la Base de Datos?')) {
-				api.post('/Empresas/create.php', formValues).then(
-					data => this.props.fetchEmpresa(),
+				api.post('/Sucursales/create.php', formValues).then(
+					data => this.props.fetchSucursal(),
 					this.props.sidebarStateFalse()
 				);
 			} else {
@@ -79,8 +77,8 @@ class Empresa extends React.Component {
 		} else {
 			// eslint-disable-next-line no-restricted-globals
 			if (confirm('Esta seguro de actualizar el siguiente dato de la tabla Empresa?')) {
-				api.put('/Empresas/update.php', formValues).then(
-					data => this.props.fetchEmpresa(),
+				api.put('/Sucursales/update.php', formValues).then(
+					data => this.props.fetchSucursal(),
 					this.props.sidebarStateFalse()
 				);
 			} else {
@@ -91,15 +89,15 @@ class Empresa extends React.Component {
 
 	onChangeStateButton = check => {
 		const updateState = {
-			IdEmpresa: check.id,
+			IdSucursal: check.id,
 			Estado: `${check.state}`,
 		};
 		const messageState = check.state === true ? 'Disponible' : 'Inactivo';
 		// eslint-disable-next-line no-restricted-globals
 		if (confirm(`Esta seguro de cambiar el estado a ${messageState}`)) {
-			api.put('/Empresas/updateState.php', updateState).then(data => {
+			api.put('/Sucursales/updateState.php', updateState).then(data => {
 				if (data.data.message) {
-					this.props.fetchEmpresa();
+					this.props.fetchSucursal();
 					this.props.sidebarStateFalse();
 				}
 			});
@@ -108,58 +106,54 @@ class Empresa extends React.Component {
 		}
 	};
 
-	frmTableEmpresa = () => {
-		const frmEmpresa = [];
+	frmTableSucursal = () => {
+		const frmSucursal = [];
 		if (this.props.getDataBodyId === undefined) {
-			frmEmpresa.push(
-				<FrmEmpresa
-					key="frmEmpresa"
+			frmSucursal.push(
+				<FrmSucursal
+					key="frmSucursal"
 					onSubmit={this.onSubmit}
 					initialValues={_.pick(
 						this.props.getDataBodyId ? this.props.getDataBodyId : undefined,
-						'IdEmpresa',
+						'IdSucursal',
 						'Nombre',
-						'Razon_Social',
 						'Direccion',
 						'Telefono',
-						'Correo',
 						'Estado'
 					)}
 					createData={true}
 				/>
 			);
 		} else {
-			frmEmpresa.push(
-				<FrmEmpresa
-					key="frmEmpresa"
+			frmSucursal.push(
+				<FrmSucursal
+					key="frmSucursal"
 					onSubmit={this.onSubmit}
 					initialValues={_.pick(
 						this.props.getDataBodyId ? this.props.getDataBodyId : undefined,
-						'IdEmpresa',
+						'IdSucursal',
 						'Nombre',
-						'Razon_Social',
 						'Direccion',
 						'Telefono',
-						'Correo',
 						'Estado'
 					)}
 					createData={false}
 				/>
 			);
 		}
-		return frmEmpresa;
+		return frmSucursal;
 	};
 
 	render() {
 		const arr = [];
-		if (this.props.dataEmpresa) {
+		if (this.props.dataSucursal) {
 			arr.push(
 				<TableData
 					header={this.headTable()}
-					dataTable={this.props.dataEmpresa}
+					dataTable={this.props.dataSucursal}
 					ejemplo={this.datosTabla()}
 					getIDtable={this.getIDtable}
-					key="IdEmpresa"
+					key="IdSucursal"
 				/>
 			);
 			return (
@@ -171,7 +165,7 @@ class Empresa extends React.Component {
 							fontWeight: 'bold',
 						}}
 					>
-						Tipo de Usuario
+						Sucursales
 					</h1>
 
 					<SideBarMenu
@@ -180,7 +174,7 @@ class Empresa extends React.Component {
 						headSide={this.props.getDataId ? this.props.getDataId : undefined}
 						bodySide={this.props.getDataBodyId ? this.props.getDataBodyId : undefined}
 						saveButton={this.getDataTable}
-						frmTable={this.frmTableEmpresa()}
+						frmTable={this.frmTableSucursal()}
 						onClick={this.onChangeStateButton}
 					/>
 					<Fab
@@ -204,34 +198,33 @@ class Empresa extends React.Component {
 
 export function mapStateToProps(state, props) {
 	return {
-		dataEmpresa: dataEmpresa(state, props),
-		stateSideBarMenu: stateSideBarMenu(state, props),
+		dataSucursal: dataSucursal(state, props),
 		getDataId: getDataId(state, props),
 		getDataBodyId: getDataBodyId(state, props),
+		stateSideBarMenu: stateSideBarMenu(state, props),
 	};
 }
 
 export const actions = {
-	fetchEmpresa,
+	fetchSucursal,
 	sidebarState,
-	idSelectedEmpresa,
 	sidebarStateFalse,
+	idSelectedSucursal,
 	creacionRegistro,
 };
 
-Empresa.propTypes = {
-	fetchEmpresa: PropTypes.func,
-	dataEmpresa: PropTypes.array,
-	sidebarState: PropTypes.func,
-	idSelectedEmpresa: PropTypes.func,
-	stateSideBarMenu: PropTypes.bool,
+Sucursales.propTypes = {
+	fetchSucursal: PropTypes.func,
+	dataSucursal: PropTypes.array,
 	getDataId: PropTypes.array,
 	getDataBodyId: PropTypes.object,
-	setTipoUsuarioData: PropTypes.object,
+	sidebarState: PropTypes.func,
+	stateSideBarMenu: PropTypes.bool,
+	idSelectedSucursal: PropTypes.func,
 	creacionRegistro: PropTypes.func,
 };
 
 export default connect(
 	mapStateToProps,
 	actions
-)(Empresa);
+)(Sucursales);

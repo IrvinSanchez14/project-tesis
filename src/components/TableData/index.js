@@ -7,10 +7,6 @@ class TableData extends React.Component {
 		this.tableRow();
 	}
 
-	click = id => {
-		return console.log('irvin' + id);
-	};
-
 	tableRow = () => {
 		let table = [];
 		this.props.ejemplo.map((value, index) => {

@@ -6,6 +6,9 @@ import empresa from './containers/Empresa/reducer';
 import Registro from './containers/Registro/reducer';
 import App from './containers/App/reducer';
 import ReduxEjemplo from './containers/EjemploRedux/reducer';
+import unidadMedida from './containers/UnidadMedida/reducer';
+import sucursal from './containers/Sucursales/reducer';
+import producto from './containers/Productos/reducer';
 
 const appReducer = combineReducers({
 	form: reduxFormReducer,
@@ -15,6 +18,9 @@ const appReducer = combineReducers({
 	Registro,
 	empresa,
 	ReduxEjemplo,
+	unidadMedida,
+	sucursal,
+	producto,
 });
 
 export default appReducer;

@@ -76,6 +76,7 @@ export default function Modal(Props) {
 		setLista(list);
 		setVisibleModal(false);
 		localStorage.setItem('listaExistente', JSON.stringify(list));
+		console.log(lista)
 	}
 
 	return (

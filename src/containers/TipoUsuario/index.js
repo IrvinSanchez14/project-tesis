@@ -94,12 +94,15 @@ class TipoUsuario extends React.Component {
 			IdTipoUsuario: check.id,
 			Estado: `${check.state}`,
 		};
+		const messageState = check.state === true ? 'Disponible' : 'Inactivo';
 		// eslint-disable-next-line no-restricted-globals
-		if (confirm('Esta seguro de cambiar el estado a Inactivo?')) {
-			api.put('/tipoUsuario/updateState.php', updateState).then(
-				data => this.props.sidebarStateFalse(),
-				this.props.fetchTipoUsuario()
-			);
+		if (confirm(`Esta seguro de cambiar el estado a ${messageState}`)) {
+			api.put('/tipoUsuario/updateState.php', updateState).then(data => {
+				if (data.data.message) {
+					this.props.fetchTipoUsuario();
+					this.props.sidebarStateFalse();
+				}
+			});
 		} else {
 			return;
 		}
@@ -107,6 +110,7 @@ class TipoUsuario extends React.Component {
 
 	frmTableTipo = () => {
 		const frmTipoUsuarios = [];
+		console.log(this.props);
 		if (this.props.getDataBodyId === undefined) {
 			frmTipoUsuarios.push(
 				<FrmTipoUsuario

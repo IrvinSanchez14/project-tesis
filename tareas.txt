@@ -1,5 +1,9 @@
-por hacer:
-- crear un setTime para volver a cargar la data cuando se actualiza un registro
-- cambiar el mensaje de cambio de estado
+[TAREAS A REALIZAR]
+- crear un setTime para volver a cargar la data cuando se actualiza un registro (done)
+- cambiar el mensaje de cambio de estado (done)
 - crear CRUD-react de todas las tablas creadas en la API
 - verificar el funcionamiento de cada una
+
+[TAREAS A PROBAR]
+
+[TAREAS A ARREGLAR]
