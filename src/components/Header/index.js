@@ -79,7 +79,14 @@ class Header extends React.Component {
 						>
 							<Dropdown.Item>Empresa</Dropdown.Item>
 						</Link>
-						<Dropdown.Item>Spanish</Dropdown.Item>
+						<Link
+							to="/Ejemplo"
+							style={{
+								color: 'inherit',
+							}}
+						>
+							<Dropdown.Item>Ejemplo</Dropdown.Item>
+						</Link>
 					</Dropdown.Menu>
 				</Dropdown>
 				<Menu.Menu position="right">

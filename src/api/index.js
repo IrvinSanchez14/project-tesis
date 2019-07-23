@@ -6,7 +6,7 @@ const hash = Base64.encode(tok);
 const Basic = 'Basic ' + hash;
 
 export default axios.create({
-	baseURL: 'http://localhost/tesis/api-jws/api',
+	baseURL: 'http://192.168.0.11/tesis/api-jws/api',
 
 	headers: { 'Content-Type': 'application/json', Authorization: Basic },
 });

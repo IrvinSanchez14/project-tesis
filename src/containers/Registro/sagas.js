@@ -18,7 +18,7 @@ function registerApi(Nombre, Email, Alias, IdTipoUsuario, Passwd) {
 		},
 	};
 
-	const endpoint = `http://10.0.21.47/tesis/api-jws/api/user/create_user.php`;
+	const endpoint = `http://192.168.0.11/tesis/api-jws/api/user/create_user.php`;
 
 	const apiOptions = {
 		body: body,

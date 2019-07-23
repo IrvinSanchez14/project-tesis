@@ -14,6 +14,7 @@ import ReduxEjemplo from '../EjemploRedux';
 import UnidadMedida from '../UnidadMedida';
 import Sucursales from '../Sucursales';
 import Productos from '../Productos';
+import Ejemplo from '../Ejemplo';
 
 const App = () => {
 	return (
@@ -21,6 +22,7 @@ const App = () => {
 			<Header stateLogin={isLoggedIn()} />
 			<Switch>
 				<Route path="/" exact render={() => (isLoggedIn() ? <Welcome /> : <Login />)} />
+				<Route path="/Ejemplo" exact component={Ejemplo} />
 				<Route path="/TipoUsuario" exact component={TipoUsuario} />
 				<Route path="/Empresa" exact component={Empresa} />
 				<Route path="/ListaExistente" exact component={ListaExistente} />
