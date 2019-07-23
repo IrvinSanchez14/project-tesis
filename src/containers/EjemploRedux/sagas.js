@@ -8,7 +8,6 @@ export function* todaData(action) {
 	let reduxDatos;
 	try {
 		reduxDatos = yield call(api.get, '/UnidadMedida/readAll.php');
-		console.log(reduxDatos);
 	} catch (err) {
 		return;
 	}

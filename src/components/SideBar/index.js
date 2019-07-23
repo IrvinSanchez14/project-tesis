@@ -5,16 +5,6 @@ import { Menu, Form, Sidebar, Segment, Checkbox } from 'semantic-ui-react';
 
 import { sidebarStateFalse } from '../../containers/App/actions';
 
-const estilos = {
-	btnStyle: {
-		float: 'right',
-		width: '155px',
-	},
-	lblID: {
-		fontSize: '24px',
-	},
-};
-
 class SideBarMenu extends React.Component {
 	state = { visible: false };
 
@@ -25,8 +15,6 @@ class SideBarMenu extends React.Component {
 			id: id,
 			state: !state,
 		};
-		console.log(this.refs.check_me);
-		console.log(this.refs.check_me.checked);
 		this.props.onClick(datos);
 	};
 
@@ -36,7 +24,6 @@ class SideBarMenu extends React.Component {
 			let estado = [];
 			this.props.headSide.map(data => {
 				const checkData = data.estado === '0' ? true : false;
-				console.log(checkData);
 				TODO.push(
 					<div key={data.id}>
 						<div

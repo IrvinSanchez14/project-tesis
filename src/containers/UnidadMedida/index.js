@@ -1,63 +1,58 @@
 import _ from 'lodash';
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
 import api from '../../api';
-
-import TableData from '../../components/TableData';
 import SideBarMenu from '../../components/SideBar';
-import { sidebarStateFalse } from '../App/actions';
-import FrmEmpresa from '../../components/Forms/frmEmpresa';
+import TableData from '../../components/TableData';
+import FrmUnidadMedida from '../../components/Forms/frmUnidadMedida';
 
-import { fetchEmpresa, idSelectedEmpresa, creacionRegistro } from './actions';
-import { dataEmpresa, getDataId, getDataBodyId } from './selectors';
+import { fetchUnidadMedida, idSelectedUnidadMedida, creacionRegistro } from './actions';
+import { dataUnidadMedida, getDataBodyId, getDataId } from './selectors';
 
-import { sidebarState } from '../App/actions';
+import { sidebarState, sidebarStateFalse } from '../App/actions';
 import { stateSideBarMenu } from '../App/selectors';
 
-class Empresa extends React.Component {
+class UnidadMedida extends Component {
 	componentDidMount() {
-		//this.props.history.push('/');
-		this.props.fetchEmpresa();
+		this.props.fetchUnidadMedida();
+		console.log(this.props);
 	}
 
 	headTable = () => {
 		let headTable;
-		this.props.dataEmpresa.map(empresa => {
-			headTable = Object.keys(empresa);
-			return empresa;
+		this.props.dataUnidadMedida.map(unidadMedida => {
+			headTable = Object.keys(unidadMedida);
+			return unidadMedida;
 		});
 		return headTable;
 	};
 
 	datosTabla = () => {
 		const dataTable = [];
-		this.props.dataEmpresa.map(empresa => {
+		this.props.dataUnidadMedida.map(unidadMedida => {
 			dataTable.push({
-				0: empresa.IdEmpresa,
-				1: empresa.Nombre,
-				2: empresa.Razon_Social,
-				3: empresa.Direccion,
-				4: empresa.Telefono,
-				5: empresa.Correo,
-				6: empresa.Estado === '0' ? 'Disponible' : 'Inactivo',
-				7: empresa.FechaCreacion,
+				0: unidadMedida.IdUnidadMedida,
+				1: unidadMedida.Siglas,
+				2: unidadMedida.Nombre,
+				3: unidadMedida.Estado === '0' ? 'Disponible' : 'Inactivo',
+				4: unidadMedida.FechaCreacion,
 			});
-			return empresa;
+			return unidadMedida;
 		});
 		return dataTable;
 	};
 
 	getIDtable = id => {
 		this.props.sidebarState();
-		this.props.idSelectedEmpresa(id);
+		this.props.idSelectedUnidadMedida(id);
 	};
 
 	getDataTable = () => {
-		return this.props.fetchEmpresa();
+		return this.props.fetchUnidadMedida();
 	};
 
 	crearRegistro = () => {
@@ -69,8 +64,8 @@ class Empresa extends React.Component {
 		if (formValues.flag === 'create') {
 			// eslint-disable-next-line no-restricted-globals
 			if (confirm('Esta seguro de guardar la siguiente Empresa en la Base de Datos?')) {
-				api.post('/Empresas/create.php', formValues).then(
-					data => this.props.fetchEmpresa(),
+				api.post('/UnidadMedida/create.php', formValues).then(
+					data => this.props.fetchUnidadMedida(),
 					this.props.sidebarStateFalse()
 				);
 			} else {
@@ -79,8 +74,8 @@ class Empresa extends React.Component {
 		} else {
 			// eslint-disable-next-line no-restricted-globals
 			if (confirm('Esta seguro de actualizar el siguiente dato de la tabla Empresa?')) {
-				api.put('/Empresas/update.php', formValues).then(
-					data => this.props.fetchEmpresa(),
+				api.put('/UnidadMedida/update.php', formValues).then(
+					data => this.props.fetchUnidadMedida(),
 					this.props.sidebarStateFalse()
 				);
 			} else {
@@ -91,15 +86,15 @@ class Empresa extends React.Component {
 
 	onChangeStateButton = check => {
 		const updateState = {
-			IdEmpresa: check.id,
+			IdUnidadMedida: check.id,
 			Estado: `${check.state}`,
 		};
 		const messageState = check.state === true ? 'Disponible' : 'Inactivo';
 		// eslint-disable-next-line no-restricted-globals
 		if (confirm(`Esta seguro de cambiar el estado a ${messageState}`)) {
-			api.put('/Empresas/updateState.php', updateState).then(data => {
+			api.put('/UnidadMedida/updateState.php', updateState).then(data => {
 				if (data.data.message) {
-					this.props.fetchEmpresa();
+					this.props.fetchUnidadMedida();
 					this.props.sidebarStateFalse();
 				}
 			});
@@ -108,58 +103,52 @@ class Empresa extends React.Component {
 		}
 	};
 
-	frmTableEmpresa = () => {
-		const frmEmpresa = [];
+	frmTableUnidadMedida = () => {
+		const frmUnidadMedida = [];
 		if (this.props.getDataBodyId === undefined) {
-			frmEmpresa.push(
-				<FrmEmpresa
-					key="frmEmpresa"
+			frmUnidadMedida.push(
+				<FrmUnidadMedida
+					key="frmUnidadMedida"
 					onSubmit={this.onSubmit}
 					initialValues={_.pick(
 						this.props.getDataBodyId ? this.props.getDataBodyId : undefined,
-						'IdEmpresa',
+						'IdUnidadMedida',
+						'Siglas',
 						'Nombre',
-						'Razon_Social',
-						'Direccion',
-						'Telefono',
-						'Correo',
 						'Estado'
 					)}
 					createData={true}
 				/>
 			);
 		} else {
-			frmEmpresa.push(
-				<FrmEmpresa
-					key="frmEmpresa"
+			frmUnidadMedida.push(
+				<FrmUnidadMedida
+					key="frmUnidadMedida"
 					onSubmit={this.onSubmit}
 					initialValues={_.pick(
 						this.props.getDataBodyId ? this.props.getDataBodyId : undefined,
-						'IdEmpresa',
+						'IdUnidadMedida',
+						'Siglas',
 						'Nombre',
-						'Razon_Social',
-						'Direccion',
-						'Telefono',
-						'Correo',
 						'Estado'
 					)}
 					createData={false}
 				/>
 			);
 		}
-		return frmEmpresa;
+		return frmUnidadMedida;
 	};
 
 	render() {
 		const arr = [];
-		if (this.props.dataEmpresa) {
+		if (this.props.dataUnidadMedida) {
 			arr.push(
 				<TableData
 					header={this.headTable()}
-					dataTable={this.props.dataEmpresa}
+					dataTable={this.props.dataUnidadMedida}
 					ejemplo={this.datosTabla()}
 					getIDtable={this.getIDtable}
-					key="IdEmpresa"
+					key="IdUnidadMedida"
 				/>
 			);
 			return (
@@ -180,7 +169,7 @@ class Empresa extends React.Component {
 						headSide={this.props.getDataId ? this.props.getDataId : undefined}
 						bodySide={this.props.getDataBodyId ? this.props.getDataBodyId : undefined}
 						saveButton={this.getDataTable}
-						frmTable={this.frmTableEmpresa()}
+						frmTable={this.frmTableUnidadMedida()}
 						onClick={this.onChangeStateButton}
 					/>
 					<Fab
@@ -204,34 +193,33 @@ class Empresa extends React.Component {
 
 export function mapStateToProps(state, props) {
 	return {
-		dataEmpresa: dataEmpresa(state, props),
-		stateSideBarMenu: stateSideBarMenu(state, props),
+		dataUnidadMedida: dataUnidadMedida(state, props),
 		getDataId: getDataId(state, props),
 		getDataBodyId: getDataBodyId(state, props),
+		stateSideBarMenu: stateSideBarMenu(state, props),
 	};
 }
 
-export const actions = {
-	fetchEmpresa,
+export const action = {
+	fetchUnidadMedida,
 	sidebarState,
-	idSelectedEmpresa,
-	sidebarStateFalse,
+	idSelectedUnidadMedida,
 	creacionRegistro,
+	sidebarStateFalse,
 };
 
-Empresa.propTypes = {
-	fetchEmpresa: PropTypes.func,
-	dataEmpresa: PropTypes.array,
-	sidebarState: PropTypes.func,
-	idSelectedEmpresa: PropTypes.func,
-	stateSideBarMenu: PropTypes.bool,
+UnidadMedida.propTypes = {
+	fetchUnidadMedida: PropTypes.func,
+	dataUnidadMedida: PropTypes.array,
 	getDataId: PropTypes.array,
 	getDataBodyId: PropTypes.object,
-	setTipoUsuarioData: PropTypes.object,
+	sidebarState: PropTypes.func,
+	idSelectedUnidadMedida: PropTypes.func,
+	stateSideBarMenu: PropTypes.bool,
 	creacionRegistro: PropTypes.func,
 };
 
 export default connect(
 	mapStateToProps,
-	actions
-)(Empresa);
+	action
+)(UnidadMedida);

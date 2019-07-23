@@ -1,7 +1,6 @@
 import React from 'react';
 import { fromJS } from 'immutable';
 import { Field, reduxForm } from 'redux-form/immutable';
-import _ from 'lodash';
 
 const validate = values => {
 	// IMPORTANT: values is an Immutable.Map here!
