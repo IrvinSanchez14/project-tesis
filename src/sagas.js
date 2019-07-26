@@ -7,6 +7,10 @@ import fetchReduxData from './containers/EjemploRedux/sagas';
 import UnidadMedidaSagas from './containers/UnidadMedida/sagas';
 import SucursalSagas from './containers/Sucursales/sagas';
 import ProductoSagas from './containers/Productos/sagas';
+import TipoProductoSagas from './containers/TipoProducto/sagas';
+import ProveedorSagas from './containers/Proveedor/sagas';
+import PermisoSagas from './containers/Permisos/sagas';
+import EstadosSagas from './containers/Estados/sagas';
 
 export default function* rootSaga() {
 	const allSagas = [
@@ -18,6 +22,10 @@ export default function* rootSaga() {
 		UnidadMedidaSagas,
 		SucursalSagas,
 		ProductoSagas,
+		TipoProductoSagas,
+		ProveedorSagas,
+		PermisoSagas,
+		EstadosSagas,
 	];
 	for (let i = 0; i < allSagas.length; i += 1) {
 		yield fork(allSagas[i]);

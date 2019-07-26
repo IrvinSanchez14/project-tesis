@@ -1,42 +1,70 @@
 import React from 'react';
-import { Table } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
+import { MDBDataTable } from 'mdbreact';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import 'bootstrap-css-only/css/bootstrap.min.css';
+import 'mdbreact/dist/css/mdb.css';
 
 class TableData extends React.Component {
-	componentWillMount() {
-		this.tableRow();
+	componentDidMount() {
+		const funcionId = this.props.getIDtable;
+		const table = document.getElementsByClassName('table table-hover dataTable')[0].rows;
+		for (var i = 2, l = table.length; i < l; i++) {
+			var currentRow = table[i];
+			var createClickHandler = function(row) {
+				return function() {
+					var cell = row.getElementsByTagName('td')[0];
+					var id = cell.innerHTML;
+					funcionId(id);
+				};
+			};
+
+			currentRow.onclick = createClickHandler(currentRow);
+		}
 	}
 
-	tableRow = () => {
-		let table = [];
-		this.props.ejemplo.map((value, index) => {
-			let children = [];
-			const number = Object.keys(value);
-			for (let i = 0; i < number.length; i++) {
-				children.push(<Table.Cell key={i}>{value[i]}</Table.Cell>);
-			}
-			table.push(
-				<Table.Row onClick={() => this.props.getIDtable(value[0])} key={value[0]}>
-					{children}
-				</Table.Row>
-			);
-			return value;
-		});
-		return table;
-	};
+	componentDidUpdate() {
+		const funcionId = this.props.getIDtable;
+		const table = document.getElementsByClassName('table table-hover dataTable')[0].rows;
+		for (var i = 2, l = table.length; i < l; i++) {
+			var currentRow = table[i];
+			var createClickHandler = function(row) {
+				return function() {
+					var cell = row.getElementsByTagName('td')[0];
+					var id = cell.innerHTML;
+					funcionId(id);
+				};
+			};
+
+			currentRow.onclick = createClickHandler(currentRow);
+		}
+	}
 
 	render() {
+		const hey = {};
+		hey.columns = this.props.header.map((titulos, key) => {
+			const prueba = {
+				label: titulos,
+				field: titulos,
+				sort: 'asc',
+				width: 150,
+			};
+			return prueba;
+		});
+		hey.rows = this.props.dataTable;
+
 		return (
-			<Table celled selectable>
-				<Table.Header>
-					<Table.Row>
-						{this.props.header.map(head => {
-							return <Table.HeaderCell key={head}>{head}</Table.HeaderCell>;
-						})}
-					</Table.Row>
-				</Table.Header>
-				<Table.Body>{this.tableRow()}</Table.Body>
-			</Table>
+			<div>
+				<MDBDataTable
+					paginationLabel={['Anterior', 'Siguiente']}
+					hover
+					responsive
+					searchLabel={'Buscar'}
+					entriesLabel={'Cantidad de Datos'}
+					infoLabel={['Mostrando', 'de', 'en', 'datos']}
+					data={hey}
+				/>
+			</div>
 		);
 	}
 }

@@ -5,48 +5,41 @@ import { connect } from 'react-redux';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
-import TableData from '../../components/TableData';
-import SideBarMenu from '../../components/SideBar';
-import FrmTipoUsuario from '../../components/Forms/frmTipoUsuario';
-import { ErrorTabla } from '../../components/Error';
-import { sidebarStateFalse } from '../App/actions';
 import api from '../../api';
 
-import {
-	fetchTipoUsuario,
-	idSelectedTipoUsuario,
-	setTipoUsuarioData,
-	editTipousuario,
-	creacionRegistro,
-} from './actions';
-import { dataTipoUsuario, getDataId, getDataBodyId } from './selectors';
+import TableData from '../../components/TableData';
+import SideBarMenu from '../../components/SideBar';
+import { sidebarStateFalse } from '../App/actions';
+import FrmProveedor from '../../components/Forms/frmProveedor';
+
+import { fetchProveedor, idSelectedProveedor, creacionRegistro } from './actions';
+import { dataProveedor, getDataId, getDataBodyId } from './selectors';
 
 import { sidebarState } from '../App/actions';
 import { stateSideBarMenu } from '../App/selectors';
 
-import { permisoVerTipoUsuario } from '../../helpers/permisos';
-
-class TipoUsuario extends React.Component {
+class Proveedor extends React.Component {
 	componentDidMount() {
-		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-		if (userInfo === null) {
-			this.props.history.push('/');
-		}
-		this.props.fetchTipoUsuario();
+		//this.props.history.push('/');
+		this.props.fetchProveedor();
 	}
 
 	headTable = () => {
 		let headTable;
-		this.props.dataTipoUsuario.map(tipoUsuario => {
-			headTable = Object.keys(tipoUsuario);
-			return tipoUsuario;
+		this.props.dataProveedor.map(empresa => {
+			headTable = Object.keys(empresa);
+			return empresa;
 		});
 		return headTable;
 	};
 
 	getIDtable = id => {
 		this.props.sidebarState();
-		this.props.idSelectedTipoUsuario(id);
+		this.props.idSelectedProveedor(id);
+	};
+
+	getDataTable = () => {
+		return this.props.fetchProveedor();
 	};
 
 	crearRegistro = () => {
@@ -54,42 +47,41 @@ class TipoUsuario extends React.Component {
 		this.props.sidebarState();
 	};
 
-	getDataTable = () => {
-		return this.props.fetchTipoUsuario();
-	};
-
 	onSubmit = formValues => {
 		if (formValues.flag === 'create') {
 			// eslint-disable-next-line no-restricted-globals
-			if (confirm('Esta seguro de guardar el siguiente Tipo de Usuario en la Base de Datos?')) {
-				api.post('/tipoUsuario/create.php', formValues).then(
-					data => this.props.fetchTipoUsuario(),
+			if (confirm('Esta seguro de guardar la siguiente Empresa en la Base de Datos?')) {
+				api.post('/Proveedor/create.php', formValues).then(
+					data => this.props.fetchProveedor(),
 					this.props.sidebarStateFalse()
 				);
 			} else {
 				return;
 			}
 		} else {
-			api.put('/tipoUsuario/update.php', formValues).then(
-				data => this.props.fetchTipoUsuario(),
-				this.props.sidebarStateFalse()
-			);
+			// eslint-disable-next-line no-restricted-globals
+			if (confirm('Esta seguro de actualizar el siguiente dato de la tabla Empresa?')) {
+				api.put('/Proveedor/update.php', formValues).then(
+					data => this.props.fetchProveedor(),
+					this.props.sidebarStateFalse()
+				);
+			} else {
+				return;
+			}
 		}
 	};
 
 	onChangeStateButton = check => {
-		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 		const updateState = {
-			IdTipoUsuario: check.id,
+			IdEmpresa: check.id,
 			Estado: `${check.state}`,
-			UsuarioActualiza: userInfo.IdUsuario,
 		};
 		const messageState = check.state === true ? 'Disponible' : 'Inactivo';
 		// eslint-disable-next-line no-restricted-globals
 		if (confirm(`Esta seguro de cambiar el estado a ${messageState}`)) {
-			api.put('/tipoUsuario/updateState.php', updateState).then(data => {
+			api.put('/Proveedor/updateState.php', updateState).then(data => {
 				if (data.data.message) {
-					this.props.fetchTipoUsuario();
+					this.props.fetchProveedor();
 					this.props.sidebarStateFalse();
 				}
 			});
@@ -98,51 +90,69 @@ class TipoUsuario extends React.Component {
 		}
 	};
 
-	frmTableTipo = () => {
-		const frmTipoUsuarios = [];
+	frmTableProveedor = () => {
+		const frmProveedor = [];
 		if (this.props.getDataBodyId === undefined) {
-			frmTipoUsuarios.push(
-				<FrmTipoUsuario
-					key="frmTipoUsuario"
+			frmProveedor.push(
+				<FrmProveedor
+					key="frmProveedor"
 					onSubmit={this.onSubmit}
 					initialValues={_.pick(
 						this.props.getDataBodyId ? this.props.getDataBodyId : undefined,
-						'IdTipoUsuario',
+						'IdProveedor',
 						'Nombre',
-						'Descripcion',
-						'Estado'
+						'Direccion',
+						'Telefono',
+						'Razo_Social',
+						'Tipo',
+						'Nombre_Contacto',
+						'Email',
+						'DUI',
+						'NIT',
+						'NRC',
+						'Estado',
+						'FechaCreacion'
 					)}
 					createData={true}
 				/>
 			);
 		} else {
-			frmTipoUsuarios.push(
-				<FrmTipoUsuario
-					key="frmTipoUsuario"
+			frmProveedor.push(
+				<FrmProveedor
+					key="frmProveedor"
 					onSubmit={this.onSubmit}
 					initialValues={_.pick(
 						this.props.getDataBodyId ? this.props.getDataBodyId : undefined,
-						'IdTipoUsuario',
+						'IdProveedor',
 						'Nombre',
-						'Descripcion',
-						'Estado'
+						'Direccion',
+						'Telefono',
+						'Razo_Social',
+						'Tipo',
+						'Nombre_Contacto',
+						'Email',
+						'DUI',
+						'NIT',
+						'NRC',
+						'Estado',
+						'FechaCreacion'
 					)}
 					createData={false}
 				/>
 			);
 		}
-		return frmTipoUsuarios;
+		return frmProveedor;
 	};
 
 	render() {
 		const arr = [];
-		if (this.props.dataTipoUsuario && permisoVerTipoUsuario()) {
+		if (this.props.dataProveedor) {
 			arr.push(
 				<TableData
 					header={this.headTable()}
-					dataTable={this.props.dataTipoUsuario}
+					dataTable={this.props.dataProveedor}
 					getIDtable={this.getIDtable}
-					key="idTableTipoUsuario"
+					key="IdProveedor"
 				/>
 			);
 			return (
@@ -154,7 +164,7 @@ class TipoUsuario extends React.Component {
 							fontWeight: 'bold',
 						}}
 					>
-						Tipo de Usuario
+						Proveedores
 					</h1>
 
 					<SideBarMenu
@@ -163,7 +173,7 @@ class TipoUsuario extends React.Component {
 						headSide={this.props.getDataId ? this.props.getDataId : undefined}
 						bodySide={this.props.getDataBodyId ? this.props.getDataBodyId : undefined}
 						saveButton={this.getDataTable}
-						frmTable={this.frmTableTipo()}
+						frmTable={this.frmTableProveedor()}
 						onClick={this.onChangeStateButton}
 					/>
 					<Fab
@@ -180,43 +190,41 @@ class TipoUsuario extends React.Component {
 					</Fab>
 				</div>
 			);
-		} else {
-			return <ErrorTabla />;
 		}
+		return null;
 	}
 }
 
 export function mapStateToProps(state, props) {
 	return {
-		dataTipoUsuario: dataTipoUsuario(state, props),
+		dataProveedor: dataProveedor(state, props),
 		stateSideBarMenu: stateSideBarMenu(state, props),
 		getDataId: getDataId(state, props),
 		getDataBodyId: getDataBodyId(state, props),
-		setTipoUsuarioData: setTipoUsuarioData(state, props),
 	};
 }
 
 export const actions = {
-	fetchTipoUsuario,
+	fetchProveedor,
 	sidebarState,
-	idSelectedTipoUsuario,
-	editTipousuario,
+	idSelectedProveedor,
 	sidebarStateFalse,
 	creacionRegistro,
 };
 
-TipoUsuario.propTypes = {
-	fetchTipoUsuario: PropTypes.func,
-	dataTipoUsuario: PropTypes.array,
+Proveedor.propTypes = {
+	fetchProveedor: PropTypes.func,
+	dataProveedor: PropTypes.array,
 	sidebarState: PropTypes.func,
-	idSelectedTipoUsuario: PropTypes.func,
+	idSelectedProveedor: PropTypes.func,
 	stateSideBarMenu: PropTypes.bool,
 	getDataId: PropTypes.array,
 	getDataBodyId: PropTypes.object,
 	setTipoUsuarioData: PropTypes.object,
+	creacionRegistro: PropTypes.func,
 };
 
 export default connect(
 	mapStateToProps,
 	actions
-)(TipoUsuario);
+)(Proveedor);

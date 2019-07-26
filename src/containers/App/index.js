@@ -14,6 +14,10 @@ import ReduxEjemplo from '../EjemploRedux';
 import UnidadMedida from '../UnidadMedida';
 import Sucursales from '../Sucursales';
 import Productos from '../Productos';
+import TipoProducto from '../TipoProducto';
+import Proveedor from '../Proveedor';
+import Permisos from '../Permisos';
+import Estados from '../Estados';
 
 const App = () => {
 	return (
@@ -28,6 +32,10 @@ const App = () => {
 				<Route path="/Sucursales" exact component={Sucursales} />
 				<Route path="/Productos" exact component={Productos} />
 				<Route path="/redux" exact component={ReduxEjemplo} />
+				<Route path="/TipoProducto" exact component={TipoProducto} />
+				<Route path="/Proveedores" exact component={Proveedor} />
+				<Route path="/Permisos" exact component={Permisos} />
+				<Route path="/Estados" exact component={Estados} />
 				<Route exact path="/login" render={() => (isLoggedIn() ? <Redirect to="/" /> : <Login />)} />
 				<Route exact path="/SignUp" render={() => (isLoggedIn() ? <Redirect to="/" /> : <Register />)} />
 			</Switch>

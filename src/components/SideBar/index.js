@@ -23,7 +23,7 @@ class SideBarMenu extends React.Component {
 		if (this.props.headSide) {
 			let estado = [];
 			this.props.headSide.map(data => {
-				const checkData = data.estado === '0' ? true : false;
+				const checkData = data.Estado === 'Disponible' ? true : false;
 				TODO.push(
 					<div key={data.id}>
 						<div
