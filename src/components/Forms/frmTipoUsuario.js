@@ -13,9 +13,9 @@ const validate = values => {
 	} else if (values.get('Nombre').length > 20) {
 		errors.IdTipoUsuario = 'Must be 20 characters or less';
 	}
-	/*if (!values.get('Descripcion')) {
+	if (!values.get('Descripcion')) {
 		errors.Descripcion = 'Required';
-	}*/
+	}
 
 	if (!values.get * '') {
 		errors.Descripcion = 'Required';
