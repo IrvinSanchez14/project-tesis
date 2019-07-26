@@ -13,6 +13,9 @@ import MenuItem from 'material-ui/MenuItem';
 import { registerRequesting } from '../actions';
 import './stylesForReg.css';
 
+const email = value =>
+	value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value) ? 'Ingresa una direccion de correo valido' : '';
+
 const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
 	<TextField hintText={label} floatingLabelText={label} errorText={touched && error} {...input} {...custom} />
 );
@@ -47,7 +50,12 @@ export class Register extends React.Component {
 											style={{ justifyContent: 'center', marginTop: '-28px' }}
 										>
 											<Field name="Nombre" label="Nombre" component={renderTextField} />
-											<Field name="Email" label="Email" component={renderTextField} />
+											<Field
+												name="Email"
+												label="Email"
+												component={renderTextField}
+												validate={email}
+											/>
 											<Field name="Alias" label="Alias" component={renderTextField} />
 											<Field
 												name="IdTipoUsuario"

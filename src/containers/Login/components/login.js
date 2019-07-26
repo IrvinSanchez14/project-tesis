@@ -15,7 +15,8 @@ export class Login extends React.Component {
 			<div>
 				<div id="login-box">
 					<div className="left">
-						<h1>Sign in</h1>
+						<h1>Ingresar</h1>
+						<br />
 						<form onSubmit={handleSubmit(onSubmit)}>
 							<div className="container">
 								<Field
@@ -24,11 +25,11 @@ export class Login extends React.Component {
 									id="email"
 									className="email"
 									label="Email"
-									placeholder="Email"
+									placeholder="Correo"
 									component="input"
 								/>
 								<div className="forgotPassword">
-									<Link to="/forgotpassword"> Forgot Password?</Link>
+									<Link to="/forgotpassword"> Olvidaste tu contraseña?</Link>
 								</div>
 								<Field
 									name="password"
@@ -36,10 +37,10 @@ export class Login extends React.Component {
 									id="password"
 									className="password"
 									label="Password"
-									placeholder="Password"
+									placeholder="Contraseña"
 									component="input"
 								/>
-								<input type="submit" name="signin_submit" value="Sign me in" />
+								<input type="submit" name="signin_submit" value="Ingresar" />
 							</div>
 						</form>
 					</div>
@@ -66,7 +67,7 @@ const mapDispatchToProps = dispatch => ({
 	onSubmit: value => {
 		const valor = value.toJS();
 		if (valor.email && valor.password) dispatch(loginRequesting(valor));
-		else alert('Please Fill All the Fields');
+		else alert('Por favor rellena todos los campos');
 	},
 });
 

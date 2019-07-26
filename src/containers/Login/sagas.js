@@ -15,7 +15,7 @@ function loginApi(email, password) {
 				'Content-Type': 'application/json',
 			},
 		};
-		const endpoint = `http://192.168.0.11/tesis/api-jws/api/user/login.php`;
+		const endpoint = `http://localhost:8080/api-jws/api/user/login.php`;
 		const apiOptions = {
 			body: body,
 			config: config,

@@ -1,3 +1,12 @@
+/*
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import TextField from 'material-ui/TextField';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+//___________________
+*/
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -171,7 +180,7 @@ class Empresa extends React.Component {
 							fontWeight: 'bold',
 						}}
 					>
-						Tipo de Usuario
+						Empresas
 					</h1>
 
 					<SideBarMenu
