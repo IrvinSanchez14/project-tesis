@@ -17,12 +17,6 @@ const validate = values => {
 		errors.Descripcion = 'Required';
 	}
 
-	if (!values.get * '') {
-		errors.Descripcion = 'Required';
-	} else if (isNaN(Number(values.Descripcion))) {
-		errors.Descripcion = 'irvin culeero';
-	}
-
 	return errors;
 };
 
