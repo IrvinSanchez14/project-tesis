@@ -15,7 +15,7 @@ export const getDataId = createSelector(
 				if (data.IdTipoUsuario === idTipoUsuario) {
 					dataId.push({
 						id: data.IdTipoUsuario,
-						estado: data.Estado,
+						Estado: data.Estado,
 					});
 				}
 			});

@@ -2,24 +2,7 @@ import React from 'react';
 import { fromJS } from 'immutable';
 import { Field, reduxForm } from 'redux-form/immutable';
 
-const validate = values => {
-	// IMPORTANT: values is an Immutable.Map here!
-	const errors = {};
-	if (!values.get('IdTipoUsuario')) {
-		errors.IdTipoUsuario = 'Required';
-	}
-	if (!values.get('Nombre')) {
-		errors.Nombre = 'Required';
-	} else if (values.get('Nombre').length > 20) {
-		errors.IdTipoUsuario = 'Must be 20 characters or less';
-	}
-	if (!values.get('Descripcion')) {
-		errors.Descripcion = 'Required';
-	}
-	return errors;
-};
-
-class FrmTipoUsuario extends React.Component {
+class FrmEstados extends React.Component {
 	renderError({ error, touched }) {
 		if (touched && error) {
 			return (
@@ -30,29 +13,26 @@ class FrmTipoUsuario extends React.Component {
 		}
 	}
 
-	renderInput = ({ input, label, meta: { touched, error, warning } }) => {
-		const className = `field ${error && touched ? 'error' : ''}`;
+	renderInput = ({ input, label, meta }) => {
+		const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
 		return (
 			<div className={className}>
 				<label>{label}</label>
 				<input {...input} autoComplete="off" />
-				{touched && (error && <span style={{ color: 'red' }}>{error}</span>)}
+				{this.renderError(meta)}
 			</div>
 		);
 	};
 
 	onSubmit = formValues => {
 		let data;
-		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 		if (this.props.createData) {
 			data = fromJS({
 				flag: 'create',
-				UsuarioCreador: userInfo.IdUsuario,
 			});
 		} else {
 			data = fromJS({
 				flag: 'update',
-				UsuarioActualiza: userInfo.IdUsuario,
 			});
 		}
 
@@ -65,6 +45,8 @@ class FrmTipoUsuario extends React.Component {
 			<form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
 				<Field name="Nombre" component={this.renderInput} label="Nombre" />
 				<Field name="Descripcion" component={this.renderInput} label="Descripcion" />
+				<Field name="IdEstadoAnterior" component={this.renderInput} label="Estado Anterior" />
+				<Field name="IdEstadoSiguiente" component={this.renderInput} label="Estado Siguiente" />
 				<div
 					style={{
 						bottom: '0',
@@ -79,8 +61,19 @@ class FrmTipoUsuario extends React.Component {
 	}
 }
 
+const validate = values => {
+	const errors = {};
+	if (!values.get('title')) {
+		errors.title = 'Required';
+	} else if (values.get('title').length > 15) {
+		errors.title = 'Must be 5 characters or less';
+	}
+
+	return errors;
+};
+
 export default reduxForm({
-	form: 'formTipoUsuario',
+	form: 'formEstados',
 	validate,
 	enableReinitialize: true,
-})(FrmTipoUsuario);
+})(FrmEstados);

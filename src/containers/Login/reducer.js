@@ -7,6 +7,7 @@ const initialState = fromJS({
 	successful: false,
 	messages: [],
 	errors: [],
+	permisos: undefined,
 });
 
 export default function(state = initialState, action) {
@@ -28,6 +29,7 @@ export default function(state = initialState, action) {
 						body: `${action.response.data.message}`,
 					},
 				],
+				permisos: action.datos,
 				errors: [],
 			};
 		case ACTIONS.LOGOUT_SUCCESSFUL:
@@ -37,6 +39,17 @@ export default function(state = initialState, action) {
 				messages: [
 					{
 						body: `${action.message}`,
+					},
+				],
+				errors: [],
+			};
+		case ACTIONS.LOGIN_PERMISOS_USUARIO:
+			return {
+				requesting: false,
+				successful: false,
+				messages: [
+					{
+						body: `${action.datos}`,
 					},
 				],
 				errors: [],

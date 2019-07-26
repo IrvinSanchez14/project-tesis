@@ -2,6 +2,7 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import { apiHandle } from '../../helpers/apiHandle';
 import { LOGIN_REQUESTING, LOGIN_SUCCESS, LOGIN_ERROR, LOGIN_UNSUCCESS } from './constants';
+import { conn } from '../../api';
 //import { SET_USER_INFO } from '../user/constants';
 
 function loginApi(email, password) {
@@ -15,7 +16,30 @@ function loginApi(email, password) {
 				'Content-Type': 'application/json',
 			},
 		};
-		const endpoint = `http://localhost/tesis/api-jws/api/user/login.php`;
+		const endpoint = `${conn}/user/login.php`;
+		const apiOptions = {
+			body: body,
+			config: config,
+			endpoint: endpoint,
+		};
+
+		return apiHandle(apiOptions).post();
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+function permisosRequest(id) {
+	try {
+		const body = {
+			IdUsuario: id,
+		};
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		};
+		const endpoint = `${conn}/user/permisos.php`;
 		const apiOptions = {
 			body: body,
 			config: config,
@@ -33,9 +57,12 @@ function* loginFlow(action) {
 		const { email, password } = action;
 		const response = yield call(loginApi, email, password);
 		if (response.data.message) {
+			const permisosCall = yield call(permisosRequest, response.data.user.IdUsuario);
 			localStorage['token'] = JSON.stringify(response.data.jwt);
-			yield put({ type: LOGIN_SUCCESS, response });
-			//yield put({ type: SET_USER_INFO, response: response.data.user });
+			localStorage['userInfo'] = JSON.stringify(response.data.user);
+			localStorage['userPermisos'] = JSON.stringify(permisosCall.data);
+			yield put({ type: LOGIN_SUCCESS, response: response, datos: permisosCall.data });
+			//yield put({ type: LOGIN_PERMISOS_USUARIO, datos: permisosCall.data });
 			yield put(push('/'));
 		} else {
 			yield put({ type: LOGIN_UNSUCCESS, response });
