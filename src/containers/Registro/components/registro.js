@@ -40,14 +40,14 @@ export class Register extends React.Component {
 						<Card style={{ width: '329px', height: '525px' }}>
 							<CardContent>
 								<div className="left" style={{ justifyContent: 'center' }}>
-									<h1 style={{ marginLeft: '69px' }}>Sign up</h1>
+									<h1 style={{ marginLeft: '69px' }}>Registrate</h1>
 									<form onSubmit={handleSubmit(onSubmit)}>
 										<div
 											className="container"
 											style={{ justifyContent: 'center', marginTop: '-28px' }}
 										>
 											<Field name="Nombre" label="Nombre" component={renderTextField} />
-											<Field name="Email" label="Email" component={renderTextField} />
+											<Field name="Email" label="Correo" component={renderTextField} />
 											<Field name="Alias" label="Alias" component={renderTextField} />
 											<Field
 												name="IdTipoUsuario"
@@ -57,7 +57,7 @@ export class Register extends React.Component {
 											<Field
 												name="Passwd"
 												type="password"
-												label="Password"
+												label="Contraseña"
 												component={renderTextField}
 											/>
 											<input
