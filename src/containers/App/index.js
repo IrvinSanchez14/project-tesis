@@ -20,9 +20,15 @@ import Permisos from '../Permisos';
 import Estados from '../Estados';
 
 const App = () => {
+	const local = JSON.parse(localStorage.getItem('userInfo'));
+	let tipo;
+	if (local !== null) {
+		tipo = local.IdTipoUsuario;
+	}
+
 	return (
 		<div>
-			<Header stateLogin={isLoggedIn()} />
+			<Header stateLogin={isLoggedIn()} tipoUsuario={tipo} />
 			<Switch>
 				<Route path="/" exact render={() => (isLoggedIn() ? <Welcome /> : <Login />)} />
 				<Route path="/TipoUsuario" exact component={TipoUsuario} />

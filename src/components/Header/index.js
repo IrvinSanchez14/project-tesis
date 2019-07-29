@@ -12,6 +12,7 @@ const styles = {
 
 class Header extends React.Component {
 	render() {
+		console.log(this.props);
 		const menuLogin = (
 			<Menu
 				size="small"
@@ -61,27 +62,85 @@ class Header extends React.Component {
 						Home
 					</Link>
 				</Menu.Item>
-				<Dropdown item text="Administracion" style={{ color: '#fff' }}>
-					<Dropdown.Menu>
-						<Link
-							to="/tipoUsuario"
-							style={{
-								color: 'inherit',
-							}}
-						>
-							<Dropdown.Item>Tipo de Usuario</Dropdown.Item>
-						</Link>
-						<Link
-							to="/Empresa"
-							style={{
-								color: 'inherit',
-							}}
-						>
-							<Dropdown.Item>Empresa</Dropdown.Item>
-						</Link>
-						<Dropdown.Item>Spanish</Dropdown.Item>
-					</Dropdown.Menu>
-				</Dropdown>
+				{this.props.tipoUsuario === '1' ? (
+					<Dropdown item text="Administracion" style={{ color: '#fff' }}>
+						<Dropdown.Menu>
+							<Link
+								to="/Empresa"
+								style={{
+									color: 'inherit',
+								}}
+							>
+								<Dropdown.Item>Empresas</Dropdown.Item>
+							</Link>
+							<Link
+								to="/Estados"
+								style={{
+									color: 'inherit',
+								}}
+							>
+								<Dropdown.Item>Estados</Dropdown.Item>
+							</Link>
+							<Link
+								to="/Permisos"
+								style={{
+									color: 'inherit',
+								}}
+							>
+								<Dropdown.Item>Permisos</Dropdown.Item>
+							</Link>
+							<Link
+								to="/Productos"
+								style={{
+									color: 'inherit',
+								}}
+							>
+								<Dropdown.Item>Productos</Dropdown.Item>
+							</Link>
+							<Link
+								to="/Proveedores"
+								style={{
+									color: 'inherit',
+								}}
+							>
+								<Dropdown.Item>Proveedores</Dropdown.Item>
+							</Link>
+							<Link
+								to="/Sucursales"
+								style={{
+									color: 'inherit',
+								}}
+							>
+								<Dropdown.Item>Sucursales</Dropdown.Item>
+							</Link>
+							<Link
+								to="/TipoProducto"
+								style={{
+									color: 'inherit',
+								}}
+							>
+								<Dropdown.Item>Tipos de Productos</Dropdown.Item>
+							</Link>
+							<Link
+								to="/TipoUsuario"
+								style={{
+									color: 'inherit',
+								}}
+							>
+								<Dropdown.Item>Tipos de Usuarios</Dropdown.Item>
+							</Link>
+							<Link
+								to="/UnidadMedida"
+								style={{
+									color: 'inherit',
+								}}
+							>
+								<Dropdown.Item>Unidades de Medidas</Dropdown.Item>
+							</Link>
+						</Dropdown.Menu>
+					</Dropdown>
+				) : null}
+
 				<Menu.Menu position="right">
 					<Menu.Item>
 						<Link

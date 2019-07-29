@@ -4,3 +4,4 @@ export const FETCH_UNIDADMEDIDA = 'src/Empresa/FETCH_UNIDADMEDIDA';
 export const EDIT_UNIDADMEDIDA = 'src/Empresa/EDIT_UNIDADMEDIDA';
 export const EDIT_TIPO = 'src/Empresa/EDIT_TIPO';
 export const CREACION_REGISTRO_UNIDADMEDIDA = 'src/Empresa/CREACION_REGISTRO_UNIDADMEDIDA';
+export const AUTORIZACION_FORM_FAIL = 'src/UnidadMedida/AUTORIZACION_FORM_FAIL';

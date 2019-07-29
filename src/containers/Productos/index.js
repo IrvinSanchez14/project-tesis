@@ -11,16 +11,22 @@ import TableData from '../../components/TableData';
 import SideBarMenu from '../../components/SideBar';
 import { sidebarStateFalse } from '../App/actions';
 import FrmProducto from '../../components/Forms/frmProducto';
+import { ErrorTabla } from '../../components/Error';
 
-import { fetchProducto, idSelectedProducto, creacionRegistro } from './actions';
-import { dataProducto, getDataId, getDataBodyId } from './selectors';
+import { fetchProducto, idSelectedProducto, creacionRegistro, autorizacionFormFail } from './actions';
+import { dataProducto, getDataId, getDataBodyId, getFormResponse } from './selectors';
 
 import { sidebarState } from '../App/actions';
 import { stateSideBarMenu } from '../App/selectors';
 
+import { permisosVerProductos } from '../../helpers/permisos';
+
 class Productos extends React.Component {
 	componentDidMount() {
-		//this.props.history.push('/');
+		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+		if (userInfo === null) {
+			this.props.history.push('/');
+		}
 		this.props.fetchProducto();
 	}
 
@@ -49,6 +55,7 @@ class Productos extends React.Component {
 	getIDtable = id => {
 		this.props.sidebarState();
 		this.props.idSelectedProducto(id);
+		this.props.autorizacionFormFail(false);
 	};
 
 	getDataTable = () => {
@@ -58,6 +65,7 @@ class Productos extends React.Component {
 	crearRegistro = () => {
 		this.props.creacionRegistro();
 		this.props.sidebarState();
+		this.props.autorizacionFormFail(false);
 	};
 
 	onSubmit = formValues => {
@@ -66,20 +74,22 @@ class Productos extends React.Component {
 			if (confirm('Esta seguro de guardar la siguiente Empresa en la Base de Datos?')) {
 				api.post('/Producto/create.php', formValues).then(
 					data => this.props.fetchProducto(),
+					this.props.autorizacionFormFail(true),
 					this.props.sidebarStateFalse()
 				);
 			} else {
-				return;
+				return this.props.autorizacionFormFail(false);
 			}
 		} else {
 			// eslint-disable-next-line no-restricted-globals
 			if (confirm('Esta seguro de actualizar el siguiente dato de la tabla Empresa?')) {
 				api.put('/Producto/update.php', formValues).then(
 					data => this.props.fetchProducto(),
+					this.props.autorizacionFormFail(true),
 					this.props.sidebarStateFalse()
 				);
 			} else {
-				return;
+				return this.props.autorizacionFormFail(false);
 			}
 		}
 	};
@@ -117,6 +127,7 @@ class Productos extends React.Component {
 						'Descripcion'
 					)}
 					createData={true}
+					formResponse={this.props.getFormResponse}
 				/>
 			);
 		} else {
@@ -131,6 +142,7 @@ class Productos extends React.Component {
 						'Descripcion'
 					)}
 					createData={false}
+					formResponse={this.props.getFormResponse}
 				/>
 			);
 		}
@@ -139,7 +151,7 @@ class Productos extends React.Component {
 
 	render() {
 		const arr = [];
-		if (this.props.dataProducto) {
+		if (this.props.dataProducto && permisosVerProductos()) {
 			arr.push(
 				<TableData
 					header={this.headTable()}
@@ -184,8 +196,9 @@ class Productos extends React.Component {
 					</Fab>
 				</div>
 			);
+		} else {
+			return <ErrorTabla />;
 		}
-		return null;
 	}
 }
 
@@ -195,6 +208,7 @@ export function mapStateToProps(state, props) {
 		stateSideBarMenu: stateSideBarMenu(state, props),
 		getDataId: getDataId(state, props),
 		getDataBodyId: getDataBodyId(state, props),
+		getFormResponse: getFormResponse(state, props),
 	};
 }
 
@@ -204,6 +218,7 @@ export const actions = {
 	idSelectedProducto,
 	sidebarStateFalse,
 	creacionRegistro,
+	autorizacionFormFail,
 };
 
 Productos.propTypes = {

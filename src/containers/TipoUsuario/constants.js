@@ -5,3 +5,4 @@ export const FETCH_TIPOUSUARIO = 'src/TipoUsuario/FETCH_TIPOUSUARIO';
 export const EDIT_TIPOUSUARIO = 'src/TipoUsuario/EDIT_TIPOUSUARIO';
 export const EDIT_TIPO = 'src/TipoUsuario/EDIT_TIPO';
 export const CREACION_REGISTRO = 'src/TipoUsuario/CREACION_REGISTRO';
+export const AUTORIZACION_FORM_FAIL = 'src/TipoUsuario/AUTORIZACION_FORM_FAIL';

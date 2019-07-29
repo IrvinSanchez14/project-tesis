@@ -18,8 +18,9 @@ import {
 	setTipoUsuarioData,
 	editTipousuario,
 	creacionRegistro,
+	autorizacionFormFail,
 } from './actions';
-import { dataTipoUsuario, getDataId, getDataBodyId } from './selectors';
+import { dataTipoUsuario, getDataId, getDataBodyId, getFormResponse } from './selectors';
 
 import { sidebarState } from '../App/actions';
 import { stateSideBarMenu } from '../App/selectors';
@@ -47,11 +48,13 @@ class TipoUsuario extends React.Component {
 	getIDtable = id => {
 		this.props.sidebarState();
 		this.props.idSelectedTipoUsuario(id);
+		this.props.autorizacionFormFail(false);
 	};
 
 	crearRegistro = () => {
 		this.props.creacionRegistro();
 		this.props.sidebarState();
+		this.props.autorizacionFormFail(false);
 	};
 
 	getDataTable = () => {
@@ -64,16 +67,23 @@ class TipoUsuario extends React.Component {
 			if (confirm('Esta seguro de guardar el siguiente Tipo de Usuario en la Base de Datos?')) {
 				api.post('/tipoUsuario/create.php', formValues).then(
 					data => this.props.fetchTipoUsuario(),
+					this.props.autorizacionFormFail(true),
 					this.props.sidebarStateFalse()
 				);
 			} else {
-				return;
+				return this.props.autorizacionFormFail(false);
 			}
 		} else {
-			api.put('/tipoUsuario/update.php', formValues).then(
-				data => this.props.fetchTipoUsuario(),
-				this.props.sidebarStateFalse()
-			);
+			// eslint-disable-next-line no-restricted-globals
+			if (confirm('Esta seguro de actualizar el siguiente registro de la tabla Tipo de Usuario?')) {
+				api.put('/tipoUsuario/update.php', formValues).then(
+					data => this.props.fetchTipoUsuario(),
+					this.props.autorizacionFormFail(true),
+					this.props.sidebarStateFalse()
+				);
+			} else {
+				return this.props.autorizacionFormFail(false);
+			}
 		}
 	};
 
@@ -113,6 +123,7 @@ class TipoUsuario extends React.Component {
 						'Estado'
 					)}
 					createData={true}
+					formResponse={this.props.getFormResponse}
 				/>
 			);
 		} else {
@@ -128,6 +139,7 @@ class TipoUsuario extends React.Component {
 						'Estado'
 					)}
 					createData={false}
+					formResponse={this.props.getFormResponse}
 				/>
 			);
 		}
@@ -154,7 +166,7 @@ class TipoUsuario extends React.Component {
 							fontWeight: 'bold',
 						}}
 					>
-						Tipo de Usuario
+						Tipos de Usuarios
 					</h1>
 
 					<SideBarMenu
@@ -193,6 +205,7 @@ export function mapStateToProps(state, props) {
 		getDataId: getDataId(state, props),
 		getDataBodyId: getDataBodyId(state, props),
 		setTipoUsuarioData: setTipoUsuarioData(state, props),
+		getFormResponse: getFormResponse(state, props),
 	};
 }
 
@@ -203,6 +216,7 @@ export const actions = {
 	editTipousuario,
 	sidebarStateFalse,
 	creacionRegistro,
+	autorizacionFormFail,
 };
 
 TipoUsuario.propTypes = {

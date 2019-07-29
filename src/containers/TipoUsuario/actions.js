@@ -26,17 +26,6 @@ export const idSelectedTipoUsuario = id => {
 	};
 };
 
-export function sagaread(authParams) {
-	return {
-		type: ACTIONS.LOGIN_WATCHER,
-		payload: authParams,
-	};
-}
-
-export function authError(error) {
-	return { type: 'AUTH_ERROR', error };
-}
-
 export function editTipousuario(formValues) {
 	return {
 		type: ACTIONS.EDIT_TIPOUSUARIO,
@@ -48,5 +37,12 @@ export function creacionRegistro() {
 	return {
 		type: ACTIONS.CREACION_REGISTRO,
 		erase: undefined,
+	};
+}
+
+export function autorizacionFormFail(value) {
+	return {
+		type: ACTIONS.AUTORIZACION_FORM_FAIL,
+		estado: value,
 	};
 }

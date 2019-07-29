@@ -11,16 +11,22 @@ import TableData from '../../components/TableData';
 import SideBarMenu from '../../components/SideBar';
 import { sidebarStateFalse } from '../App/actions';
 import FrmProveedor from '../../components/Forms/frmProveedor';
+import { ErrorTabla } from '../../components/Error';
 
-import { fetchProveedor, idSelectedProveedor, creacionRegistro } from './actions';
-import { dataProveedor, getDataId, getDataBodyId } from './selectors';
+import { fetchProveedor, idSelectedProveedor, creacionRegistro, autorizacionFormFail } from './actions';
+import { dataProveedor, getDataId, getDataBodyId, getFormResponse } from './selectors';
 
 import { sidebarState } from '../App/actions';
 import { stateSideBarMenu } from '../App/selectors';
 
+import { permisosVerProveedor } from '../../helpers/permisos';
+
 class Proveedor extends React.Component {
 	componentDidMount() {
-		//this.props.history.push('/');
+		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+		if (userInfo === null) {
+			this.props.history.push('/');
+		}
 		this.props.fetchProveedor();
 	}
 
@@ -36,6 +42,7 @@ class Proveedor extends React.Component {
 	getIDtable = id => {
 		this.props.sidebarState();
 		this.props.idSelectedProveedor(id);
+		this.props.autorizacionFormFail(false);
 	};
 
 	getDataTable = () => {
@@ -45,6 +52,7 @@ class Proveedor extends React.Component {
 	crearRegistro = () => {
 		this.props.creacionRegistro();
 		this.props.sidebarState();
+		this.props.autorizacionFormFail(false);
 	};
 
 	onSubmit = formValues => {
@@ -53,20 +61,22 @@ class Proveedor extends React.Component {
 			if (confirm('Esta seguro de guardar la siguiente Empresa en la Base de Datos?')) {
 				api.post('/Proveedor/create.php', formValues).then(
 					data => this.props.fetchProveedor(),
+					this.props.autorizacionFormFail(true),
 					this.props.sidebarStateFalse()
 				);
 			} else {
-				return;
+				return this.props.autorizacionFormFail(false);
 			}
 		} else {
 			// eslint-disable-next-line no-restricted-globals
 			if (confirm('Esta seguro de actualizar el siguiente dato de la tabla Empresa?')) {
 				api.put('/Proveedor/update.php', formValues).then(
 					data => this.props.fetchProveedor(),
+					this.props.autorizacionFormFail(true),
 					this.props.sidebarStateFalse()
 				);
 			} else {
-				return;
+				return this.props.autorizacionFormFail(false);
 			}
 		}
 	};
@@ -114,6 +124,7 @@ class Proveedor extends React.Component {
 						'FechaCreacion'
 					)}
 					createData={true}
+					formResponse={this.props.getFormResponse}
 				/>
 			);
 		} else {
@@ -138,6 +149,7 @@ class Proveedor extends React.Component {
 						'FechaCreacion'
 					)}
 					createData={false}
+					formResponse={this.props.getFormResponse}
 				/>
 			);
 		}
@@ -146,7 +158,7 @@ class Proveedor extends React.Component {
 
 	render() {
 		const arr = [];
-		if (this.props.dataProveedor) {
+		if (this.props.dataProveedor && permisosVerProveedor()) {
 			arr.push(
 				<TableData
 					header={this.headTable()}
@@ -190,8 +202,9 @@ class Proveedor extends React.Component {
 					</Fab>
 				</div>
 			);
+		} else {
+			return <ErrorTabla />;
 		}
-		return null;
 	}
 }
 
@@ -201,6 +214,7 @@ export function mapStateToProps(state, props) {
 		stateSideBarMenu: stateSideBarMenu(state, props),
 		getDataId: getDataId(state, props),
 		getDataBodyId: getDataBodyId(state, props),
+		getFormResponse: getFormResponse(state, props),
 	};
 }
 
@@ -210,6 +224,7 @@ export const actions = {
 	idSelectedProveedor,
 	sidebarStateFalse,
 	creacionRegistro,
+	autorizacionFormFail,
 };
 
 Proveedor.propTypes = {

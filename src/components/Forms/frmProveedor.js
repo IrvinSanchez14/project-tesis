@@ -1,6 +1,9 @@
 import React from 'react';
 import { fromJS } from 'immutable';
 import { Field, reduxForm } from 'redux-form/immutable';
+import { connect } from 'react-redux';
+
+import { getFormResponse } from '../../containers/Proveedor/selectors';
 
 class FrmProveedor extends React.Component {
 	renderError({ error, touched }) {
@@ -40,7 +43,15 @@ class FrmProveedor extends React.Component {
 		this.props.onSubmit(newData.toJS());
 	};
 
+	validateClean = () => {
+		const { reset } = this.props;
+		if (this.props.getFormResponse) {
+			reset();
+		}
+	};
+
 	render() {
+		this.validateClean();
 		return (
 			<form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
 				<Field name="Nombre" component={this.renderInput} label="Nombre" />
@@ -67,19 +78,15 @@ class FrmProveedor extends React.Component {
 	}
 }
 
-const validate = values => {
-	const errors = {};
-	if (!values.get('title')) {
-		errors.title = 'Required';
-	} else if (values.get('title').length > 15) {
-		errors.title = 'Must be 5 characters or less';
-	}
+export function mapStateToProps(state, props) {
+	return {
+		getFormResponse: getFormResponse(state, props),
+	};
+}
 
-	return errors;
-};
-
-export default reduxForm({
-	form: 'formProveedor',
-	validate,
-	enableReinitialize: true,
-})(FrmProveedor);
+export default connect(mapStateToProps)(
+	reduxForm({
+		form: 'formProveedor',
+		enableReinitialize: true,
+	})(FrmProveedor)
+);

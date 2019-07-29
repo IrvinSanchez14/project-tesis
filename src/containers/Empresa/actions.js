@@ -26,17 +26,6 @@ export const idSelectedEmpresa = id => {
 	};
 };
 
-export function sagaread(authParams) {
-	return {
-		type: ACTIONS.LOGIN_WATCHER,
-		payload: authParams,
-	};
-}
-
-export function authError(error) {
-	return { type: 'AUTH_ERROR', error };
-}
-
 export function editEmpresa(formValues) {
 	return {
 		type: ACTIONS.EDIT_EMPRESA,
@@ -48,5 +37,12 @@ export function creacionRegistro() {
 	return {
 		type: ACTIONS.CREACION_REGISTRO_EMPRESA,
 		erase: undefined,
+	};
+}
+
+export function autorizacionFormFail(value) {
+	return {
+		type: ACTIONS.AUTORIZACION_FORM_FAIL,
+		estado: value,
 	};
 }

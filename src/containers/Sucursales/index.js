@@ -9,15 +9,22 @@ import api from '../../api';
 import TableData from '../../components/TableData';
 import SideBarMenu from '../../components/SideBar';
 import FrmSucursal from '../../components/Forms/frmSucursal';
+import { ErrorTabla } from '../../components/Error';
 
-import { fetchSucursal, idSelectedSucursal, creacionRegistro } from './actions';
-import { dataSucursal, getDataId, getDataBodyId } from './selectors';
+import { fetchSucursal, idSelectedSucursal, creacionRegistro, autorizacionFormFail } from './actions';
+import { dataSucursal, getDataId, getDataBodyId, getFormResponse } from './selectors';
 
 import { sidebarState, sidebarStateFalse } from '../App/actions';
 import { stateSideBarMenu } from '../App/selectors';
 
+import { permisosVerSucursales } from '../../helpers/permisos';
+
 class Sucursales extends Component {
 	componentDidMount() {
+		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+		if (userInfo === null) {
+			this.props.history.push('/');
+		}
 		this.props.fetchSucursal();
 		console.log(this.props);
 	}
@@ -52,6 +59,7 @@ class Sucursales extends Component {
 	getIDtable = id => {
 		this.props.sidebarState();
 		this.props.idSelectedSucursal(id);
+		this.props.autorizacionFormFail(false);
 	};
 
 	getDataTable = () => {
@@ -61,6 +69,7 @@ class Sucursales extends Component {
 	crearRegistro = () => {
 		this.props.creacionRegistro();
 		this.props.sidebarState();
+		this.props.autorizacionFormFail(false);
 	};
 
 	onSubmit = formValues => {
@@ -69,20 +78,22 @@ class Sucursales extends Component {
 			if (confirm('Esta seguro de guardar la siguiente Empresa en la Base de Datos?')) {
 				api.post('/Sucursales/create.php', formValues).then(
 					data => this.props.fetchSucursal(),
+					this.props.autorizacionFormFail(true),
 					this.props.sidebarStateFalse()
 				);
 			} else {
-				return;
+				return this.props.autorizacionFormFail(false);
 			}
 		} else {
 			// eslint-disable-next-line no-restricted-globals
 			if (confirm('Esta seguro de actualizar el siguiente dato de la tabla Empresa?')) {
 				api.put('/Sucursales/update.php', formValues).then(
 					data => this.props.fetchSucursal(),
+					this.props.autorizacionFormFail(true),
 					this.props.sidebarStateFalse()
 				);
 			} else {
-				return;
+				return this.props.autorizacionFormFail(false);
 			}
 		}
 	};
@@ -122,6 +133,7 @@ class Sucursales extends Component {
 						'Estado'
 					)}
 					createData={true}
+					formResponse={this.props.getFormResponse}
 				/>
 			);
 		} else {
@@ -138,6 +150,7 @@ class Sucursales extends Component {
 						'Estado'
 					)}
 					createData={false}
+					formResponse={this.props.getFormResponse}
 				/>
 			);
 		}
@@ -146,7 +159,7 @@ class Sucursales extends Component {
 
 	render() {
 		const arr = [];
-		if (this.props.dataSucursal) {
+		if (this.props.dataSucursal && permisosVerSucursales()) {
 			arr.push(
 				<TableData
 					header={this.headTable()}
@@ -191,8 +204,9 @@ class Sucursales extends Component {
 					</Fab>
 				</div>
 			);
+		} else {
+			return <ErrorTabla />;
 		}
-		return null;
 	}
 }
 
@@ -202,6 +216,7 @@ export function mapStateToProps(state, props) {
 		getDataId: getDataId(state, props),
 		getDataBodyId: getDataBodyId(state, props),
 		stateSideBarMenu: stateSideBarMenu(state, props),
+		getFormResponse: getFormResponse(state, props),
 	};
 }
 
@@ -211,6 +226,7 @@ export const actions = {
 	sidebarStateFalse,
 	idSelectedSucursal,
 	creacionRegistro,
+	autorizacionFormFail,
 };
 
 Sucursales.propTypes = {

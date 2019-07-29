@@ -14,8 +14,8 @@ export default function(state = initialState, action) {
 		case ACTIONS.ID_SELECTED_EMPRESA: {
 			return state.set('idSelected', action.id);
 		}
-		case ACTIONS.LOGIN_WATCHER: {
-			return state.set('saga', action.payload);
+		case ACTIONS.AUTORIZACION_FORM_FAIL: {
+			return state.set('formularioRespuesta', action.estado);
 		}
 		case ACTIONS.CREACION_REGISTRO_EMPRESA: {
 			return state.set('idSelected', action.erase);

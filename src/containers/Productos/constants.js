@@ -4,3 +4,4 @@ export const FETCH_PRODUCTO = 'src/Empresa/FETCH_PRODUCTO';
 export const EDIT_PRODUCTO = 'src/Empresa/EDIT_PRODUCTO';
 export const EDIT_TIPO = 'src/Empresa/EDIT_TIPO';
 export const CREACION_REGISTRO_PRODUCTO = 'src/Empresa/CREACION_REGISTRO_PRODUCTO';
+export const AUTORIZACION_FORM_FAIL = 'src/TipoUsuario/AUTORIZACION_FORM_FAIL';

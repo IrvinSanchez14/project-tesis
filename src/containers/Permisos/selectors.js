@@ -4,6 +4,8 @@ export const dataPermiso = state => state.getIn(['permiso', 'data']);
 
 export const getPermiso = state => state.getIn(['permiso', 'idSelected']);
 
+export const getFormResponse = state => state.getIn(['permiso', 'formularioRespuesta']);
+
 export const getDataId = createSelector(
 	dataPermiso,
 	getPermiso,

@@ -1,6 +1,9 @@
 import React from 'react';
 import { fromJS } from 'immutable';
-import { Field, reduxForm } from 'redux-form/immutable';
+import { Field, reduxForm, reset } from 'redux-form/immutable';
+import { connect } from 'react-redux';
+
+import { getFormResponse } from '../../containers/TipoUsuario/selectors';
 
 const validate = values => {
 	// IMPORTANT: values is an Immutable.Map here!
@@ -60,7 +63,15 @@ class FrmTipoUsuario extends React.Component {
 		this.props.onSubmit(newData.toJS());
 	};
 
+	validateClean = () => {
+		const { reset } = this.props;
+		if (this.props.getFormResponse) {
+			reset();
+		}
+	};
+
 	render() {
+		this.validateClean();
 		return (
 			<form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
 				<Field name="Nombre" component={this.renderInput} label="Nombre" />
@@ -79,8 +90,16 @@ class FrmTipoUsuario extends React.Component {
 	}
 }
 
-export default reduxForm({
-	form: 'formTipoUsuario',
-	validate,
-	enableReinitialize: true,
-})(FrmTipoUsuario);
+export function mapStateToProps(state, props) {
+	return {
+		getFormResponse: getFormResponse(state, props),
+	};
+}
+
+export default connect(mapStateToProps)(
+	reduxForm({
+		form: 'formTipoUsuario',
+		validate,
+		enableReinitialize: true,
+	})(FrmTipoUsuario)
+);

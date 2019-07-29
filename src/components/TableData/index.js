@@ -52,7 +52,6 @@ class TableData extends React.Component {
 			return prueba;
 		});
 		hey.rows = this.props.dataTable;
-
 		return (
 			<div>
 				<MDBDataTable
@@ -63,6 +62,7 @@ class TableData extends React.Component {
 					entriesLabel={'Cantidad de Datos'}
 					infoLabel={['Mostrando', 'de', 'en', 'datos']}
 					data={hey}
+					exportToCSV={true}
 				/>
 			</div>
 		);

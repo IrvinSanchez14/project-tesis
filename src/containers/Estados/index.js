@@ -11,16 +11,22 @@ import TableData from '../../components/TableData';
 import SideBarMenu from '../../components/SideBar';
 import { sidebarStateFalse } from '../App/actions';
 import FrmEstados from '../../components/Forms/frmEstados';
+import { ErrorTabla } from '../../components/Error';
 
-import { fetchEstados, idSelectedEstados, creacionRegistro } from './actions';
-import { dataEstados, getDataId, getDataBodyId } from './selectors';
+import { fetchEstados, idSelectedEstados, creacionRegistro, autorizacionFormFail } from './actions';
+import { dataEstados, getDataId, getDataBodyId, getFormResponse } from './selectors';
 
 import { sidebarState } from '../App/actions';
 import { stateSideBarMenu } from '../App/selectors';
 
+import { permisosVerEstados } from '../../helpers/permisos';
+
 class Estados extends React.Component {
 	componentDidMount() {
-		//this.props.history.push('/');
+		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+		if (userInfo === null) {
+			this.props.history.push('/');
+		}
 		this.props.fetchEstados();
 	}
 
@@ -36,6 +42,7 @@ class Estados extends React.Component {
 	getIDtable = id => {
 		this.props.sidebarState();
 		this.props.idSelectedEstados(id);
+		this.props.autorizacionFormFail(false);
 	};
 
 	getDataTable = () => {
@@ -45,6 +52,7 @@ class Estados extends React.Component {
 	crearRegistro = () => {
 		this.props.creacionRegistro();
 		this.props.sidebarState();
+		this.props.autorizacionFormFail(false);
 	};
 
 	onSubmit = formValues => {
@@ -53,20 +61,22 @@ class Estados extends React.Component {
 			if (confirm('Esta seguro de guardar la siguiente Empresa en la Base de Datos?')) {
 				api.post('/Estado/create.php', formValues).then(
 					data => this.props.fetchEstados(),
+					this.props.autorizacionFormFail(true),
 					this.props.sidebarStateFalse()
 				);
 			} else {
-				return;
+				return this.props.autorizacionFormFail(false);
 			}
 		} else {
 			// eslint-disable-next-line no-restricted-globals
 			if (confirm('Esta seguro de actualizar el siguiente dato de la tabla Empresa?')) {
 				api.put('/Estado/update.php', formValues).then(
 					data => this.props.fetchEstados(),
+					this.props.autorizacionFormFail(true),
 					this.props.sidebarStateFalse()
 				);
 			} else {
-				return;
+				return this.props.autorizacionFormFail(false);
 			}
 		}
 	};
@@ -106,6 +116,7 @@ class Estados extends React.Component {
 						'IdEstadoSiguiente'
 					)}
 					createData={true}
+					formResponse={this.props.getFormResponse}
 				/>
 			);
 		} else {
@@ -122,6 +133,7 @@ class Estados extends React.Component {
 						'IdEstadoSiguiente'
 					)}
 					createData={false}
+					formResponse={this.props.getFormResponse}
 				/>
 			);
 		}
@@ -130,7 +142,7 @@ class Estados extends React.Component {
 
 	render() {
 		const arr = [];
-		if (this.props.dataEstados) {
+		if (this.props.dataEstados && permisosVerEstados()) {
 			arr.push(
 				<TableData
 					header={this.headTable()}
@@ -148,7 +160,7 @@ class Estados extends React.Component {
 							fontWeight: 'bold',
 						}}
 					>
-						Tipo de Usuario
+						Estados
 					</h1>
 
 					<SideBarMenu
@@ -174,8 +186,9 @@ class Estados extends React.Component {
 					</Fab>
 				</div>
 			);
+		} else {
+			return <ErrorTabla />;
 		}
-		return null;
 	}
 }
 
@@ -185,6 +198,7 @@ export function mapStateToProps(state, props) {
 		stateSideBarMenu: stateSideBarMenu(state, props),
 		getDataId: getDataId(state, props),
 		getDataBodyId: getDataBodyId(state, props),
+		getFormResponse: getFormResponse(state, props),
 	};
 }
 
@@ -194,6 +208,7 @@ export const actions = {
 	idSelectedEstados,
 	sidebarStateFalse,
 	creacionRegistro,
+	autorizacionFormFail,
 };
 
 Estados.propTypes = {
