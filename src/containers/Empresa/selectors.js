@@ -4,6 +4,8 @@ export const dataEmpresa = state => state.getIn(['empresa', 'data']);
 
 export const getEmpresa = state => state.getIn(['empresa', 'idSelected']);
 
+export const getFormResponse = state => state.getIn(['empresa', 'formularioRespuesta']);
+
 export const getDataId = createSelector(
 	dataEmpresa,
 	getEmpresa,

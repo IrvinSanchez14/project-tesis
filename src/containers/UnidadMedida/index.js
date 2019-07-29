@@ -9,17 +9,23 @@ import api from '../../api';
 import SideBarMenu from '../../components/SideBar';
 import TableData from '../../components/TableData';
 import FrmUnidadMedida from '../../components/Forms/frmUnidadMedida';
+import { ErrorTabla } from '../../components/Error';
 
-import { fetchUnidadMedida, idSelectedUnidadMedida, creacionRegistro } from './actions';
-import { dataUnidadMedida, getDataBodyId, getDataId } from './selectors';
+import { fetchUnidadMedida, idSelectedUnidadMedida, creacionRegistro, autorizacionFormFail } from './actions';
+import { dataUnidadMedida, getDataBodyId, getDataId, getFormResponse } from './selectors';
 
 import { sidebarState, sidebarStateFalse } from '../App/actions';
 import { stateSideBarMenu } from '../App/selectors';
 
+import { permisosVerUnidadMedida } from '../../helpers/permisos';
+
 class UnidadMedida extends Component {
 	componentDidMount() {
+		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+		if (userInfo === null) {
+			this.props.history.push('/');
+		}
 		this.props.fetchUnidadMedida();
-		console.log(this.props);
 	}
 
 	headTable = () => {
@@ -49,6 +55,7 @@ class UnidadMedida extends Component {
 	getIDtable = id => {
 		this.props.sidebarState();
 		this.props.idSelectedUnidadMedida(id);
+		this.props.autorizacionFormFail(false);
 	};
 
 	getDataTable = () => {
@@ -58,6 +65,7 @@ class UnidadMedida extends Component {
 	crearRegistro = () => {
 		this.props.creacionRegistro();
 		this.props.sidebarState();
+		this.props.autorizacionFormFail(false);
 	};
 
 	onSubmit = formValues => {
@@ -66,20 +74,22 @@ class UnidadMedida extends Component {
 			if (confirm('Esta seguro de guardar la siguiente Empresa en la Base de Datos?')) {
 				api.post('/UnidadMedida/create.php', formValues).then(
 					data => this.props.fetchUnidadMedida(),
+					this.props.autorizacionFormFail(true),
 					this.props.sidebarStateFalse()
 				);
 			} else {
-				return;
+				return this.props.autorizacionFormFail(false);
 			}
 		} else {
 			// eslint-disable-next-line no-restricted-globals
 			if (confirm('Esta seguro de actualizar el siguiente dato de la tabla Empresa?')) {
 				api.put('/UnidadMedida/update.php', formValues).then(
 					data => this.props.fetchUnidadMedida(),
+					this.props.autorizacionFormFail(true),
 					this.props.sidebarStateFalse()
 				);
 			} else {
-				return;
+				return this.props.autorizacionFormFail(false);
 			}
 		}
 	};
@@ -118,6 +128,7 @@ class UnidadMedida extends Component {
 						'Estado'
 					)}
 					createData={true}
+					formResponse={this.props.getFormResponse}
 				/>
 			);
 		} else {
@@ -133,6 +144,7 @@ class UnidadMedida extends Component {
 						'Estado'
 					)}
 					createData={false}
+					formResponse={this.props.getFormResponse}
 				/>
 			);
 		}
@@ -141,7 +153,7 @@ class UnidadMedida extends Component {
 
 	render() {
 		const arr = [];
-		if (this.props.dataUnidadMedida) {
+		if (this.props.dataUnidadMedida && permisosVerUnidadMedida()) {
 			arr.push(
 				<TableData
 					header={this.headTable()}
@@ -160,7 +172,7 @@ class UnidadMedida extends Component {
 							fontWeight: 'bold',
 						}}
 					>
-						Tipo de Usuario
+						Unidades de Medidas
 					</h1>
 
 					<SideBarMenu
@@ -186,8 +198,9 @@ class UnidadMedida extends Component {
 					</Fab>
 				</div>
 			);
+		} else {
+			return <ErrorTabla />;
 		}
-		return null;
 	}
 }
 
@@ -197,6 +210,7 @@ export function mapStateToProps(state, props) {
 		getDataId: getDataId(state, props),
 		getDataBodyId: getDataBodyId(state, props),
 		stateSideBarMenu: stateSideBarMenu(state, props),
+		getFormResponse: getFormResponse(state, props),
 	};
 }
 
@@ -206,6 +220,7 @@ export const action = {
 	idSelectedUnidadMedida,
 	creacionRegistro,
 	sidebarStateFalse,
+	autorizacionFormFail,
 };
 
 UnidadMedida.propTypes = {

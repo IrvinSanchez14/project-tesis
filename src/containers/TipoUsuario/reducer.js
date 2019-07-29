@@ -14,11 +14,11 @@ export default function(state = initialState, action) {
 		case ACTIONS.ID_SELECTED_TIPOUSUARIO: {
 			return state.set('idSelected', action.id);
 		}
-		case ACTIONS.LOGIN_WATCHER: {
-			return state.set('saga', action.payload);
-		}
 		case ACTIONS.CREACION_REGISTRO: {
 			return state.set('idSelected', action.erase);
+		}
+		case ACTIONS.AUTORIZACION_FORM_FAIL: {
+			return state.set('formularioRespuesta', action.estado);
 		}
 		default:
 			return state;

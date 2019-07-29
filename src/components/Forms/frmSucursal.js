@@ -1,6 +1,9 @@
 import React from 'react';
 import { fromJS } from 'immutable';
 import { Field, reduxForm } from 'redux-form/immutable';
+import { connect } from 'react-redux';
+
+import { getFormResponse } from '../../containers/Sucursales/selectors';
 
 const validate = values => {
 	// IMPORTANT: values is an Immutable.Map here!
@@ -57,7 +60,15 @@ class FrmSucursal extends React.Component {
 		this.props.onSubmit(newData.toJS());
 	};
 
+	validateClean = () => {
+		const { reset } = this.props;
+		if (this.props.getFormResponse) {
+			reset();
+		}
+	};
+
 	render() {
+		this.validateClean();
 		return (
 			<form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
 				<Field name="Nombre" component={this.renderInput} label="Nombre" />
@@ -77,8 +88,16 @@ class FrmSucursal extends React.Component {
 	}
 }
 
-export default reduxForm({
-	form: 'formSucursal',
-	validate,
-	enableReinitialize: true,
-})(FrmSucursal);
+export function mapStateToProps(state, props) {
+	return {
+		getFormResponse: getFormResponse(state, props),
+	};
+}
+
+export default connect(mapStateToProps)(
+	reduxForm({
+		form: 'formSucursal',
+		validate,
+		enableReinitialize: true,
+	})(FrmSucursal)
+);

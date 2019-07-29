@@ -11,16 +11,22 @@ import TableData from '../../components/TableData';
 import SideBarMenu from '../../components/SideBar';
 import { sidebarStateFalse } from '../App/actions';
 import FrmEmpresa from '../../components/Forms/frmEmpresa';
+import { ErrorTabla } from '../../components/Error';
 
-import { fetchEmpresa, idSelectedEmpresa, creacionRegistro } from './actions';
-import { dataEmpresa, getDataId, getDataBodyId } from './selectors';
+import { fetchEmpresa, idSelectedEmpresa, creacionRegistro, autorizacionFormFail } from './actions';
+import { dataEmpresa, getDataId, getDataBodyId, getFormResponse } from './selectors';
 
 import { sidebarState } from '../App/actions';
 import { stateSideBarMenu } from '../App/selectors';
 
+import { permisosVerEmpresa } from '../../helpers/permisos';
+
 class Empresa extends React.Component {
 	componentDidMount() {
-		//this.props.history.push('/');
+		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+		if (userInfo === null) {
+			this.props.history.push('/');
+		}
 		this.props.fetchEmpresa();
 	}
 
@@ -54,6 +60,7 @@ class Empresa extends React.Component {
 	getIDtable = id => {
 		this.props.sidebarState();
 		this.props.idSelectedEmpresa(id);
+		this.props.autorizacionFormFail(false);
 	};
 
 	getDataTable = () => {
@@ -63,6 +70,7 @@ class Empresa extends React.Component {
 	crearRegistro = () => {
 		this.props.creacionRegistro();
 		this.props.sidebarState();
+		this.props.autorizacionFormFail(false);
 	};
 
 	onSubmit = formValues => {
@@ -71,6 +79,7 @@ class Empresa extends React.Component {
 			if (confirm('Esta seguro de guardar la siguiente Empresa en la Base de Datos?')) {
 				api.post('/Empresas/create.php', formValues).then(
 					data => this.props.fetchEmpresa(),
+					this.props.autorizacionFormFail(true),
 					this.props.sidebarStateFalse()
 				);
 			} else {
@@ -81,6 +90,7 @@ class Empresa extends React.Component {
 			if (confirm('Esta seguro de actualizar el siguiente dato de la tabla Empresa?')) {
 				api.put('/Empresas/update.php', formValues).then(
 					data => this.props.fetchEmpresa(),
+					this.props.autorizacionFormFail(true),
 					this.props.sidebarStateFalse()
 				);
 			} else {
@@ -126,6 +136,7 @@ class Empresa extends React.Component {
 						'Estado'
 					)}
 					createData={true}
+					formResponse={this.props.getFormResponse}
 				/>
 			);
 		} else {
@@ -144,6 +155,7 @@ class Empresa extends React.Component {
 						'Estado'
 					)}
 					createData={false}
+					formResponse={this.props.getFormResponse}
 				/>
 			);
 		}
@@ -152,7 +164,7 @@ class Empresa extends React.Component {
 
 	render() {
 		const arr = [];
-		if (this.props.dataEmpresa) {
+		if (this.props.dataEmpresa && permisosVerEmpresa()) {
 			arr.push(
 				<TableData
 					header={this.headTable()}
@@ -171,7 +183,7 @@ class Empresa extends React.Component {
 							fontWeight: 'bold',
 						}}
 					>
-						Tipo de Usuario
+						Empresas
 					</h1>
 
 					<SideBarMenu
@@ -197,8 +209,9 @@ class Empresa extends React.Component {
 					</Fab>
 				</div>
 			);
+		} else {
+			return <ErrorTabla />;
 		}
-		return null;
 	}
 }
 
@@ -208,6 +221,7 @@ export function mapStateToProps(state, props) {
 		stateSideBarMenu: stateSideBarMenu(state, props),
 		getDataId: getDataId(state, props),
 		getDataBodyId: getDataBodyId(state, props),
+		getFormResponse: getFormResponse(state, props),
 	};
 }
 
@@ -217,6 +231,7 @@ export const actions = {
 	idSelectedEmpresa,
 	sidebarStateFalse,
 	creacionRegistro,
+	autorizacionFormFail,
 };
 
 Empresa.propTypes = {

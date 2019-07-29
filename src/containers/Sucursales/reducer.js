@@ -17,6 +17,9 @@ export default function(state = initialState, action) {
 		case ACTIONS.CREACION_REGISTRO_SUCURSAL: {
 			return state.set('idSelected', action.erase);
 		}
+		case ACTIONS.AUTORIZACION_FORM_FAIL: {
+			return state.set('formularioRespuesta', action.estado);
+		}
 		default:
 			return state;
 	}

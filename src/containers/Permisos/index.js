@@ -11,16 +11,22 @@ import TableData from '../../components/TableData';
 import SideBarMenu from '../../components/SideBar';
 import { sidebarStateFalse } from '../App/actions';
 import FrmPermiso from '../../components/Forms/frmPermiso';
+import { ErrorTabla } from '../../components/Error';
 
-import { fetchPermiso, idSelectedPermiso, creacionRegistro } from './actions';
-import { dataPermiso, getDataId, getDataBodyId } from './selectors';
+import { fetchPermiso, idSelectedPermiso, creacionRegistro, autorizacionFormFail } from './actions';
+import { dataPermiso, getDataId, getDataBodyId, getFormResponse } from './selectors';
 
 import { sidebarState } from '../App/actions';
 import { stateSideBarMenu } from '../App/selectors';
 
+import { permisosVerPermisos } from '../../helpers/permisos';
+
 class Permiso extends React.Component {
 	componentDidMount() {
-		//this.props.history.push('/');
+		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+		if (userInfo === null) {
+			this.props.history.push('/');
+		}
 		this.props.fetchPermiso();
 	}
 
@@ -36,6 +42,7 @@ class Permiso extends React.Component {
 	getIDtable = id => {
 		this.props.sidebarState();
 		this.props.idSelectedPermiso(id);
+		this.props.autorizacionFormFail(false);
 	};
 
 	getDataTable = () => {
@@ -45,6 +52,7 @@ class Permiso extends React.Component {
 	crearRegistro = () => {
 		this.props.creacionRegistro();
 		this.props.sidebarState();
+		this.props.autorizacionFormFail(false);
 	};
 
 	onSubmit = formValues => {
@@ -53,20 +61,22 @@ class Permiso extends React.Component {
 			if (confirm('Esta seguro de guardar la siguiente Empresa en la Base de Datos?')) {
 				api.post('/Permisos/create.php', formValues).then(
 					data => this.props.fetchPermiso(),
+					this.props.autorizacionFormFail(true),
 					this.props.sidebarStateFalse()
 				);
 			} else {
-				return;
+				return this.props.autorizacionFormFail(false);
 			}
 		} else {
 			// eslint-disable-next-line no-restricted-globals
 			if (confirm('Esta seguro de actualizar el siguiente dato de la tabla Empresa?')) {
 				api.put('/Permisos/update.php', formValues).then(
 					data => this.props.fetchPermiso(),
+					this.props.autorizacionFormFail(true),
 					this.props.sidebarStateFalse()
 				);
 			} else {
-				return;
+				return this.props.autorizacionFormFail(false);
 			}
 		}
 	};
@@ -105,6 +115,7 @@ class Permiso extends React.Component {
 						'Estado'
 					)}
 					createData={true}
+					formResponse={this.props.getFormResponse}
 				/>
 			);
 		} else {
@@ -120,6 +131,7 @@ class Permiso extends React.Component {
 						'Estado'
 					)}
 					createData={false}
+					formResponse={this.props.getFormResponse}
 				/>
 			);
 		}
@@ -128,7 +140,7 @@ class Permiso extends React.Component {
 
 	render() {
 		const arr = [];
-		if (this.props.dataPermiso) {
+		if (this.props.dataPermiso && permisosVerPermisos()) {
 			arr.push(
 				<TableData
 					header={this.headTable()}
@@ -172,8 +184,9 @@ class Permiso extends React.Component {
 					</Fab>
 				</div>
 			);
+		} else {
+			return <ErrorTabla />;
 		}
-		return null;
 	}
 }
 
@@ -183,6 +196,7 @@ export function mapStateToProps(state, props) {
 		stateSideBarMenu: stateSideBarMenu(state, props),
 		getDataId: getDataId(state, props),
 		getDataBodyId: getDataBodyId(state, props),
+		getFormResponse: getFormResponse(state, props),
 	};
 }
 
@@ -192,6 +206,7 @@ export const actions = {
 	idSelectedPermiso,
 	sidebarStateFalse,
 	creacionRegistro,
+	autorizacionFormFail,
 };
 
 Permiso.propTypes = {

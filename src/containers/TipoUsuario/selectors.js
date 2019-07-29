@@ -4,6 +4,8 @@ export const dataTipoUsuario = state => state.getIn(['tipoUsuario', 'data']);
 
 export const getIdTipoUsuario = state => state.getIn(['tipoUsuario', 'idSelected']);
 
+export const getFormResponse = state => state.getIn(['tipoUsuario', 'formularioRespuesta']);
+
 export const getDataId = createSelector(
 	dataTipoUsuario,
 	getIdTipoUsuario,

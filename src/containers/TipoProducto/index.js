@@ -11,16 +11,22 @@ import TableData from '../../components/TableData';
 import SideBarMenu from '../../components/SideBar';
 import { sidebarStateFalse } from '../App/actions';
 import FrmTipoProducto from '../../components/Forms/frmTipoProducto';
+import { ErrorTabla } from '../../components/Error';
 
-import { fetchTipoProducto, idSelectedTipoProducto, creacionRegistro } from './actions';
-import { dataTipoProducto, getDataId, getDataBodyId } from './selectors';
+import { fetchTipoProducto, idSelectedTipoProducto, creacionRegistro, autorizacionFormFail } from './actions';
+import { dataTipoProducto, getDataId, getDataBodyId, getFormResponse } from './selectors';
 
 import { sidebarState } from '../App/actions';
 import { stateSideBarMenu } from '../App/selectors';
 
+import { permisosVerTipoProducto } from '../../helpers/permisos';
+
 class TipoProducto extends React.Component {
 	componentDidMount() {
-		//this.props.history.push('/');
+		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+		if (userInfo === null) {
+			this.props.history.push('/');
+		}
 		this.props.fetchTipoProducto();
 	}
 
@@ -36,6 +42,7 @@ class TipoProducto extends React.Component {
 	getIDtable = id => {
 		this.props.sidebarState();
 		this.props.idSelectedTipoProducto(id);
+		this.props.autorizacionFormFail(false);
 	};
 
 	getDataTable = () => {
@@ -45,6 +52,7 @@ class TipoProducto extends React.Component {
 	crearRegistro = () => {
 		this.props.creacionRegistro();
 		this.props.sidebarState();
+		this.props.autorizacionFormFail(false);
 	};
 
 	onSubmit = formValues => {
@@ -53,20 +61,22 @@ class TipoProducto extends React.Component {
 			if (confirm('Esta seguro de guardar la siguiente Empresa en la Base de Datos?')) {
 				api.post('/TipoProducto/create.php', formValues).then(
 					data => this.props.fetchTipoProducto(),
+					this.props.autorizacionFormFail(true),
 					this.props.sidebarStateFalse()
 				);
 			} else {
-				return;
+				return this.props.autorizacionFormFail(false);
 			}
 		} else {
 			// eslint-disable-next-line no-restricted-globals
 			if (confirm('Esta seguro de actualizar el siguiente dato de la tabla Empresa?')) {
 				api.put('/TipoProducto/update.php', formValues).then(
 					data => this.props.fetchTipoProducto(),
+					this.props.autorizacionFormFail(true),
 					this.props.sidebarStateFalse()
 				);
 			} else {
-				return;
+				return this.props.autorizacionFormFail(false);
 			}
 		}
 	};
@@ -106,6 +116,7 @@ class TipoProducto extends React.Component {
 						'Estado'
 					)}
 					createData={true}
+					formResponse={this.props.getFormResponse}
 				/>
 			);
 		} else {
@@ -122,6 +133,7 @@ class TipoProducto extends React.Component {
 						'Estado'
 					)}
 					createData={false}
+					formResponse={this.props.getFormResponse}
 				/>
 			);
 		}
@@ -130,7 +142,7 @@ class TipoProducto extends React.Component {
 
 	render() {
 		const arr = [];
-		if (this.props.dataTipoProducto) {
+		if (this.props.dataTipoProducto && permisosVerTipoProducto()) {
 			arr.push(
 				<TableData
 					header={this.headTable()}
@@ -148,7 +160,7 @@ class TipoProducto extends React.Component {
 							fontWeight: 'bold',
 						}}
 					>
-						Tipo de Producto
+						Tipos de Productos
 					</h1>
 
 					<SideBarMenu
@@ -174,8 +186,9 @@ class TipoProducto extends React.Component {
 					</Fab>
 				</div>
 			);
+		} else {
+			return <ErrorTabla />;
 		}
-		return null;
 	}
 }
 
@@ -185,6 +198,7 @@ export function mapStateToProps(state, props) {
 		stateSideBarMenu: stateSideBarMenu(state, props),
 		getDataId: getDataId(state, props),
 		getDataBodyId: getDataBodyId(state, props),
+		getFormResponse: getFormResponse(state, props),
 	};
 }
 
@@ -194,6 +208,7 @@ export const actions = {
 	idSelectedTipoProducto,
 	sidebarStateFalse,
 	creacionRegistro,
+	autorizacionFormFail,
 };
 
 TipoProducto.propTypes = {

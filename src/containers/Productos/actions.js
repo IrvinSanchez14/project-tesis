@@ -39,3 +39,10 @@ export function creacionRegistro() {
 		erase: undefined,
 	};
 }
+
+export function autorizacionFormFail(value) {
+	return {
+		type: ACTIONS.AUTORIZACION_FORM_FAIL,
+		estado: value,
+	};
+}

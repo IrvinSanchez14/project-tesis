@@ -4,6 +4,8 @@ export const dataSucursal = state => state.getIn(['sucursal', 'data']);
 
 export const getSucursal = state => state.getIn(['sucursal', 'idSelected']);
 
+export const getFormResponse = state => state.getIn(['sucursal', 'formularioRespuesta']);
+
 export const getDataId = createSelector(
 	dataSucursal,
 	getSucursal,
