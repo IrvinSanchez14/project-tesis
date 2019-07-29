@@ -13,6 +13,7 @@ import tipoProducto from './containers/TipoProducto/reducer';
 import proveedor from './containers/Proveedor/reducer';
 import permiso from './containers/Permisos/reducer';
 import estados from './containers/Estados/reducer';
+import permisosUsuarios from './containers/PermisosUsuarios/reducer';
 
 const appReducer = combineReducers({
 	form: reduxFormReducer,
@@ -29,6 +30,7 @@ const appReducer = combineReducers({
 	proveedor,
 	permiso,
 	estados,
+	permisosUsuarios,
 });
 
 export default appReducer;
