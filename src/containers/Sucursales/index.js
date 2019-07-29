@@ -26,7 +26,6 @@ class Sucursales extends Component {
 			this.props.history.push('/');
 		}
 		this.props.fetchSucursal();
-		console.log(this.props);
 	}
 
 	headTable = () => {

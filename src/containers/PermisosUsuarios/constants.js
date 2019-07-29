@@ -1,0 +1,9 @@
+export const SET_PERMISOSUSUARIOS_DATA = 'src/PermisosUsuarios/SET_PERMISOSUSUARIOS_DATA';
+export const ID_SELECTED_PERMISOSUSUARIOS = 'src/PermisosUsuarios/ID_SELECTED_PERMISOSUSUARIOS';
+export const FETCH_PERMISOSUSUARIOS = 'src/PermisosUsuarios/FETCH_PERMISOSUSUARIOS';
+export const EDIT_PERMISOSUSUARIOS = 'src/PermisosUsuarios/EDIT_PERMISOSUSUARIOS';
+export const EDIT_TIPO = 'src/PermisosUsuarios/EDIT_TIPO';
+export const CREACION_REGISTRO_PERMISOSUSUARIOS = 'src/PermisosUsuarios/CREACION_REGISTRO_PERMISOSUSUARIOS';
+export const AUTORIZACION_FORM_FAIL = 'src/PermisosUsuarios/AUTORIZACION_FORM_FAIL';
+export const LISTA_PERMISO_USUARIO = 'src/PermisosUsuarios/LISTA_PERMISO_USUARIO';
+export const FETCH_USUARIO_PERMISO = 'src/PermisosUsuarios/FETCH_USUARIO_PERMISO';

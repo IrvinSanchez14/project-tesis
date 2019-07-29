@@ -12,7 +12,6 @@ const styles = {
 
 class Header extends React.Component {
 	render() {
-		console.log(this.props);
 		const menuLogin = (
 			<Menu
 				size="small"
@@ -136,6 +135,14 @@ class Header extends React.Component {
 								}}
 							>
 								<Dropdown.Item>Unidades de Medidas</Dropdown.Item>
+							</Link>
+							<Link
+								to="/PermisosUsuarios"
+								style={{
+									color: 'inherit',
+								}}
+							>
+								<Dropdown.Item>Permisos de los Usuarios</Dropdown.Item>
 							</Link>
 						</Dropdown.Menu>
 					</Dropdown>

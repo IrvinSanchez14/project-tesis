@@ -18,6 +18,7 @@ import TipoProducto from '../TipoProducto';
 import Proveedor from '../Proveedor';
 import Permisos from '../Permisos';
 import Estados from '../Estados';
+import PermisosUsuarios from '../PermisosUsuarios';
 
 const App = () => {
 	const local = JSON.parse(localStorage.getItem('userInfo'));
@@ -42,6 +43,7 @@ const App = () => {
 				<Route path="/Proveedores" exact component={Proveedor} />
 				<Route path="/Permisos" exact component={Permisos} />
 				<Route path="/Estados" exact component={Estados} />
+				<Route path="/PermisosUsuarios" exact component={PermisosUsuarios} />
 				<Route exact path="/login" render={() => (isLoggedIn() ? <Redirect to="/" /> : <Login />)} />
 				<Route exact path="/SignUp" render={() => (isLoggedIn() ? <Redirect to="/" /> : <Register />)} />
 			</Switch>
