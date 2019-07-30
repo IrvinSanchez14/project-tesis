@@ -191,7 +191,7 @@ class Proveedor extends React.Component {
 					<Fab
 						style={{
 							right: '16px',
-							bottom: '16px',
+							bottom: '619px',
 							position: 'fixed',
 						}}
 						color="primary"

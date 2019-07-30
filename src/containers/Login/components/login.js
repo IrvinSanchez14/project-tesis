@@ -15,7 +15,7 @@ export class Login extends React.Component {
 			<div>
 				<div id="login-box">
 					<div className="left">
-						<h1>Sign in</h1>
+						<h1>Ingresar</h1>
 						<form onSubmit={handleSubmit(onSubmit)}>
 							<div className="container">
 								<Field
@@ -23,23 +23,23 @@ export class Login extends React.Component {
 									type="text"
 									id="email"
 									className="email"
-									label="Email"
-									placeholder="Email"
+									label="Correo"
+									placeholder="Correo"
 									component="input"
 								/>
 								<div className="forgotPassword">
-									<Link to="/forgotpassword"> Forgot Password?</Link>
+									<Link to="/forgotpassword"> Olvido Contrasña?</Link>
 								</div>
 								<Field
 									name="password"
 									type="password"
 									id="password"
 									className="password"
-									label="Password"
-									placeholder="Password"
+									label="Contraseña"
+									placeholder="Contraseña"
 									component="input"
 								/>
-								<input type="submit" name="signin_submit" value="Sign me in" />
+								<input type="submit" name="signin_submit" value="Ingresar" />
 							</div>
 						</form>
 					</div>

@@ -174,8 +174,8 @@ class Estados extends React.Component {
 					/>
 					<Fab
 						style={{
-							right: '16px',
-							bottom: '16px',
+							right: '12px',
+							bottom: '619px',
 							position: 'fixed',
 						}}
 						color="primary"
