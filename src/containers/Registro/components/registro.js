@@ -64,7 +64,7 @@ export class Register extends React.Component {
 												style={{ marginLeft: '69px' }}
 												type="submit"
 												name="signup_submit"
-												value="SIGN IN"
+												value="Registrate"
 											/>
 										</div>
 									</form>

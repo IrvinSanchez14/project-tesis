@@ -2,9 +2,10 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-
+import Print from '../../components/Print/';
 import api from '../../api';
 
 import TableData from '../../components/TableData';
@@ -197,8 +198,8 @@ class Empresa extends React.Component {
 					/>
 					<Fab
 						style={{
-							right: '16px',
-							bottom: '16px',
+							right: '12px',
+							bottom: '619px',
 							position: 'fixed',
 						}}
 						color="primary"
@@ -207,6 +208,7 @@ class Empresa extends React.Component {
 					>
 						<AddIcon />
 					</Fab>
+					<Print />
 				</div>
 			);
 		} else {
