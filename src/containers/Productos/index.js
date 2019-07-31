@@ -7,6 +7,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 import api from '../../api';
 
+import Print from '../../components/Print/';
 import TableData from '../../components/TableData';
 import SideBarMenu from '../../components/SideBar';
 import { sidebarStateFalse } from '../App/actions';
@@ -194,6 +195,7 @@ class Productos extends React.Component {
 					>
 						<AddIcon />
 					</Fab>
+					<Print />
 				</div>
 			);
 		} else {

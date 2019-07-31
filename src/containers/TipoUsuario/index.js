@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
+import Print from '../../components/Print/';
 import TableData from '../../components/TableData';
 import SideBarMenu from '../../components/SideBar';
 import FrmTipoUsuario from '../../components/Forms/frmTipoUsuario';
@@ -190,6 +191,7 @@ class TipoUsuario extends React.Component {
 					>
 						<AddIcon />
 					</Fab>
+					<Print />
 				</div>
 			);
 		} else {

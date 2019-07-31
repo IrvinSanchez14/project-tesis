@@ -20,6 +20,7 @@ import { sidebarState } from '../App/actions';
 import { stateSideBarMenu } from '../App/selectors';
 
 import { permisosVerPermisos } from '../../helpers/permisos';
+import Print from '../../components/Print/';
 
 class Permiso extends React.Component {
 	componentDidMount() {
@@ -182,6 +183,7 @@ class Permiso extends React.Component {
 					>
 						<AddIcon />
 					</Fab>
+					<Print />
 				</div>
 			);
 		} else {
