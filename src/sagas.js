@@ -12,6 +12,7 @@ import ProveedorSagas from './containers/Proveedor/sagas';
 import PermisoSagas from './containers/Permisos/sagas';
 import EstadosSagas from './containers/Estados/sagas';
 import PermisosUsuariosSagas from './containers/PermisosUsuarios/sagas';
+import UsuariosSagas from './containers/Usuarios/sagas';
 
 export default function* rootSaga() {
 	const allSagas = [
@@ -28,6 +29,7 @@ export default function* rootSaga() {
 		PermisoSagas,
 		EstadosSagas,
 		...PermisosUsuariosSagas,
+		UsuariosSagas,
 	];
 	for (let i = 0; i < allSagas.length; i += 1) {
 		yield fork(allSagas[i]);

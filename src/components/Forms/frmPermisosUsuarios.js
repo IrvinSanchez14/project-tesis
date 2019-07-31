@@ -41,7 +41,7 @@ class FrmPermisosUsuarios extends React.Component {
 		return (
 			<div className={className}>
 				<label>{label}</label>
-				<input style={{ backgroundColor: 'ghostwhite' }} {...input} autoComplete="off" readonly="readonly" />
+				<input style={{ backgroundColor: 'ghostwhite' }} {...input} autoComplete="off" readOnly="readonly" />
 				{this.renderError(meta)}
 			</div>
 		);
@@ -101,7 +101,6 @@ class FrmPermisosUsuarios extends React.Component {
 	deleteUsuarioPermido = id => {
 		// eslint-disable-next-line no-restricted-globals
 		if (confirm('Esta seguro de Eliminar el siguiente permiso?')) {
-			console.log(id);
 			api.post('/permisoUsuario/delete.php', { IdPermisosusuario: id }).then(data => {
 				this.prueba();
 			});
@@ -111,7 +110,6 @@ class FrmPermisosUsuarios extends React.Component {
 	};
 
 	render() {
-		console.log('this.props', this.props);
 		const renderLista = ({ input, label, meta }) => {
 			const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
 			return (
