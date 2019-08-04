@@ -22,7 +22,7 @@ const validate = values => {
 	return errors;
 };
 
-class FrmTipoUsuario extends React.Component {
+class FrmUsuario extends React.Component {
 	renderError({ error, touched }) {
 		if (touched && error) {
 			return (
@@ -44,6 +44,39 @@ class FrmTipoUsuario extends React.Component {
 		);
 	};
 
+	renderPassw = ({ input, label, meta: { touched, error, warning } }) => {
+		const className = `field ${error && touched ? 'error' : ''}`;
+		return (
+			<div className={className}>
+				<label>{label}</label>
+				<input {...input} autoComplete="off" type="password" />
+				{touched && (error && <span style={{ color: 'red' }}>{error}</span>)}
+			</div>
+		);
+	};
+
+	renderSelect = ({ input, label, meta }) => {
+		const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
+		return (
+			<div className={className}>
+				<label>{label}</label>
+				<select {...input}>
+					{this.props.createData ? <option /> : null}
+					{this.props.listaTipos
+						? this.props.listaTipos.map(permiso => {
+								return (
+									<option key={permiso.IdTipoUsuario} value={permiso.IdTipoUsuario}>
+										{permiso.Nombre}
+									</option>
+								);
+						  })
+						: null}
+				</select>
+				{this.renderError(meta)}
+			</div>
+		);
+	};
+
 	onSubmit = formValues => {
 		let data;
 		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -60,6 +93,7 @@ class FrmTipoUsuario extends React.Component {
 		}
 
 		const newData = formValues.mergeDeep(data);
+
 		this.props.onSubmit(newData.toJS());
 	};
 
@@ -71,11 +105,15 @@ class FrmTipoUsuario extends React.Component {
 	};
 
 	render() {
+		console.log(this.props);
 		this.validateClean();
 		return (
 			<form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
 				<Field name="Nombre" component={this.renderInput} label="Nombre" />
-				<Field name="Descripcion" component={this.renderInput} label="Descripcion" />
+				<Field name="Email" component={this.renderInput} label="Email" />
+				<Field name="Alias" component={this.renderInput} label="Alias" />
+				<Field name="IdTipoUsuario" component={this.renderSelect} label="Rol" />
+				{this.props.createData ? <Field name="Passwd" component={this.renderPassw} label="Contraseña" /> : null}
 				<div
 					style={{
 						bottom: '0',
@@ -98,8 +136,8 @@ export function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps)(
 	reduxForm({
-		form: 'formTipoUsuario',
+		form: 'formUsuarios',
 		validate,
 		enableReinitialize: true,
-	})(FrmTipoUsuario)
+	})(FrmUsuario)
 );

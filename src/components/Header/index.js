@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Dropdown, Menu } from 'semantic-ui-react';
-import { cleanToken } from '../../helpers/logout';
+import history from '../../history';
+import { logoutSuccessful } from '../../containers/Login/actions';
+import store from '../../store';
 
 const styles = {
 	baseButton: {
@@ -11,6 +13,12 @@ const styles = {
 };
 
 class Header extends React.Component {
+	cleanToken = () => {
+		console.log('clean');
+		store.dispatch(logoutSuccessful('Sistema Cerrado'));
+		localStorage.clear();
+		history.push('/login');
+	};
 	render() {
 		const menuLogin = (
 			<Menu
@@ -20,16 +28,6 @@ class Header extends React.Component {
 				}}
 			>
 				<Menu.Menu position="right">
-					<Menu.Item>
-						<Link
-							to="/SignUp"
-							style={{
-								color: 'inherit',
-							}}
-						>
-							<Button style={styles.baseButton}>Registrate</Button>
-						</Link>
-					</Menu.Item>
 					<Menu.Item>
 						<Link
 							to="/Login"
@@ -144,6 +142,14 @@ class Header extends React.Component {
 							>
 								<Dropdown.Item>Permisos de los Usuarios</Dropdown.Item>
 							</Link>
+							<Link
+								to="/Usuarios"
+								style={{
+									color: 'inherit',
+								}}
+							>
+								<Dropdown.Item>Usuarios</Dropdown.Item>
+							</Link>
 						</Dropdown.Menu>
 					</Dropdown>
 				) : null}
@@ -156,7 +162,7 @@ class Header extends React.Component {
 								color: 'inherit',
 							}}
 						>
-							<Button style={styles.baseButton} onClick={cleanToken}>
+							<Button style={styles.baseButton} onClick={this.cleanToken}>
 								Salir
 							</Button>
 						</Link>

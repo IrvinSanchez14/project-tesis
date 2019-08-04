@@ -16,24 +16,8 @@ export const permisosDisponibles = createSelector(
 	(permisosUsuario, permisos) => {
 		let permisosOn;
 		if (permisosUsuario) {
-			permisosOn = [];
-			let d1;
-			const sort = permisos.sort(function(a, b) {
-				return a.IdPermiso - b.IdPermiso;
-			});
-			sort.map(data => {
-				permisosUsuario.map(data2 => {
-					if (data2.IdPermiso === data.IdPermiso) {
-						d1 = data2;
-					}
-					return data2;
-				});
-				if (d1.IdPermiso !== data.IdPermiso) {
-					console.log('awe', data);
-					permisosOn.push(data);
-				}
-				return data;
-			});
+			const permisoUsuarioIDs = permisosUsuario.map(us => us.IdPermiso);
+			permisosOn = permisos.filter(PNA => !permisoUsuarioIDs.includes(PNA.IdPermiso));
 		}
 		return permisosOn;
 	}

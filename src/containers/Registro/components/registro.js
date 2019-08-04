@@ -1,79 +1,83 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { reduxForm, Field } from 'redux-form/immutable';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import TextField from 'material-ui/TextField';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import { MDBBtn, MDBCard, MDBCardBody, MDBCardTitle, MDBInput, MDBCol, MDBNotification } from 'mdbreact';
 
-import { registerRequesting } from '../actions';
+import Message from '../../../share/messages';
+import api from '../../../api';
+
 import './stylesForReg.css';
 
-const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
-	<TextField hintText={label} floatingLabelText={label} errorText={touched && error} {...input} {...custom} />
-);
-
-const renderSelectField = ({ input, label, meta: { touched, error }, children, ...custom }) => (
-	<SelectField
-		floatingLabelText={label}
-		errorText={touched && error}
-		{...input}
-		onChange={(event, index, value) => input.onChange(value)}
-		children={children}
-		{...custom}
-	>
-		<MenuItem value="ADM002" primaryText="Red" />
-	</SelectField>
-);
-
 export class Register extends React.Component {
+	state = { Email: '', loading: '', notification: false };
+
+	handleChange = e => {
+		this.setState({
+			Email: e.target.value,
+		});
+	};
+
+	onClick = () => {
+		this.setState({
+			loading: true,
+			notification: false,
+		});
+		api.post('/user/recuperacion.php', { Email: this.state.Email }).then(respuesta => {
+			console.log(respuesta);
+			this.setState({
+				loading: false,
+				notification: true,
+			});
+		});
+	};
+
 	render() {
-		const { onSubmit, handleSubmit } = this.props;
+		console.log(this.state);
 		return (
-			<MuiThemeProvider muiTheme={getMuiTheme()}>
-				<div>
-					<div id="register-box">
-						<Card style={{ width: '329px', height: '525px' }}>
-							<CardContent>
-								<div className="left" style={{ justifyContent: 'center' }}>
-									<h1 style={{ marginLeft: '69px' }}>Registrate</h1>
-									<form onSubmit={handleSubmit(onSubmit)}>
-										<div
-											className="container"
-											style={{ justifyContent: 'center', marginTop: '-28px' }}
-										>
-											<Field name="Nombre" label="Nombre" component={renderTextField} />
-											<Field name="Email" label="Correo" component={renderTextField} />
-											<Field name="Alias" label="Alias" component={renderTextField} />
-											<Field
-												name="IdTipoUsuario"
-												component={renderSelectField}
-												label="Tipo de Usuario"
-											/>
-											<Field
-												name="Passwd"
-												type="password"
-												label="Contraseña"
-												component={renderTextField}
-											/>
-											<input
-												style={{ marginLeft: '69px' }}
-												type="submit"
-												name="signup_submit"
-												value="Registrate"
-											/>
-										</div>
-									</form>
-								</div>
-							</CardContent>
-						</Card>
+			<div className="register-box">
+				<MDBCol>
+					<MDBCard style={{ width: '22rem' }}>
+						<MDBCardBody>
+							<MDBCardTitle>Recuperacion Contraseña</MDBCardTitle>
+							<div style={{ marginLeft: '24px' }}>
+								<MDBInput label="Correo Electronico" onChange={this.handleChange} />
+							</div>
+							<MDBBtn style={{ marginLeft: '83px' }} onClick={() => this.onClick()}>
+								Enviar
+							</MDBBtn>
+						</MDBCardBody>
+					</MDBCard>
+				</MDBCol>
+				{this.state.loading ? (
+					<div className="pacpac lds-css ng-scope">
+						<div style={{ width: '100%', height: '100%' }} className="lds-pacman">
+							<div>
+								<div />
+								<div />
+								<div />
+							</div>
+							<div>
+								<div />
+								<div />
+							</div>
+						</div>
 					</div>
-				</div>
-			</MuiThemeProvider>
+				) : null}
+				{this.state.notification ? (
+					<MDBNotification
+						show
+						fade
+						iconClassName="text-primary"
+						title="Servidor"
+						message="Correo enviado exitosamente"
+						style={{
+							position: 'initial',
+							top: '10px',
+							right: '10px',
+							zIndex: 9999,
+						}}
+					/>
+				) : null}
+			</div>
 		);
 	}
 }
@@ -84,24 +88,4 @@ Register.propTypes = {
 	messages: PropTypes.array,
 };
 
-export const mapStateToProps = state => ({});
-
-export const mapDispatchToProps = dispatch => ({
-	onSubmit: value => {
-		const response = value.toJS();
-		if (response.Nombre && response.Email) {
-			dispatch(registerRequesting(response));
-		} else {
-			alert('Please Fill All the Fields');
-		}
-	},
-});
-
-export default reduxForm({
-	form: 'register',
-})(
-	connect(
-		mapStateToProps,
-		mapDispatchToProps
-	)(Register)
-);
+export default Register;
