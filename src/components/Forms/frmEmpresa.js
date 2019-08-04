@@ -5,6 +5,38 @@ import { connect } from 'react-redux';
 
 import { getFormResponse } from '../../containers/Empresa/selectors';
 
+const validate = values => {
+	// IMPORTANT: values is an Immutable.Map here!
+	const errors = {};
+	if (!values.get('Nombre')) {
+		errors.Nombre = 'Requerido';
+	} else if (values.get('Nombre').length > 20) {
+		errors.Nombre = 'Must be 20 characters or less';
+	}
+	if (!values.get('Direccion')) {
+		errors.Direccion = 'Requerido';
+	}
+	if (!values.get('Razo_Social')) {
+		errors.Razo_Social = 'Requerido';
+	}
+	if (!values.get('Email')) {
+		errors.Email = 'Requerido';
+	} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.get('Email'))) {
+		errors.Email = 'Verifique el crreo';
+	}
+	if (!values.get('Telefono')) {
+		errors.Telefono = 'Requerido';
+	} else if (isNaN(Number(values.get('Telefono')))) {
+		errors.Telefono = 'Tiene que ser numero';
+	} else if (values.get('Telefono').length > 8) {
+		errors.Telefono = '8 digitos o menos';
+	} else if (values.get('Telefono').length < 8) {
+		errors.Telefono = '8 digitos o menos';
+	}
+
+	return errors;
+};
+
 class FrmEmpresa extends React.Component {
 	renderError({ error, touched }) {
 		if (touched && error) {
@@ -15,27 +47,29 @@ class FrmEmpresa extends React.Component {
 			);
 		}
 	}
-
-	renderInput = ({ input, label, meta }) => {
-		const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
+	renderInput = ({ input, label, meta: { touched, error, warning } }) => {
+		const className = `field ${error && touched ? 'error' : ''}`;
 		return (
 			<div className={className}>
 				<label>{label}</label>
 				<input {...input} autoComplete="off" />
-				{this.renderError(meta)}
+				{touched && (error && <span style={{ color: 'red' }}>{error}</span>)}
 			</div>
 		);
 	};
 
 	onSubmit = formValues => {
 		let data;
+		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 		if (this.props.createData) {
 			data = fromJS({
 				flag: 'create',
+				UsuarioCreador: userInfo.IdUsuario,
 			});
 		} else {
 			data = fromJS({
 				flag: 'update',
+				UsuarioActualiza: userInfo.IdUsuario,
 			});
 		}
 
@@ -55,10 +89,10 @@ class FrmEmpresa extends React.Component {
 		return (
 			<form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
 				<Field name="Nombre" component={this.renderInput} label="Nombre" />
-				<Field name="Razon_Social" component={this.renderInput} label="Razon Social" />
-				<Field name="Direccion" component={this.renderInput} label="Direccion" />
-				<Field name="Telefono" component={this.renderInput} label="Telefono" />
-				<Field name="Correo" component={this.renderInput} label="Correo" />
+				<Field name="Razo_Social" component={this.renderInput} label="Razon Social" />
+				<Field name="Direccion" component={this.renderInput} label="Dirección" />
+				<Field name="Telefono" component={this.renderInput} label="Teléfono" />
+				<Field name="Email" component={this.renderInput} label="Correo" />
 				<div
 					style={{
 						bottom: '0',
@@ -82,6 +116,7 @@ export function mapStateToProps(state, props) {
 export default connect(mapStateToProps)(
 	reduxForm({
 		form: 'formEmpresa',
+		validate,
 		enableReinitialize: true,
 	})(FrmEmpresa)
 );

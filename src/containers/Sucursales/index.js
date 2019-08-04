@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
+import Print from '../../components/Print/';
 import api from '../../api';
 import TableData from '../../components/TableData';
 import SideBarMenu from '../../components/SideBar';
@@ -201,6 +202,7 @@ class Sucursales extends Component {
 					>
 						<AddIcon />
 					</Fab>
+					<Print />
 				</div>
 			);
 		} else {

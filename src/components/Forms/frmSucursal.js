@@ -9,15 +9,24 @@ const validate = values => {
 	// IMPORTANT: values is an Immutable.Map here!
 	const errors = {};
 	if (!values.get('IdSucursal')) {
-		errors.IdSucursal = 'Required';
+		errors.IdSucursal = 'Requerido';
 	}
 	if (!values.get('Nombre')) {
-		errors.Nombre = 'Required';
+		errors.Nombre = 'Requerido';
 	} else if (values.get('Nombre').length > 20) {
 		errors.IdSucursal = 'Must be 20 characters or less';
 	}
 	if (!values.get('Direccion')) {
-		errors.Direccion = 'Required';
+		errors.Direccion = 'Requerido';
+	}
+	if (!values.get('Telefono')) {
+		errors.Telefono = 'Requerido';
+	} else if (isNaN(Number(values.get('Telefono')))) {
+		errors.Telefono = 'Tiene que ser numero';
+	} else if (values.get('Telefono').length > 8) {
+		errors.Telefono = '8 digitos o menos';
+	} else if (values.get('Telefono').length < 8) {
+		errors.Telefono = '8 digitos o menos';
 	}
 	return errors;
 };
@@ -46,13 +55,16 @@ class FrmSucursal extends React.Component {
 
 	onSubmit = formValues => {
 		let data;
+		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 		if (this.props.createData) {
 			data = fromJS({
 				flag: 'create',
+				UsuarioCreador: userInfo.IdUsuario,
 			});
 		} else {
 			data = fromJS({
 				flag: 'update',
+				UsuarioActualiza: userInfo.IdUsuario,
 			});
 		}
 
@@ -72,7 +84,7 @@ class FrmSucursal extends React.Component {
 		return (
 			<form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
 				<Field name="Nombre" component={this.renderInput} label="Nombre" />
-				<Field name="Direccion" component={this.renderInput} label="Direccion" />
+				<Field name="Direccion" component={this.renderInput} label="Dirección" />
 				<Field name="Telefono" component={this.renderInput} label="Telefono" />
 				<div
 					style={{

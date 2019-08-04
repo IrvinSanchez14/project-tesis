@@ -7,6 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Modal from '../../components/Modal';
 import ModalTable from '../../components/ModalTable';
 import Typography from '@material-ui/core/Typography';
+import Print from '../../components/Print/';
 
 const useStyles = makeStyles({
 	card: {
@@ -110,6 +111,7 @@ export default function ListaExistente() {
 			>
 				{'Lista'}
 			</Fab>
+			<Print />
 		</div>
 	);
 }

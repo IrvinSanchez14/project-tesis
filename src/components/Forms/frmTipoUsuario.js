@@ -2,22 +2,21 @@ import React from 'react';
 import { fromJS } from 'immutable';
 import { Field, reduxForm } from 'redux-form/immutable';
 import { connect } from 'react-redux';
-
 import { getFormResponse } from '../../containers/TipoUsuario/selectors';
 
 const validate = values => {
 	// IMPORTANT: values is an Immutable.Map here!
 	const errors = {};
 	if (!values.get('IdTipoUsuario')) {
-		errors.IdTipoUsuario = 'Required';
+		errors.IdTipoUsuario = 'Requerido';
 	}
 	if (!values.get('Nombre')) {
-		errors.Nombre = 'Required';
+		errors.Nombre = 'Requerido';
 	} else if (values.get('Nombre').length > 20) {
-		errors.IdTipoUsuario = 'Must be 20 characters or less';
+		errors.Nombre = 'Must be 20 characters or less';
 	}
 	if (!values.get('Descripcion')) {
-		errors.Descripcion = 'Required';
+		errors.Descripcion = 'Requerido';
 	}
 	return errors;
 };
@@ -75,7 +74,7 @@ class FrmTipoUsuario extends React.Component {
 		return (
 			<form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
 				<Field name="Nombre" component={this.renderInput} label="Nombre" />
-				<Field name="Descripcion" component={this.renderInput} label="Descripcion" />
+				<Field name="Descripcion" component={this.renderInput} label="Descripción" />
 				<div
 					style={{
 						bottom: '0',
