@@ -30,16 +30,6 @@ class Header extends React.Component {
 				<Menu.Menu position="right">
 					<Menu.Item>
 						<Link
-							to="/SignUp"
-							style={{
-								color: 'inherit',
-							}}
-						>
-							<Button style={styles.baseButton}>Registrate</Button>
-						</Link>
-					</Menu.Item>
-					<Menu.Item>
-						<Link
 							to="/Login"
 							style={{
 								color: 'inherit',
@@ -172,7 +162,7 @@ class Header extends React.Component {
 								color: 'inherit',
 							}}
 						>
-							<Button style={styles.baseButton} onClick={this.cleanToken()}>
+							<Button style={styles.baseButton} onClick={this.cleanToken}>
 								Salir
 							</Button>
 						</Link>
