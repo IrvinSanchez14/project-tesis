@@ -193,7 +193,7 @@ class Sucursales extends Component {
 					<Fab
 						style={{
 							right: '16px',
-							bottom: '619px',
+							bottom: '80%',
 							position: 'fixed',
 						}}
 						color="primary"

@@ -187,7 +187,7 @@ class Usuarios extends React.Component {
 					<Fab
 						style={{
 							right: '16px',
-							bottom: '16px',
+							bottom: '80%',
 							position: 'fixed',
 						}}
 						color="primary"
