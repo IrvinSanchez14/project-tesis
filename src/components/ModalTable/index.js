@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
+import { connect } from 'react-redux';
+
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -13,6 +15,11 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+
+import './estilo.css';
+
+import { actualizacionLista, listaLocal } from '../../containers/ListaExistente/actions';
+import { listaExistente } from '../../containers/ListaExistente/selectors';
 
 const StyledTableCell = withStyles(theme => ({
 	head: {
@@ -43,14 +50,13 @@ const useStyles2 = makeStyles(theme => ({
 	},
 }));
 
-const lista = [];
-
-export default function ModalTable(Props) {
+function ModalTable(Props) {
 	const { visibleModalTable, setVisibleModalTable } = Props;
 
 	const theme = useTheme();
 	const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 	const classes2 = useStyles2();
+	const [valor, setValor] = useState(0);
 
 	function handleClose() {
 		setVisibleModalTable(false);
@@ -61,61 +67,156 @@ export default function ModalTable(Props) {
 		: [];
 
 	function listaEnviada() {
+		const lista = [];
 		lista.push({
 			fecha: '2019-09-06',
 			lista: local,
 			sucursal: 'volcan',
 			encargado: '1',
 		});
-		console.log(lista);
+
+		const lista2 = {};
+		lista2.fecha = '2019-09-06';
+		lista2.lista = local;
+		lista2.sucursal = 'volcan';
+		lista2.encargado = 1;
+
+		console.log(lista2);
+	}
+
+	useEffect(() => {
+		Props.actualizacionLista();
+	}, []);
+
+	function hey(e) {
+		setValor(e.target.value);
+		return valor;
+	}
+
+	function EditArrayLista(arrayId) {
+		const newObjectList = Props.listaExistente.map((row, index) => {
+			if (index === arrayId) {
+				row = { ...row, Cantidad: valor, edit: 0 };
+			}
+			return row;
+		});
+		localStorage.setItem('listaExistente', JSON.stringify(newObjectList));
+		Props.actualizacionLista();
+	}
+
+	function activateEditInput(arrayId) {
+		// eslint-disable-next-line no-restricted-globals
+		if (confirm(`Esta seguro `)) {
+			const newObjectList = Props.listaExistente.map((row, index) => {
+				if (index === arrayId) {
+					row = { ...row, edit: 1 };
+				}
+				return row;
+			});
+			localStorage.setItem('listaExistente', JSON.stringify(newObjectList));
+			Props.actualizacionLista();
+		} else {
+			return;
+		}
 	}
 
 	return (
-		<Dialog
-			fullScreen={fullScreen}
-			open={visibleModalTable}
-			onClose={handleClose}
-			aria-labelledby="responsive-dialog-title"
-		>
-			<DialogTitle
-				id="responsive-dialog-title"
-				style={{
-					backgroundColor: '#39215E',
-					color: '#FFF',
-				}}
-			>
-				{'LISTA EXISTENTE'}
-			</DialogTitle>
-			<DialogContent>
-				<Paper className={classes2.root}>
-					<Table className={classes2.table}>
-						<TableHead>
-							<TableRow>
-								<StyledTableCell>Producto</StyledTableCell>
-								<StyledTableCell>Porcion</StyledTableCell>
-								<StyledTableCell>Cantidad</StyledTableCell>
-							</TableRow>
-						</TableHead>
-						<TableBody>
-							{local.map(row => (
-								<StyledTableRow key={row.nombre}>
-									<StyledTableCell>{row.nombre}</StyledTableCell>
-									<StyledTableCell>{row.porcion}</StyledTableCell>
-									<StyledTableCell>{row.cantidad}</StyledTableCell>
-								</StyledTableRow>
-							))}
-						</TableBody>
-					</Table>
-				</Paper>
-			</DialogContent>
-			<DialogActions>
-				<Button onClick={handleClose} color="primary">
-					Cancelar
-				</Button>
-				<Button onClick={listaEnviada} color="primary" autoFocus>
-					Enviar Lista
-				</Button>
-			</DialogActions>
-		</Dialog>
+		<div>
+			{Props.listaExistente ? (
+				<Dialog
+					fullScreen={fullScreen}
+					open={visibleModalTable}
+					onClose={handleClose}
+					aria-labelledby="responsive-dialog-title"
+				>
+					<DialogTitle
+						id="responsive-dialog-title"
+						style={{
+							backgroundColor: '#39215E',
+							color: '#FFF',
+						}}
+					>
+						{'LISTA EXISTENTE'}
+					</DialogTitle>
+					<DialogContent>
+						<Paper className={classes2.root}>
+							<Table className={classes2.table}>
+								<TableHead>
+									<TableRow>
+										<StyledTableCell>Producto</StyledTableCell>
+										<StyledTableCell>Porcion</StyledTableCell>
+										<StyledTableCell>Cantidad</StyledTableCell>
+										<StyledTableCell>Acciones</StyledTableCell>
+									</TableRow>
+								</TableHead>
+								<TableBody>
+									{Props.listaExistente.map((row, index) => (
+										<StyledTableRow key={index}>
+											<StyledTableCell>{row.IdProducto}</StyledTableCell>
+											<StyledTableCell>{row.IdPorcion}</StyledTableCell>
+											<StyledTableCell style={{ display: 'flex' }}>
+												{row.edit === 0 ? (
+													row.Cantidad
+												) : (
+													<Fragment>
+														<input
+															type="text"
+															defaultValue={row.cantidad}
+															style={{
+																width: '52px',
+																margin: '10px',
+																textAlign: 'center',
+															}}
+															onChange={e => hey(e)}
+														/>
+														<button
+															className="waves-effect waves-light btn"
+															onClick={() => EditArrayLista(index)}
+															style={{ backgroundColor: '#26a69a', color: '#FFF' }}
+														>
+															Guardar
+														</button>
+													</Fragment>
+												)}
+											</StyledTableCell>
+											<StyledTableCell>
+												<span className="spanAction" onClick={() => activateEditInput(index)}>
+													Editar
+												</span>{' '}
+												-<span className="spanAction">Eliminar</span>
+											</StyledTableCell>
+										</StyledTableRow>
+									))}
+								</TableBody>
+							</Table>
+						</Paper>
+					</DialogContent>
+					<DialogActions>
+						<Button onClick={handleClose} color="primary">
+							Cancelar
+						</Button>
+						<Button onClick={listaEnviada} color="primary" autoFocus>
+							Enviar Lista
+						</Button>
+					</DialogActions>
+				</Dialog>
+			) : null}
+		</div>
 	);
 }
+
+export function mapStateToProps(state, props) {
+	return {
+		listaExistente: listaExistente(state, props),
+	};
+}
+
+const actions = {
+	actualizacionLista,
+	listaLocal,
+};
+
+export default connect(
+	mapStateToProps,
+	actions
+)(ModalTable);

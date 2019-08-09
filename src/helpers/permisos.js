@@ -175,3 +175,19 @@ export const permisosVerUsuarios = respuesta => {
 
 	return respuesta;
 };
+
+export const permisosVerPorciones = respuesta => {
+	const userPermisos = JSON.parse(localStorage.getItem('userPermisos'));
+	if (userPermisos !== null) {
+		userPermisos.map(permiso => {
+			if (permiso.Nombre === VALIDATE.PERMISO_VER_COMPONENT_PORCIONES) {
+				respuesta = true;
+			}
+			return respuesta;
+		});
+	} else {
+		respuesta = false;
+	}
+
+	return respuesta;
+};

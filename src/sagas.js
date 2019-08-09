@@ -13,6 +13,9 @@ import PermisoSagas from './containers/Permisos/sagas';
 import EstadosSagas from './containers/Estados/sagas';
 import PermisosUsuariosSagas from './containers/PermisosUsuarios/sagas';
 import UsuariosSagas from './containers/Usuarios/sagas';
+import PorcionSagas from './containers/Porciones/sagas';
+import ListaProductoSagas from './containers/ListaProducto/sagas';
+import ListaExistenteSagas from './containers/ListaExistente/sagas';
 
 export default function* rootSaga() {
 	const allSagas = [
@@ -30,6 +33,9 @@ export default function* rootSaga() {
 		EstadosSagas,
 		...PermisosUsuariosSagas,
 		UsuariosSagas,
+		PorcionSagas,
+		ListaProductoSagas,
+		ListaExistenteSagas,
 	];
 	for (let i = 0; i < allSagas.length; i += 1) {
 		yield fork(allSagas[i]);

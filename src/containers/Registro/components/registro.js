@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { MDBBtn, MDBCard, MDBCardBody, MDBCardTitle, MDBInput, MDBCol, MDBNotification } from 'mdbreact';
-
-import Message from '../../../share/messages';
 import api from '../../../api';
 
 import './stylesForReg.css';
@@ -22,7 +20,6 @@ export class Register extends React.Component {
 			notification: false,
 		});
 		api.post('/user/recuperacion.php', { Email: this.state.Email }).then(respuesta => {
-			console.log(respuesta);
 			this.setState({
 				loading: false,
 				notification: true,
@@ -31,7 +28,6 @@ export class Register extends React.Component {
 	};
 
 	render() {
-		console.log(this.state);
 		return (
 			<div className="register-box">
 				<MDBCol>

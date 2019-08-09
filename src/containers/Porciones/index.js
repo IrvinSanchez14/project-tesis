@@ -7,39 +7,32 @@ import AddIcon from '@material-ui/icons/Add';
 
 import api from '../../api';
 
-import Print from '../../components/Print/';
 import TableData from '../../components/TableData';
 import SideBarMenu from '../../components/SideBar';
 import { sidebarStateFalse } from '../App/actions';
-import FrmProducto from '../../components/Forms/frmProducto';
+import FrmPorcion from '../../components/Forms/frmPorciones';
 import { ErrorTabla } from '../../components/Error';
 
-import { fetchProducto, idSelectedProducto, creacionRegistro, autorizacionFormFail } from './actions';
-import { dataProducto, getDataId, getDataBodyId, getFormResponse } from './selectors';
+import { fetchPorciones, idSelectedPorciones, creacionRegistro, autorizacionFormFail } from './actions';
+import { dataPorciones, getDataId, getDataBodyId, getFormResponse } from './selectors';
 
 import { sidebarState } from '../App/actions';
 import { stateSideBarMenu } from '../App/selectors';
-import { fetchTipoProducto } from '../TipoProducto/actions';
 import { fetchUnidadMedida } from '../UnidadMedida/actions';
-import { fetchProveedor } from '../Proveedor/actions';
 
-import { permisosVerProductos } from '../../helpers/permisos';
-
-class Productos extends React.Component {
+class Porciones extends React.Component {
 	componentDidMount() {
 		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 		if (userInfo === null) {
 			this.props.history.push('/');
 		}
-		this.props.fetchProducto();
-		this.props.fetchProveedor();
-		this.props.fetchTipoProducto();
+		this.props.fetchPorciones();
 		this.props.fetchUnidadMedida();
 	}
 
 	headTable = () => {
 		let headTable;
-		this.props.dataProducto.map(producto => {
+		this.props.dataPorciones.map(producto => {
 			headTable = Object.keys(producto);
 			return producto;
 		});
@@ -48,7 +41,7 @@ class Productos extends React.Component {
 
 	datosTabla = () => {
 		const dataTable = [];
-		this.props.dataProducto.map(producto => {
+		this.props.dataPorciones.map(producto => {
 			dataTable.push({
 				0: producto.IdProducto,
 				1: producto.Nombre,
@@ -61,12 +54,12 @@ class Productos extends React.Component {
 
 	getIDtable = id => {
 		this.props.sidebarState();
-		this.props.idSelectedProducto(id);
+		this.props.idSelectedPorciones(id);
 		this.props.autorizacionFormFail(false);
 	};
 
 	getDataTable = () => {
-		return this.props.fetchProducto();
+		return this.props.fetchPorciones();
 	};
 
 	crearRegistro = () => {
@@ -79,8 +72,8 @@ class Productos extends React.Component {
 		if (formValues.flag === 'create') {
 			// eslint-disable-next-line no-restricted-globals
 			if (confirm('Esta seguro de guardar la siguiente Empresa en la Base de Datos?')) {
-				api.post('/Producto/create.php', formValues).then(
-					data => this.props.fetchProducto(),
+				api.post('/Porcion/create.php', formValues).then(
+					data => this.props.fetchPorciones(),
 					this.props.autorizacionFormFail(true),
 					this.props.sidebarStateFalse()
 				);
@@ -90,8 +83,8 @@ class Productos extends React.Component {
 		} else {
 			// eslint-disable-next-line no-restricted-globals
 			if (confirm('Esta seguro de actualizar el siguiente dato de la tabla Empresa?')) {
-				api.put('/Producto/update.php', formValues).then(
-					data => this.props.fetchProducto(),
+				api.put('/Porcion/update.php', formValues).then(
+					data => this.props.fetchPorciones(),
 					this.props.autorizacionFormFail(true),
 					this.props.sidebarStateFalse()
 				);
@@ -111,7 +104,7 @@ class Productos extends React.Component {
 		if (confirm(`Esta seguro de cambiar el estado a ${messageState}`)) {
 			api.put('/Producto/updateState.php', updateState).then(data => {
 				if (data.data.message) {
-					this.props.fetchProducto();
+					this.props.fetchPorciones();
 					this.props.sidebarStateFalse();
 				}
 			});
@@ -120,21 +113,18 @@ class Productos extends React.Component {
 		}
 	};
 
-	frmTableProducto = () => {
+	frmTablePorcion = () => {
 		const frmProducto = [];
 		if (this.props.getDataBodyId === undefined) {
 			frmProducto.push(
-				<FrmProducto
-					key="IdProducto"
+				<FrmPorcion
+					key="IdPorcion"
 					onSubmit={this.onSubmit}
 					initialValues={_.pick(
 						this.props.getDataBodyId ? this.props.getDataBodyId : undefined,
-						'IdProducto',
-						'Nombre',
-						'Descripcion',
-						'tipoProducto',
-						'Siglas',
-						'Proveedor'
+						'IdPorcion',
+						'Cantidad',
+						'UnidadMedida'
 					)}
 					createData={true}
 					formResponse={this.props.getFormResponse}
@@ -142,17 +132,14 @@ class Productos extends React.Component {
 			);
 		} else {
 			frmProducto.push(
-				<FrmProducto
-					key="IdProducto"
+				<FrmPorcion
+					key="IdPorcion"
 					onSubmit={this.onSubmit}
 					initialValues={_.pick(
 						this.props.getDataBodyId ? this.props.getDataBodyId : undefined,
-						'IdProducto',
-						'Nombre',
-						'Descripcion',
-						'tipoProducto',
-						'Siglas',
-						'Proveedor'
+						'IdPorcion',
+						'Cantidad',
+						'UnidadMedida'
 					)}
 					createData={false}
 					formResponse={this.props.getFormResponse}
@@ -164,11 +151,11 @@ class Productos extends React.Component {
 
 	render() {
 		const arr = [];
-		if (this.props.dataProducto && permisosVerProductos()) {
+		if (this.props.dataPorciones) {
 			arr.push(
 				<TableData
 					header={this.headTable()}
-					dataTable={this.props.dataProducto}
+					dataTable={this.props.dataPorciones}
 					ejemplo={this.datosTabla()}
 					getIDtable={this.getIDtable}
 					key="IdProducto"
@@ -183,7 +170,7 @@ class Productos extends React.Component {
 							fontWeight: 'bold',
 						}}
 					>
-						Productos
+						Porciones
 					</h1>
 
 					<SideBarMenu
@@ -192,13 +179,13 @@ class Productos extends React.Component {
 						headSide={this.props.getDataId ? this.props.getDataId : undefined}
 						bodySide={this.props.getDataBodyId ? this.props.getDataBodyId : undefined}
 						saveButton={this.getDataTable}
-						frmTable={this.frmTableProducto()}
+						frmTable={this.frmTablePorcion()}
 						onClick={this.onChangeStateButton}
 					/>
 					<Fab
 						style={{
 							right: '16px',
-							bottom: '80%',
+							bottom: '82%',
 							position: 'fixed',
 						}}
 						color="primary"
@@ -207,7 +194,6 @@ class Productos extends React.Component {
 					>
 						<AddIcon />
 					</Fab>
-					<Print />
 				</div>
 			);
 		} else {
@@ -218,7 +204,7 @@ class Productos extends React.Component {
 
 export function mapStateToProps(state, props) {
 	return {
-		dataProducto: dataProducto(state, props),
+		dataPorciones: dataPorciones(state, props),
 		stateSideBarMenu: stateSideBarMenu(state, props),
 		getDataId: getDataId(state, props),
 		getDataBodyId: getDataBodyId(state, props),
@@ -227,22 +213,20 @@ export function mapStateToProps(state, props) {
 }
 
 export const actions = {
-	fetchProducto,
+	fetchPorciones,
 	sidebarState,
-	idSelectedProducto,
+	idSelectedPorciones,
 	sidebarStateFalse,
 	creacionRegistro,
 	autorizacionFormFail,
-	fetchTipoProducto,
-	fetchProveedor,
 	fetchUnidadMedida,
 };
 
-Productos.propTypes = {
-	fetchProducto: PropTypes.func,
-	dataProducto: PropTypes.array,
+Porciones.propTypes = {
+	fetchPorciones: PropTypes.func,
+	dataPorciones: PropTypes.array,
 	sidebarState: PropTypes.func,
-	idSelectedProducto: PropTypes.func,
+	idSelectedPorciones: PropTypes.func,
 	stateSideBarMenu: PropTypes.bool,
 	getDataId: PropTypes.array,
 	getDataBodyId: PropTypes.object,
@@ -253,4 +237,4 @@ Productos.propTypes = {
 export default connect(
 	mapStateToProps,
 	actions
-)(Productos);
+)(Porciones);

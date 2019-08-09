@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import Card from '@material-ui/core/Card';
@@ -9,6 +10,12 @@ import ModalTable from '../../components/ModalTable';
 import Typography from '@material-ui/core/Typography';
 import Print from '../../components/Print/';
 
+import { fetchListadoProductos } from '../ListaProducto/actions';
+import { fetchProducto } from '../Productos/actions';
+import { datosProductos, listaPorcionProducto } from './selectors';
+import { fetchPorciones } from '../Porciones/actions';
+import { actualizacionLista } from './actions';
+
 const useStyles = makeStyles({
 	card: {
 		maxWidth: 345,
@@ -18,52 +25,34 @@ const useStyles = makeStyles({
 	},
 });
 
-const mockData = [
-	{
-		Nombre: 'Tomate',
-		Porcion: [
-			{
-				Nombre: '2',
-				Alias: 'Onz',
-			},
-			{
-				Nombre: '3',
-				Alias: 'Onz',
-			},
-		],
-	},
-	{
-		Nombre: 'Queso Mozarella',
-		Porcion: [
-			{
-				Nombre: '4',
-				Alias: 'Onz',
-			},
-			{
-				Nombre: '2',
-				Alias: 'Onz',
-			},
-		],
-	},
-];
-
-export default function ListaExistente() {
+function ListaExistente(Props) {
 	const [visibleModal, setVisibleModal] = useState(false);
 	const [visibleModalTable, setVisibleModalTable] = useState(false);
 	const [arrayData, setArrayData] = useState([]);
-	const [nombreProducto, setNombreProducto] = useState('');
+	const [nameProducto, setNameProducto] = useState({});
 	const classes = useStyles();
 
-	function verificandoProducto(id) {
-		mockData.map(data => {
-			if (data.Nombre === id) {
+	function verificandoProducto(datos) {
+		let porciones = [];
+		Props.listaPorcionProducto.map(data => {
+			if (data.NombreProducto === datos.Nombre) {
 				setVisibleModal(true);
-				setArrayData(data.Porcion);
-				setNombreProducto(data.Nombre);
+				porciones.push({
+					Nombre: data.Porcion,
+					IdPorcion: data.IdPorcion,
+				});
+				setNameProducto(datos);
 			}
 			return arrayData;
 		});
+		setArrayData(porciones);
 	}
+
+	useEffect(() => {
+		Props.fetchProducto();
+		Props.fetchListadoProductos();
+		Props.fetchPorciones();
+	}, []);
 
 	return (
 		<div
@@ -73,29 +62,31 @@ export default function ListaExistente() {
 				justifyContent: 'flex-start',
 			}}
 		>
-			{mockData.map(data => {
-				return (
-					<Card key={data.Nombre} className={classes.card}>
-						<CardActionArea
-							style={{
-								textAlign: 'center',
-							}}
-							onClick={() => verificandoProducto(data.Nombre)}
-						>
-							<CardContent>
-								<Typography gutterBottom variant="h5" component="h2">
-									{data.Nombre}
-								</Typography>
-							</CardContent>
-						</CardActionArea>
-					</Card>
-				);
-			})}
+			{Props.datosProductos
+				? Props.datosProductos.map(data => {
+						return (
+							<Card key={data.IdProducto} className={classes.card}>
+								<CardActionArea
+									style={{
+										textAlign: 'center',
+									}}
+									onClick={() => verificandoProducto(data)}
+								>
+									<CardContent>
+										<Typography gutterBottom variant="h5" component="h2">
+											{data.Nombre}
+										</Typography>
+									</CardContent>
+								</CardActionArea>
+							</Card>
+						);
+				  })
+				: null}
 			<Modal
 				visibleModal={visibleModal}
 				setVisibleModal={setVisibleModal}
 				dataContent={arrayData}
-				title={nombreProducto}
+				title={nameProducto}
 			/>
 			<ModalTable visibleModalTable={visibleModalTable} setVisibleModalTable={setVisibleModalTable} />
 			<Fab
@@ -106,7 +97,10 @@ export default function ListaExistente() {
 				}}
 				color="primary"
 				aria-label="Add"
-				onClick={() => setVisibleModalTable(true)}
+				onClick={() => {
+					setVisibleModalTable(true);
+					Props.actualizacionLista();
+				}}
 				className="video-link"
 			>
 				{'Lista'}
@@ -115,3 +109,22 @@ export default function ListaExistente() {
 		</div>
 	);
 }
+
+export function mapStateToProps(state, props) {
+	return {
+		datosProductos: datosProductos(state, props),
+		listaPorcionProducto: listaPorcionProducto(state, props),
+	};
+}
+
+export const actions = {
+	fetchProducto,
+	fetchListadoProductos,
+	fetchPorciones,
+	actualizacionLista,
+};
+
+export default connect(
+	mapStateToProps,
+	actions
+)(ListaExistente);
