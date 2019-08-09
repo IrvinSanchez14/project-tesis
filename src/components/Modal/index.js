@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -26,10 +28,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const list = [];
-
-export default function Modal(Props) {
+function Modal(Props) {
 	const { visibleModal, setVisibleModal, dataContent, title } = Props;
-
 	const theme = useTheme();
 	const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 	const classes = useStyles();
@@ -43,9 +43,10 @@ export default function Modal(Props) {
 		if (local) {
 			local.map(data => {
 				list.push({
-					nombre: data.nombre,
-					porcion: data.porcion,
-					cantidad: data.cantidad,
+					IdProducto: data.IdProducto,
+					IdPorcion: data.IdPorcion,
+					Cantidad: data.Cantidad,
+					edit: 0,
 				});
 				return data;
 			});
@@ -68,15 +69,16 @@ export default function Modal(Props) {
 	}
 
 	function createList() {
+		console.log(lista);
 		list.push({
-			nombre: title,
-			porcion: porcion,
-			cantidad: cantidadPorcion,
+			IdProducto: title.IdProducto,
+			IdPorcion: porcion,
+			Cantidad: cantidadPorcion,
+			edit: 0,
 		});
 		setLista(list);
 		setVisibleModal(false);
 		localStorage.setItem('listaExistente', JSON.stringify(list));
-		console.log(lista)
 	}
 
 	return (
@@ -93,7 +95,7 @@ export default function Modal(Props) {
 					color: '#FFF',
 				}}
 			>
-				{title}
+				{title.Nombre}
 			</DialogTitle>
 			<DialogContent>
 				<FormLabel component="legend">Elige</FormLabel>
@@ -107,10 +109,10 @@ export default function Modal(Props) {
 					{dataContent.map(array => {
 						return (
 							<FormControlLabel
-								key={array.Nombre}
-								value={array.Nombre}
+								key={array.IdPorcion}
+								value={array.IdPorcion}
 								control={<Radio />}
-								label={`${array.Nombre} ${array.Alias}`}
+								label={array.Nombre}
 								onChange={event => valueChek(event)}
 							/>
 						);
@@ -139,3 +141,5 @@ export default function Modal(Props) {
 		</Dialog>
 	);
 }
+
+export default Modal;

@@ -3,26 +3,9 @@ import { fromJS } from 'immutable';
 import { Field, reduxForm } from 'redux-form/immutable';
 import { connect } from 'react-redux';
 
-import { getFormResponse } from '../../containers/TipoUsuario/selectors';
+import { getFormResponse, unidadesMedidas } from '../../containers/Porciones/selectors';
 
-const validate = values => {
-	// IMPORTANT: values is an Immutable.Map here!
-	const errors = {};
-	if (!values.get('IdTipoUsuario')) {
-		errors.IdTipoUsuario = 'Required';
-	}
-	if (!values.get('Nombre')) {
-		errors.Nombre = 'Required';
-	} else if (values.get('Nombre').length > 20) {
-		errors.IdTipoUsuario = 'Must be 20 characters or less';
-	}
-	if (!values.get('Descripcion')) {
-		errors.Descripcion = 'Required';
-	}
-	return errors;
-};
-
-class FrmUsuario extends React.Component {
+class FrmPorcion extends React.Component {
 	renderError({ error, touched }) {
 		if (touched && error) {
 			return (
@@ -33,40 +16,29 @@ class FrmUsuario extends React.Component {
 		}
 	}
 
-	renderInput = ({ input, label, meta: { touched, error, warning } }) => {
-		const className = `field ${error && touched ? 'error' : ''}`;
+	renderInput = ({ input, label, meta }) => {
+		const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
 		return (
 			<div className={className}>
 				<label>{label}</label>
 				<input {...input} autoComplete="off" />
-				{touched && (error && <span style={{ color: 'red' }}>{error}</span>)}
+				{this.renderError(meta)}
 			</div>
 		);
 	};
 
-	renderPassw = ({ input, label, meta: { touched, error, warning } }) => {
-		const className = `field ${error && touched ? 'error' : ''}`;
-		return (
-			<div className={className}>
-				<label>{label}</label>
-				<input {...input} autoComplete="off" type="password" />
-				{touched && (error && <span style={{ color: 'red' }}>{error}</span>)}
-			</div>
-		);
-	};
-
-	renderSelect = ({ input, label, meta }) => {
+	renderSelectUnidad = ({ input, label, meta }) => {
 		const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
 		return (
 			<div className={className}>
 				<label>{label}</label>
 				<select {...input}>
 					{this.props.createData ? <option /> : null}
-					{this.props.listaTipos
-						? this.props.listaTipos.map(permiso => {
+					{this.props.unidadesMedidas
+						? this.props.unidadesMedidas.map(UM => {
 								return (
-									<option key={permiso.IdTipoUsuario} value={permiso.IdTipoUsuario}>
-										{permiso.Nombre}
+									<option key={UM.IdUnidadMedida} value={UM.IdUnidadMedida}>
+										{UM.Nombre}
 									</option>
 								);
 						  })
@@ -93,7 +65,6 @@ class FrmUsuario extends React.Component {
 		}
 
 		const newData = formValues.mergeDeep(data);
-
 		this.props.onSubmit(newData.toJS());
 	};
 
@@ -108,11 +79,9 @@ class FrmUsuario extends React.Component {
 		this.validateClean();
 		return (
 			<form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
-				<Field name="Nombre" component={this.renderInput} label="Nombre" />
-				<Field name="Email" component={this.renderInput} label="Email" />
-				<Field name="Alias" component={this.renderInput} label="Alias" />
-				<Field name="IdTipoUsuario" component={this.renderSelect} label="Rol" />
-				{this.props.createData ? <Field name="Passwd" component={this.renderPassw} label="Contraseña" /> : null}
+				<Field name="Cantidad" component={this.renderInput} label="Cantidad" />
+				<Field name="UnidadMedida" component={this.renderSelectUnidad} label="Unidad de Medida" />
+
 				<div
 					style={{
 						bottom: '0',
@@ -130,13 +99,13 @@ class FrmUsuario extends React.Component {
 export function mapStateToProps(state, props) {
 	return {
 		getFormResponse: getFormResponse(state, props),
+		unidadesMedidas: unidadesMedidas(state, props),
 	};
 }
 
 export default connect(mapStateToProps)(
 	reduxForm({
-		form: 'formUsuarios',
-		validate,
+		form: 'formPorciones',
 		enableReinitialize: true,
-	})(FrmUsuario)
+	})(FrmPorcion)
 );

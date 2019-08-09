@@ -32,8 +32,6 @@ export const listaTipos = createSelector(
 				// a must be equal to b
 				return 0;
 			});
-			console.log('usuarioRegistro', Datos);
-			console.log('id', id);
 		} else {
 			Datos = tipo;
 		}

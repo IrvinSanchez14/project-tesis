@@ -14,7 +14,6 @@ const styles = {
 
 class Header extends React.Component {
 	cleanToken = () => {
-		console.log('clean');
 		store.dispatch(logoutSuccessful('Sistema Cerrado'));
 		localStorage.clear();
 		history.push('/login');
@@ -150,9 +149,29 @@ class Header extends React.Component {
 							>
 								<Dropdown.Item>Usuarios</Dropdown.Item>
 							</Link>
+							<Link
+								to="/Porciones"
+								style={{
+									color: 'inherit',
+								}}
+							>
+								<Dropdown.Item>Porciones</Dropdown.Item>
+							</Link>
 						</Dropdown.Menu>
 					</Dropdown>
 				) : null}
+				<Dropdown item text="Listas" style={{ color: '#fff' }}>
+					<Dropdown.Menu>
+						<Link
+							to="/ListaProducto"
+							style={{
+								color: 'inherit',
+							}}
+						>
+							<Dropdown.Item>Listado de productos y sus porciones</Dropdown.Item>
+						</Link>
+					</Dropdown.Menu>
+				</Dropdown>
 
 				<Menu.Menu position="right">
 					<Menu.Item>
