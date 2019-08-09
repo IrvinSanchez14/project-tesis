@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
+import Print from '../../components/Print/';
 import api from '../../api';
 import SideBarMenu from '../../components/SideBar';
 import TableData from '../../components/TableData';
@@ -187,7 +188,7 @@ class UnidadMedida extends Component {
 					<Fab
 						style={{
 							right: '16px',
-							bottom: '619px',
+							bottom: '80%',
 							position: 'fixed',
 						}}
 						color="primary"
@@ -196,6 +197,7 @@ class UnidadMedida extends Component {
 					>
 						<AddIcon />
 					</Fab>
+					<Print />
 				</div>
 			);
 		} else {

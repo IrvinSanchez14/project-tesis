@@ -46,13 +46,16 @@ class FrmUnidadMedida extends React.Component {
 
 	onSubmit = formValues => {
 		let data;
+		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 		if (this.props.createData) {
 			data = fromJS({
 				flag: 'create',
+				UsuarioCreador: userInfo.IdUsuario,
 			});
 		} else {
 			data = fromJS({
 				flag: 'update',
+				UsuarioActualiza: userInfo.IdUsuario,
 			});
 		}
 

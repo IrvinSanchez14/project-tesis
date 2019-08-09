@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Formulario Compras</title>
+</head>
+<body>
+       <script type="text/javascript" src="js/materialize.min.js"></script>  
+    <form class="MuiFormControl">
+        Fecha   <input id="date" type="date">
+        <br><br>
+        Tipo Documento<select name="tipo_doc">
+                <option value="CCF">CCF</option>
+                <option value="Factura">Factura</option>
+                <option value="Nota de credito">Nota de credito</option>
+              </select>
+              <br><br>
+        N° Doc  <input class="mdc-text-field__input" name="doc" type="text">
+              <br><br>
+        Comp de retencion  <input name="comp_retencion" type="text">
+              <br><br>
+        Forma de pago <select name="Forma_pago">
+                <option value="Contado">Contado</option>
+                <option value="Credito">Credito</option>
+                <option value="Cupones">Cupones</option>
+              </select>
+              <br><br>
+        Si es quedan <input name="N_quedan"> 
+        Fecha Vencimiento   <input id="date" type="date">
+        <br><br>
+        Proveedor <input name="Proveedor"> "puede ser auto fill"     <input type="submit" value="Crear">
+        <br><br>
+
+        <table>
+                <Thead>
+                        <tr>
+                                <th>Producto</th>
+                                <th>Descripcion</th>
+                                <th>Cantidad</th>
+                                <th>Costo</th>
+                                <th>Total</th>
+                              </tr>
+                </Thead>
+                <Thead>
+                        <tr>
+                                <th><input name="N_quedan"> </th>
+                                <th><input name="N_quedan"> </th>
+                                <th><input name="N_quedan"> </th>
+                                <th><input name="N_quedan"> </th>
+                                <th><input name="N_quedan"> </th>
+                              </tr>
+                </Thead>
+            <tfoot>
+                    <tr>
+                            <th>Cantidad</th>
+                            <th></th>
+                            <th>22</th>
+                            <th>Total</th>
+                            <th>7.00</th>
+                          </tr>
+            </tfoot>
+            <tbody>
+                    <tr>
+                            <td>1</td>
+                            <td>tomate</td>
+                            <td>20</td>
+                            <td>0.10</td>
+                            <td>2.00</td>
+                          </tr>
+                          <tr>
+                                <td>20</td>
+                                <td>Jalea</td>
+                                <td>2</td>
+                                <td>2.50</td>
+                                <td>5.00</td>
+                              </tr>
+  </tbody>
+        </table>
+              <br><br>
+        <input type="submit">
+      </form>
+</body>
+</html>

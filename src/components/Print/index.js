@@ -55,7 +55,7 @@ export default function CustomizedMenus() {
 			<Fab
 				style={{
 					right: '100px',
-					bottom: '619px',
+					bottom: '80%',
 					position: 'fixed',
 				}}
 				color="secondary"
