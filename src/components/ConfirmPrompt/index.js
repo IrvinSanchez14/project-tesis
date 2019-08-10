@@ -12,10 +12,10 @@ export function confirmPrompt() {
 		customUI: ({ onClose }) => {
 			return (
 				<div className="custom-ui">
-					<h1>Are you sure?</h1>
-					<p>You want to delete this file?</p>
+					<h1>Estas seguo?</h1>
+					<p>Quieres eliminarlo?</p>
 					<button onClick={onClose}>No</button>
-					<button onClick={() => yes()}>Yes, Delete it!</button>
+					<button onClick={() => yes()}>Si, Eliminar!</button>
 				</div>
 			);
 		},
@@ -28,8 +28,8 @@ class ModalPrompt extends React.Component {
 			customUI: ({ onClose }) => {
 				return (
 					<div className="custom-ui">
-						<h1>Are you sure?</h1>
-						<p>You want to delete this file?</p>
+						<h1>Estas seguro?</h1>
+						<p>Quieres eliminarlo</p>
 						<button onClick={onClose}>No</button>
 						<button
 							onClick={() => {
@@ -37,7 +37,7 @@ class ModalPrompt extends React.Component {
 								onClose();
 							}}
 						>
-							Yes, Delete it!
+							Si, Eliminar!
 						</button>
 					</div>
 				);
@@ -48,7 +48,7 @@ class ModalPrompt extends React.Component {
 	render() {
 		return (
 			<div className="container">
-				<button onClick={this.submit}>Confirm dialog</button>
+				<button onClick={this.submit}>Aceptar</button>
 			</div>
 		);
 	}

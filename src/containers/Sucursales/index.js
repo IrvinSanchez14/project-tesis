@@ -75,7 +75,7 @@ class Sucursales extends Component {
 	onSubmit = formValues => {
 		if (formValues.flag === 'create') {
 			// eslint-disable-next-line no-restricted-globals
-			if (confirm('Esta seguro de guardar la siguiente Empresa en la Base de Datos?')) {
+			if (confirm('Esta seguro de guardar la siguiente sucursal en la Base de Datos?')) {
 				api.post('/Sucursales/create.php', formValues).then(
 					data => this.props.fetchSucursal(),
 					this.props.autorizacionFormFail(true),
