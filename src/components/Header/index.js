@@ -40,6 +40,8 @@ class Header extends React.Component {
 				</Menu.Menu>
 			</Menu>
 		);
+		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+		console.log('el raus', userInfo ? userInfo.Nombre : null);
 
 		const menu = (
 			<Menu
@@ -174,6 +176,12 @@ class Header extends React.Component {
 				</Dropdown>
 
 				<Menu.Menu position="right">
+					<Menu.Item>
+						<label style={{ color: 'white', marginLeft: '-39px', position: 'absolute' }}>
+							{userInfo ? userInfo.Nombre : null}
+						</label>
+					</Menu.Item>
+
 					<Menu.Item>
 						<Link
 							to="/Login"

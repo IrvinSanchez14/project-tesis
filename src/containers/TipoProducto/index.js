@@ -59,7 +59,7 @@ class TipoProducto extends React.Component {
 	onSubmit = formValues => {
 		if (formValues.flag === 'create') {
 			// eslint-disable-next-line no-restricted-globals
-			if (confirm('Esta seguro de guardar la siguiente Empresa en la Base de Datos?')) {
+			if (confirm('Esta seguro de guardar el siguiente tipo producto en la Base de Datos?')) {
 				api.post('/TipoProducto/create.php', formValues).then(
 					data => this.props.fetchTipoProducto(),
 					this.props.autorizacionFormFail(true),

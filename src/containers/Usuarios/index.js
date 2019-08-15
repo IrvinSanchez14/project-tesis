@@ -66,7 +66,7 @@ class Usuarios extends React.Component {
 	onSubmit = formValues => {
 		if (formValues.flag === 'create') {
 			// eslint-disable-next-line no-restricted-globals
-			if (confirm('Esta seguro de guardar el siguiente Tipo de Usuario en la Base de Datos?')) {
+			if (confirm('Esta seguro de guardar el siguiente Usuario en la Base de Datos?')) {
 				api.post('/user/create_user.php', formValues).then(
 					data => this.props.fetchUsuarios(),
 					this.props.autorizacionFormFail(true),

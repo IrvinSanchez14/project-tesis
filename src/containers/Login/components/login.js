@@ -28,7 +28,7 @@ export class Login extends React.Component {
 									component="input"
 								/>
 								<div className="forgotPassword">
-									<Link to="/forgotpassword"> Olvido Contrasña?</Link>
+									<Link to="/forgotpassword"> Olvido Contraseña?</Link>
 								</div>
 								<Field
 									name="password"
@@ -66,7 +66,7 @@ const mapDispatchToProps = dispatch => ({
 	onSubmit: value => {
 		const valor = value.toJS();
 		if (valor.email && valor.password) dispatch(loginRequesting(valor));
-		else alert('Please Fill All the Fields');
+		else alert('Por favor llena todos los espacios requeridos');
 	},
 });
 

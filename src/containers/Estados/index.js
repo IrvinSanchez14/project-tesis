@@ -58,7 +58,7 @@ class Estados extends React.Component {
 	onSubmit = formValues => {
 		if (formValues.flag === 'create') {
 			// eslint-disable-next-line no-restricted-globals
-			if (confirm('Esta seguro de guardar la siguiente Empresa en la Base de Datos?')) {
+			if (confirm('Esta seguro de guardar el siguiente estado en la Base de Datos?')) {
 				api.post('/Estado/create.php', formValues).then(
 					data => this.props.fetchEstados(),
 					this.props.autorizacionFormFail(true),
