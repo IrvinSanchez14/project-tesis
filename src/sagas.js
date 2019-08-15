@@ -34,7 +34,7 @@ export default function* rootSaga() {
 		...PermisosUsuariosSagas,
 		UsuariosSagas,
 		PorcionSagas,
-		ListaProductoSagas,
+		...ListaProductoSagas,
 		ListaExistenteSagas,
 	];
 	for (let i = 0; i < allSagas.length; i += 1) {

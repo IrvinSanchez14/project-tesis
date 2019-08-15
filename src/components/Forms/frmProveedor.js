@@ -2,10 +2,8 @@ import React from 'react';
 import { fromJS } from 'immutable';
 import { Field, reduxForm } from 'redux-form/immutable';
 import { connect } from 'react-redux';
-import TextField from 'material-ui/TextField';
 import { getFormResponse } from '../../containers/Proveedor/selectors';
 
-import NumberFormat from 'react-number-format';
 const validate = values => {
 	// IMPORTANT: values is an Immutable.Map here!
 	const errors = {};

@@ -7,7 +7,7 @@ import Welcome from '../Welcome';
 import TipoUsuario from '../TipoUsuario';
 import Login from '../Login';
 import Register from '../Registro';
-import { isLoggedIn } from '../../helpers/check-auth';
+import { isLoggedIn, isRenuevaLoggin } from '../../helpers/check-auth';
 import Empresa from '../Empresa';
 import ListaExistente from '../ListaExistente';
 import ReduxEjemplo from '../EjemploRedux';
@@ -22,6 +22,7 @@ import PermisosUsuarios from '../PermisosUsuarios';
 import Usuarios from '../Usuarios';
 import Porciones from '../Porciones';
 import ListaProducto from '../ListaProducto';
+import CambioPass from '../CambioPass';
 
 const App = () => {
 	const local = JSON.parse(localStorage.getItem('userInfo'));
@@ -50,8 +51,13 @@ const App = () => {
 				<Route path="/Usuarios" exact component={Usuarios} />
 				<Route path="/Porciones" exact component={Porciones} />
 				<Route path="/ListaProducto" exact component={ListaProducto} />
+				<Route
+					path="/CambioPassword"
+					exact
+					render={() => (!isRenuevaLoggin() ? <Redirect to="/" /> : <CambioPass />)}
+				/>
 				<Route exact path="/login" render={() => (isLoggedIn() ? <Redirect to="/" /> : <Login />)} />
-				<Route exact path="/SignUp" render={() => (isLoggedIn() ? <Redirect to="/" /> : <Register />)} />
+				<Route exact path="/recuperacion" render={() => (isLoggedIn() ? <Redirect to="/" /> : <Register />)} />
 			</Switch>
 		</div>
 	);

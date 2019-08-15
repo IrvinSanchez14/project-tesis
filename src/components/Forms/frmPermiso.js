@@ -10,8 +10,8 @@ const validate = values => {
 	const errors = {};
 	if (!values.get('Nombre')) {
 		errors.Nombre = 'Requerido';
-	} else if (values.get('Nombre').length > 20) {
-		errors.Nombre = 'Must be 20 characters or less';
+	} else if (values.get('Nombre').length > 100) {
+		errors.Nombre = 'Must be 100 characters or less';
 	}
 	if (!values.get('Descripcion')) {
 		errors.Descripcion = 'Requerido';

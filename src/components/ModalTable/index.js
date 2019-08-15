@@ -15,6 +15,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import api from '../../api';
 
 import './estilo.css';
 
@@ -66,22 +67,19 @@ function ModalTable(Props) {
 		? JSON.parse(localStorage.getItem('listaExistente'))
 		: [];
 
-	function listaEnviada() {
-		const lista = [];
-		lista.push({
-			fecha: '2019-09-06',
-			lista: local,
-			sucursal: 'volcan',
-			encargado: '1',
-		});
+	const id = JSON.parse(localStorage.getItem('userInfo'));
 
+	function listaEnviada() {
 		const lista2 = {};
-		lista2.fecha = '2019-09-06';
 		lista2.lista = local;
-		lista2.sucursal = 'volcan';
-		lista2.encargado = 1;
+		lista2.Sucursal = 1;
+		lista2.UsuarioCreador = id.IdUsuario;
 
 		console.log(lista2);
+		api.post('/ListaExistente/create.php', lista2).then(response => {
+			localStorage.removeItem('listaExistente');
+			setVisibleModalTable(false);
+		});
 	}
 
 	useEffect(() => {
@@ -119,7 +117,6 @@ function ModalTable(Props) {
 			return;
 		}
 	}
-
 	return (
 		<div>
 			{Props.listaExistente ? (
@@ -152,8 +149,8 @@ function ModalTable(Props) {
 								<TableBody>
 									{Props.listaExistente.map((row, index) => (
 										<StyledTableRow key={index}>
-											<StyledTableCell>{row.IdProducto}</StyledTableCell>
-											<StyledTableCell>{row.IdPorcion}</StyledTableCell>
+											<StyledTableCell>{row.NombreProducto}</StyledTableCell>
+											<StyledTableCell>{row.NombrePorcion}</StyledTableCell>
 											<StyledTableCell style={{ display: 'flex' }}>
 												{row.edit === 0 ? (
 													row.Cantidad

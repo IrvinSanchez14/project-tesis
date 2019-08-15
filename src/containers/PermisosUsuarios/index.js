@@ -161,7 +161,7 @@ class PermisosUsuarios extends React.Component {
 							fontWeight: 'bold',
 						}}
 					>
-						Tipos de Usuarios
+						Permisos Usuarios
 					</h1>
 
 					<SideBarMenu

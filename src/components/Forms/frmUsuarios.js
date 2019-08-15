@@ -23,6 +23,7 @@ const validate = values => {
 };
 
 class FrmUsuario extends React.Component {
+	state = { sucursal: 0 };
 	renderError({ error, touched }) {
 		if (touched && error) {
 			return (
@@ -40,6 +41,28 @@ class FrmUsuario extends React.Component {
 				<label>{label}</label>
 				<input {...input} autoComplete="off" />
 				{touched && (error && <span style={{ color: 'red' }}>{error}</span>)}
+			</div>
+		);
+	};
+
+	renderSucursal = ({ input, label, meta }) => {
+		const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
+		return (
+			<div className={className}>
+				<label>{label}</label>
+				<select {...input}>
+					{this.props.createData ? <option /> : null}
+					{this.props.listaTipos
+						? this.props.listaTipos.map(permiso => {
+								return (
+									<option key={permiso.IdTipoUsuario} value={permiso.IdTipoUsuario}>
+										{permiso.Nombre}
+									</option>
+								);
+						  })
+						: null}
+				</select>
+				{this.renderError(meta)}
 			</div>
 		);
 	};
@@ -105,6 +128,7 @@ class FrmUsuario extends React.Component {
 	};
 
 	render() {
+		console.log('this.state', this.state);
 		this.validateClean();
 		return (
 			<form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
@@ -113,6 +137,9 @@ class FrmUsuario extends React.Component {
 				<Field name="Alias" component={this.renderInput} label="Alias" />
 				<Field name="IdTipoUsuario" component={this.renderSelect} label="Rol" />
 				{this.props.createData ? <Field name="Passwd" component={this.renderPassw} label="Contraseña" /> : null}
+				{this.state.sucursal === 1 ? (
+					<Field name="IdTipoUsuario" component={this.renderSelect} label="Rol" />
+				) : null}
 				<div
 					style={{
 						bottom: '0',

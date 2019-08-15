@@ -172,6 +172,14 @@ class Header extends React.Component {
 						>
 							<Dropdown.Item>Listado de productos y sus porciones</Dropdown.Item>
 						</Link>
+						<Link
+							to="/ListaExistente"
+							style={{
+								color: 'inherit',
+							}}
+						>
+							<Dropdown.Item>Lista existente sucursal</Dropdown.Item>
+						</Link>
 					</Dropdown.Menu>
 				</Dropdown>
 

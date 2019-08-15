@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 
 export const dataListadoProducto = state => state.getIn(['listadoProducto', 'data']);
+export const dataLecturaProducto = state => state.getIn(['listadoProducto', 'lecturaP']);
 
 export const getListadoProducto = state => state.getIn(['listadoProducto', 'idSelected']);
 
@@ -39,41 +40,9 @@ export const productoLista = createSelector(
 		return selectTipo;
 	}
 );
-
-export const listaPorcion = createSelector(
-	porciones,
-	getListadoProducto,
-	dataListadoProducto,
-	(porcion, id, listaP) => {
-		let selectTipo;
-		if (id) {
-			let PR = [];
-			listaP.map(p => {
-				if (p.IdListaPP === id) {
-					PR.push(p.Porcion);
-				}
-				return PR;
-			});
-			selectTipo = porcion.sort(function(a, b) {
-				const identificador = PR[0].split(' ', 1);
-				if (identificador[0] === b.Cantidad) {
-					return 1;
-				}
-				if (a.Cantidad === identificador[0]) {
-					return -1;
-				}
-				// a must be equal to b
-				return 0;
-			});
-		} else {
-			selectTipo = porcion;
-		}
-		return selectTipo;
-	}
-);
-
+ 
 export const getDataId = createSelector(
-	dataListadoProducto,
+	dataLecturaProducto,
 	getListadoProducto,
 	(dataPro, idListaPP) => {
 		let dataId;
@@ -84,11 +53,44 @@ export const getDataId = createSelector(
 					dataId.push({
 						id: data.IdListaPP,
 						estado: data.estadoTexto,
+						IdProducto: data.IdProducto,
+						NombreProducto: data.NombreProducto,
 					});
 				}
 			});
 		}
 		return dataId;
+	}
+);
+
+export const listaPorcion = createSelector(
+	porciones,
+	dataListadoProducto,
+	getDataId,
+	(porcion, lista, id) => {
+		let selectTipo;
+		if (id) {
+			const nobreProductoLista = id.map(GB => GB.NombreProducto);
+			const l = lista.filter(PNA => nobreProductoLista.includes(PNA.NombreProducto));
+			const f = l.map(a => a.IdPorcion);
+			selectTipo = porcion.filter(PP => !f.includes(PP.IdPorcion));
+		} else {
+			selectTipo = porcion;
+		}
+		return selectTipo;
+	}
+);
+
+export const listaPProducto = createSelector(
+	getDataId,
+	dataListadoProducto,
+	(bodyid, lista) => {
+		let productoPorcion;
+		if (bodyid) {
+			const nobreProductoLista = bodyid.map(GB => GB.NombreProducto);
+			productoPorcion = lista.filter(PNA => nobreProductoLista.includes(PNA.NombreProducto));
+		}
+		return productoPorcion;
 	}
 );
 
