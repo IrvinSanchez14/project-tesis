@@ -202,7 +202,7 @@ class Sucursales extends Component {
 					>
 						<AddIcon />
 					</Fab>
-					<Print />
+					<Print ruta={'/tipoUsuario/reportePDF.php'} />
 				</div>
 			);
 		} else {

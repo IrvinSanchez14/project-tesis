@@ -7,6 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListItemText from '@material-ui/core/ListItemText';
 //import SendIcon from '@material-ui/icons/Send';
 import Fab from '@material-ui/core/Fab';
+import api from '../../api';
 
 const StyledMenu = withStyles({
 	paper: {
