@@ -13,8 +13,14 @@ import { sidebarStateFalse } from '../App/actions';
 import FrmListadoProducto from '../../components/Forms/frmListadoProducto';
 import { ErrorTabla } from '../../components/Error';
 
-import { fetchListadoProductos, idSelectedListadoProductos, creacionRegistro, autorizacionFormFail } from './actions';
-import { dataListadoProducto, getDataId, getDataBodyId, getFormResponse } from './selectors';
+import {
+	fetchListadoProductos,
+	fetchLecturaProducto,
+	idSelectedListadoProductos,
+	creacionRegistro,
+	autorizacionFormFail,
+} from './actions';
+import { dataLecturaProducto, getDataId, getDataBodyId, getFormResponse, listaPProducto } from './selectors';
 
 import { sidebarState } from '../App/actions';
 import { stateSideBarMenu } from '../App/selectors';
@@ -30,11 +36,12 @@ class ListaProducto extends React.Component {
 		this.props.fetchListadoProductos();
 		this.props.fetchProducto();
 		this.props.fetchPorciones();
+		this.props.fetchLecturaProducto();
 	}
 
 	headTable = () => {
 		let headTable;
-		this.props.dataListadoProducto.map(producto => {
+		this.props.dataLecturaProducto.map(producto => {
 			headTable = Object.keys(producto);
 			return producto;
 		});
@@ -43,7 +50,7 @@ class ListaProducto extends React.Component {
 
 	datosTabla = () => {
 		const dataTable = [];
-		this.props.dataListadoProducto.map(producto => {
+		this.props.dataLecturaProducto.map(producto => {
 			dataTable.push({
 				0: producto.IdProducto,
 				1: producto.Nombre,
@@ -55,6 +62,7 @@ class ListaProducto extends React.Component {
 	};
 
 	getIDtable = id => {
+		console.log('irvin', this.props.getDataId);
 		this.props.sidebarState();
 		this.props.idSelectedListadoProductos(id);
 		this.props.autorizacionFormFail(false);
@@ -152,12 +160,13 @@ class ListaProducto extends React.Component {
 	};
 
 	render() {
+		console.log('eduardo', this.props);
 		const arr = [];
-		if (this.props.dataListadoProducto) {
+		if (this.props.dataLecturaProducto) {
 			arr.push(
 				<TableData
 					header={this.headTable()}
-					dataTable={this.props.dataListadoProducto}
+					dataTable={this.props.dataLecturaProducto}
 					ejemplo={this.datosTabla()}
 					getIDtable={this.getIDtable}
 					key="IdProducto"
@@ -206,11 +215,12 @@ class ListaProducto extends React.Component {
 
 export function mapStateToProps(state, props) {
 	return {
-		dataListadoProducto: dataListadoProducto(state, props),
+		dataLecturaProducto: dataLecturaProducto(state, props),
 		stateSideBarMenu: stateSideBarMenu(state, props),
 		getDataId: getDataId(state, props),
 		getDataBodyId: getDataBodyId(state, props),
 		getFormResponse: getFormResponse(state, props),
+		listaPProducto: listaPProducto(state, props),
 	};
 }
 
@@ -223,11 +233,12 @@ export const actions = {
 	autorizacionFormFail,
 	fetchProducto,
 	fetchPorciones,
+	fetchLecturaProducto,
 };
 
 ListaProducto.propTypes = {
 	fetchListadoProductos: PropTypes.func,
-	dataListadoProducto: PropTypes.array,
+	dataLecturaProducto: PropTypes.array,
 	sidebarState: PropTypes.func,
 	idSelectedListadoProductos: PropTypes.func,
 	stateSideBarMenu: PropTypes.bool,

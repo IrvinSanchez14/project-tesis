@@ -13,6 +13,26 @@ export function fetchListadoProductos() {
 	};
 }
 
+export const listaProductoyPorcion = data => {
+	return {
+		type: ACTIONS.LISTA_PRODUCTO_PORCION,
+		data: data,
+	};
+};
+
+export const setLecturaProductoData = datosProducto => {
+	return {
+		type: ACTIONS.SET_LECTURAPRODUCTO_DATA,
+		datos: datosProducto,
+	};
+};
+
+export function fetchLecturaProducto() {
+	return {
+		type: ACTIONS.FETCH_LECTURAPRODUCTO,
+	};
+}
+
 export function editTipo() {
 	return {
 		type: ACTIONS.EDIT_TIPO,

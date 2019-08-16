@@ -8,7 +8,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Modal from '../../components/Modal';
 import ModalTable from '../../components/ModalTable';
 import Typography from '@material-ui/core/Typography';
-import Print from '../../components/Print/';
+import { ErrorTabla } from '../../components/Error';
 
 import { fetchListadoProductos } from '../ListaProducto/actions';
 import { fetchProducto } from '../Productos/actions';
@@ -16,12 +16,14 @@ import { datosProductos, listaPorcionProducto } from './selectors';
 import { fetchPorciones } from '../Porciones/actions';
 import { actualizacionLista } from './actions';
 
+import { permisoVerListaExistente } from '../../helpers/permisos';
+
 const useStyles = makeStyles({
 	card: {
 		maxWidth: 345,
 		margin: '15px',
 		width: '137px',
-		background: 'deeppink',
+		background: '#e3e3e3',
 	},
 });
 
@@ -49,12 +51,16 @@ function ListaExistente(Props) {
 	}
 
 	useEffect(() => {
+		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+		if (userInfo === null) {
+			Props.history.push('/');
+		}
 		Props.fetchProducto();
 		Props.fetchListadoProductos();
 		Props.fetchPorciones();
 	}, []);
 
-	return (
+	return permisoVerListaExistente() ? (
 		<div
 			style={{
 				display: 'flex',
@@ -65,12 +71,15 @@ function ListaExistente(Props) {
 			{Props.datosProductos
 				? Props.datosProductos.map(data => {
 						return (
-							<Card key={data.IdProducto} className={classes.card}>
+							<Card
+								key={data.IdProducto}
+								className={classes.card}
+								onClick={() => verificandoProducto(data)}
+							>
 								<CardActionArea
 									style={{
 										textAlign: 'center',
 									}}
-									onClick={() => verificandoProducto(data)}
 								>
 									<CardContent>
 										<Typography gutterBottom variant="h5" component="h2">
@@ -105,8 +114,9 @@ function ListaExistente(Props) {
 			>
 				{'Lista'}
 			</Fab>
-			<Print />
 		</div>
+	) : (
+		<ErrorTabla />
 	);
 }
 

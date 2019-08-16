@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
 
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -35,6 +34,7 @@ function Modal(Props) {
 	const classes = useStyles();
 	const [value, setValue] = useState('');
 	const [porcion, setPorcion] = useState(0);
+	const [nombrePorcion, setNombrePorcion] = useState('');
 	const [cantidadPorcion, setCantidadPorcion] = useState(0);
 	const [lista, setLista] = useState([]);
 
@@ -47,6 +47,8 @@ function Modal(Props) {
 					IdPorcion: data.IdPorcion,
 					Cantidad: data.Cantidad,
 					edit: 0,
+					NombreProducto: title.Nombre,
+					NombrePorcion: nombrePorcion,
 				});
 				return data;
 			});
@@ -60,8 +62,9 @@ function Modal(Props) {
 		setVisibleModal(false);
 	}
 
-	function valueChek(event) {
+	function valueChek(event, nombre) {
 		setPorcion(event.target.value);
+		setNombrePorcion(nombre);
 	}
 
 	function valueTextField(event) {
@@ -69,18 +72,18 @@ function Modal(Props) {
 	}
 
 	function createList() {
-		console.log(lista);
 		list.push({
 			IdProducto: title.IdProducto,
 			IdPorcion: porcion,
 			Cantidad: cantidadPorcion,
 			edit: 0,
+			NombreProducto: title.Nombre,
+			NombrePorcion: nombrePorcion,
 		});
 		setLista(list);
 		setVisibleModal(false);
 		localStorage.setItem('listaExistente', JSON.stringify(list));
 	}
-
 	return (
 		<Dialog
 			fullScreen={fullScreen}
@@ -113,7 +116,7 @@ function Modal(Props) {
 								value={array.IdPorcion}
 								control={<Radio />}
 								label={array.Nombre}
-								onChange={event => valueChek(event)}
+								onChange={event => valueChek(event, array.Nombre)}
 							/>
 						);
 					})}

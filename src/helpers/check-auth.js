@@ -4,3 +4,10 @@ export const isLoggedIn = () => {
 	}
 	return false;
 };
+
+export const isRenuevaLoggin = () => {
+	if (localStorage['firsTime']) {
+		return true;
+	}
+	return false;
+};

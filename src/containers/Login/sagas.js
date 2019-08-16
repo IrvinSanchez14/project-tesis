@@ -56,7 +56,8 @@ function* loginFlow(action) {
 	try {
 		const { email, password } = action;
 		const response = yield call(loginApi, email, password);
-		if (response.data.message) {
+		console.log('alejandro', response);
+		if (response.data.message !== 'Login failed.' && response.data.activacion === '0') {
 			const permisosCall = yield call(permisosRequest, response.data.user.IdUsuario);
 			localStorage['token'] = JSON.stringify(response.data.jwt);
 			localStorage['userInfo'] = JSON.stringify(response.data.user);
@@ -64,7 +65,12 @@ function* loginFlow(action) {
 			yield put({ type: LOGIN_SUCCESS, response: response, datos: permisosCall.data });
 			//yield put({ type: LOGIN_PERMISOS_USUARIO, datos: permisosCall.data });
 			yield put(push('/'));
+		} else if (response.data.activacion === '1') {
+			alert(response.data.error);
+			localStorage['firsTime'] = JSON.stringify(response.data.IdUsuario);
+			yield put(push('/CambioPassword'));
 		} else {
+			alert(response.data.error);
 			yield put({ type: LOGIN_UNSUCCESS, response });
 		}
 	} catch (error) {
