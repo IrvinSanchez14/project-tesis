@@ -11,7 +11,7 @@ export default axios.create({
 	headers: { 'Content-Type': 'application/json', Authorization: Basic },
 });
 
-export const conn = 'http://localhost/tesis/api-jws/api';
+export const conn = 'http://localhost:8080/tesis/api-jws/api';
 
 // http://45.79.35.9/api-jws/api
 // http://localhost/tesis/api-jws/api
