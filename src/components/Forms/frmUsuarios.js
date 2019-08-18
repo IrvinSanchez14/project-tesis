@@ -19,6 +19,19 @@ const validate = values => {
 	if (!values.get('Descripcion')) {
 		errors.Descripcion = 'Required';
 	}
+	if (!values.get('Email')) {
+		errors.Email = 'Requerido';
+	} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.get('Email'))) {
+		errors.Email = 'Verifique el crreo';
+	}
+
+	if (!values.get('Passwd')) {
+		errors.Passwd = 'Required';
+	}
+
+	if (!values.get('Alias')) {
+		errors.Alias = 'Required';
+	}
 	return errors;
 };
 
@@ -147,7 +160,7 @@ class FrmUsuario extends React.Component {
 						height: '60px',
 					}}
 				>
-					<button className="ui button primary">Guardar</button>
+					<button className="ui buttonGuardar">Guardar</button>
 				</div>
 			</form>
 		);

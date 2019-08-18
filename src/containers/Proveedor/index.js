@@ -205,7 +205,7 @@ class Proveedor extends React.Component {
 					>
 						<AddIcon />
 					</Fab>
-					<Print />
+					<Print ruta={'/Proveedor/readAllPDF.php'} titulo={'Proveedor'} csv={'/Proveedor/readAllCSV.php'} />
 				</div>
 			);
 		} else {

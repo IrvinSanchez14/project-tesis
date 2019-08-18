@@ -14,6 +14,8 @@ import FormLabel from '@material-ui/core/FormLabel';
 import TextField from '@material-ui/core/TextField';
 import { useTheme } from '@material-ui/core/styles';
 
+///////keypad////////
+
 const useStyles = makeStyles(theme => ({
 	root: {
 		display: 'flex',
@@ -67,7 +69,7 @@ function Modal(Props) {
 		setNombrePorcion(nombre);
 	}
 
-	function valueTextField(event) {
+	function valueTextField(event, text) {
 		setCantidadPorcion(event.target.value);
 	}
 
@@ -84,6 +86,7 @@ function Modal(Props) {
 		setVisibleModal(false);
 		localStorage.setItem('listaExistente', JSON.stringify(list));
 	}
+
 	return (
 		<Dialog
 			fullScreen={fullScreen}
@@ -94,7 +97,7 @@ function Modal(Props) {
 			<DialogTitle
 				id="responsive-dialog-title"
 				style={{
-					backgroundColor: '#39215E',
+					backgroundColor: '#000',
 					color: '#FFF',
 				}}
 			>
@@ -121,23 +124,24 @@ function Modal(Props) {
 						);
 					})}
 				</RadioGroup>
-				<FormLabel component="legend">Elige Cantidad</FormLabel>
+				<FormLabel component="legend">Cantidad</FormLabel>
 				<TextField
 					id="outlined-email-input"
-					label="Cantidad"
+					//label="Cantidad"
 					className={classes.textField}
-					type="email"
+					type="number"
+					inputmode="numeric"
 					name="Cantidad"
 					margin="normal"
 					variant="outlined"
 					onChange={event => valueTextField(event)}
 				/>
 			</DialogContent>
-			<DialogActions>
-				<Button onClick={handleClose} color="primary">
+			<DialogActions className="dialogo">
+				<Button onClick={handleClose} className="ui buttonCancelar" color="primary">
 					Cancelar
 				</Button>
-				<Button onClick={createList} color="primary" autoFocus>
+				<Button onClick={createList} className="ui buttonGuardar" color="primary" autoFocus>
 					Agregar
 				</Button>
 			</DialogActions>

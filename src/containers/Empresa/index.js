@@ -208,7 +208,7 @@ class Empresa extends React.Component {
 					>
 						<AddIcon />
 					</Fab>
-					<Print />
+					<Print ruta={'/Empresas/readAllPDF.php'} titulo={'Empresas'} csv={'/Empresas/readAllCSV.php'} />
 				</div>
 			);
 		} else {

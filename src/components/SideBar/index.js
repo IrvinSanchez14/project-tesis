@@ -138,7 +138,7 @@ class SideBarMenu extends React.Component {
 						<div
 							style={{
 								right: '10px',
-								marginTop: '19px',
+								marginTop: '10px',
 								position: 'absolute',
 								color: '#FFF',
 								fontSize: '2em',
@@ -146,7 +146,7 @@ class SideBarMenu extends React.Component {
 							}}
 							onClick={this.handleSidebarHide}
 						>
-							X
+							<i class="far fa-times-circle" />
 						</div>
 					</div>
 					<Menu.Item

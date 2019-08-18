@@ -21,7 +21,6 @@ import './estilo.css';
 
 import { actualizacionLista, listaLocal } from '../../containers/ListaExistente/actions';
 import { listaExistente } from '../../containers/ListaExistente/selectors';
-
 const StyledTableCell = withStyles(theme => ({
 	head: {
 		backgroundColor: theme.palette.common.black,
@@ -117,6 +116,7 @@ function ModalTable(Props) {
 			return;
 		}
 	}
+
 	return (
 		<div>
 			{Props.listaExistente ? (
@@ -129,8 +129,8 @@ function ModalTable(Props) {
 					<DialogTitle
 						id="responsive-dialog-title"
 						style={{
-							backgroundColor: '#39215E',
-							color: '#FFF',
+							backgroundColor: '#000',
+							color: '#fff',
 						}}
 					>
 						{'LISTA EXISTENTE'}
@@ -140,10 +140,38 @@ function ModalTable(Props) {
 							<Table className={classes2.table}>
 								<TableHead>
 									<TableRow>
-										<StyledTableCell>Producto</StyledTableCell>
-										<StyledTableCell>Porcion</StyledTableCell>
-										<StyledTableCell>Cantidad</StyledTableCell>
-										<StyledTableCell>Acciones</StyledTableCell>
+										<StyledTableCell
+											style={{
+												backgroundColor: '#FFF',
+												color: '#000',
+											}}
+										>
+											Producto
+										</StyledTableCell>
+										<StyledTableCell
+											style={{
+												backgroundColor: '#FFF',
+												color: '#000',
+											}}
+										>
+											Porcion
+										</StyledTableCell>
+										<StyledTableCell
+											style={{
+												backgroundColor: '#FFF',
+												color: '#000',
+											}}
+										>
+											Cantidad
+										</StyledTableCell>
+										<StyledTableCell
+											style={{
+												backgroundColor: '#FFF',
+												color: '#000',
+											}}
+										>
+											Acciones
+										</StyledTableCell>
 									</TableRow>
 								</TableHead>
 								<TableBody>
@@ -178,9 +206,12 @@ function ModalTable(Props) {
 											</StyledTableCell>
 											<StyledTableCell>
 												<span className="spanAction" onClick={() => activateEditInput(index)}>
-													Editar
-												</span>{' '}
-												-<span className="spanAction">Eliminar</span>
+													<i class="fas fa-pen" />
+												</span>
+												{'  '}-{'  '}
+												<span className="spanAction">
+													<i class="fas fa-trash" />
+												</span>
 											</StyledTableCell>
 										</StyledTableRow>
 									))}
@@ -188,11 +219,11 @@ function ModalTable(Props) {
 							</Table>
 						</Paper>
 					</DialogContent>
-					<DialogActions>
-						<Button onClick={handleClose} color="primary">
+					<DialogActions className="dialogo">
+						<Button onClick={handleClose} className="ui buttonCancelar" color="primary">
 							Cancelar
 						</Button>
-						<Button onClick={listaEnviada} color="primary" autoFocus>
+						<Button onClick={listaEnviada} color="primary" className="ui buttonGuardar" autoFocus>
 							Enviar Lista
 						</Button>
 					</DialogActions>

@@ -87,7 +87,7 @@ class FrmEstados extends React.Component {
 						height: '60px',
 					}}
 				>
-					<button className="ui button primary">Guardar</button>
+					<button className="ui buttonGuardar">Guardar</button>
 				</div>
 			</form>
 		);

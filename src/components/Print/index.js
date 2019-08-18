@@ -7,6 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListItemText from '@material-ui/core/ListItemText';
 //import SendIcon from '@material-ui/icons/Send';
 import Fab from '@material-ui/core/Fab';
+import api from '../../api';
 
 const StyledMenu = withStyles({
 	paper: {
@@ -39,7 +40,7 @@ const StyledMenuItem = withStyles(theme => ({
 	},
 }))(MenuItem);
 
-export default function CustomizedMenus() {
+export default function CustomizedMenus(Props) {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 
 	function handleClick(event) {
@@ -48,6 +49,34 @@ export default function CustomizedMenus() {
 
 	function handleClose() {
 		setAnchorEl(null);
+	}
+
+	function callApiPDF() {
+		//console.log('Props', Props);
+		api.get(`${Props.ruta}`, { responseType: 'blob' }).then(response => {
+			//console.log('response', response.data);
+			const url = window.URL.createObjectURL(new Blob([response.data]));
+			const link = document.createElement('a');
+			link.href = url;
+			link.setAttribute('download', `${Props.titulo}.pdf`);
+			document.body.appendChild(link);
+			link.click();
+			//Response.data;
+		});
+	}
+
+	function callApiCSV() {
+		//console.log('Props', Props);
+		api.get(`${Props.csv}`, { responseType: 'blob' }).then(response => {
+			console.log(response);
+			const url = window.URL.createObjectURL(new Blob([response.data]));
+			const link = document.createElement('a');
+			link.href = url;
+			link.setAttribute('download', `${Props.titulo}.csv`);
+			document.body.appendChild(link);
+			link.click();
+			//Response.data;
+		});
 	}
 
 	return (
@@ -72,10 +101,20 @@ export default function CustomizedMenus() {
 				onClose={handleClose}
 			>
 				<StyledMenuItem>
-					<ListItemText primary="PDF" />
+					<ListItemText
+						primary="PDF"
+						onClick={() => {
+							callApiPDF();
+						}}
+					/>
 				</StyledMenuItem>
 				<StyledMenuItem>
-					<ListItemText primary="CSV" />
+					<ListItemText
+						primary="CSV"
+						onClick={() => {
+							callApiCSV();
+						}}
+					/>
 				</StyledMenuItem>
 			</StyledMenu>
 		</div>
