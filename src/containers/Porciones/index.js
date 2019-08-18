@@ -19,6 +19,7 @@ import { dataPorciones, getDataId, getDataBodyId, getFormResponse } from './sele
 import { sidebarState } from '../App/actions';
 import { stateSideBarMenu } from '../App/selectors';
 import { fetchUnidadMedida } from '../UnidadMedida/actions';
+import { Print } from 'material-ui-icons';
 
 class Porciones extends React.Component {
 	componentDidMount() {

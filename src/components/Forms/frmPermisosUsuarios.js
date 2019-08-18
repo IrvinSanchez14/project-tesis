@@ -151,7 +151,7 @@ class FrmPermisosUsuarios extends React.Component {
 						height: '60px',
 					}}
 				>
-					<button className="ui button primary">Agregar</button>
+					<button className="ui buttonGuardar">Agregar</button>
 				</div>
 			</form>
 		);

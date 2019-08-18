@@ -12,9 +12,9 @@ const validate = values => {
 		errors.IdUnidadMedida = 'Required';
 	}
 	if (!values.get('Siglas')) {
-		errors.Nombre = 'Required';
-	} else if (values.get('Siglas').length > 20) {
-		errors.IdUnidadMedida = 'Must be 20 characters or less';
+		errors.Siglas = 'Required';
+	} else if (values.get('Siglas').length < 3) {
+		errors.Siglas = '3 Letras';
 	}
 	if (!values.get('Nombre')) {
 		errors.Nombre = 'Required';
@@ -83,7 +83,7 @@ class FrmUnidadMedida extends React.Component {
 						height: '60px',
 					}}
 				>
-					<button className="ui button primary">Guardar</button>
+					<button className="ui buttonGuardar">Guardar</button>
 				</div>
 			</form>
 		);

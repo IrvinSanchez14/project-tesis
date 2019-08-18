@@ -211,7 +211,7 @@ class Productos extends React.Component {
 					>
 						<AddIcon />
 					</Fab>
-					<Print />
+					<Print ruta={'/Producto/readAllPDF.php'} titulo={'Producto'} />
 				</div>
 			);
 		} else {

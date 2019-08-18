@@ -16,6 +16,18 @@ const validate = values => {
 	if (!values.get('Descripcion')) {
 		errors.Descripcion = 'Requerido';
 	}
+
+	if (!values.get('tipoProducto')) {
+		errors.tipoProducto = 'Requerido';
+	}
+
+	if (!values.get('Siglas')) {
+		errors.Siglas = 'Requerido';
+	}
+
+	if (!values.get('Proveedor')) {
+		errors.Proveedor = 'Requerido';
+	}
 	return errors;
 };
 
@@ -41,8 +53,8 @@ class FrmEmpresa extends React.Component {
 		);
 	};
 
-	renderSelectUnidad = ({ input, label, meta }) => {
-		const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
+	renderSelectUnidad = ({ input, label, meta: { touched, error, warning } }) => {
+		const className = `field ${error && touched ? 'error' : ''}`;
 		return (
 			<div className={className}>
 				<label>{label}</label>
@@ -58,13 +70,12 @@ class FrmEmpresa extends React.Component {
 						  })
 						: null}
 				</select>
-				{this.renderError(meta)}
 			</div>
 		);
 	};
 
-	renderSelectProveedor = ({ input, label, meta }) => {
-		const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
+	renderSelectProveedor = ({ input, label, meta: { touched, error, warning } }) => {
+		const className = `field ${error && touched ? 'error' : ''}`;
 		return (
 			<div className={className}>
 				<label>{label}</label>
@@ -80,13 +91,12 @@ class FrmEmpresa extends React.Component {
 						  })
 						: null}
 				</select>
-				{this.renderError(meta)}
 			</div>
 		);
 	};
-
-	renderSelectTipo = ({ input, label, meta }) => {
-		const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
+	//{this.renderError(meta)}
+	renderSelectTipo = ({ input, label, meta: { touched, error, warning } }) => {
+		const className = `field ${error && touched ? 'error' : ''}`;
 		return (
 			<div className={className}>
 				<label>{label}</label>
@@ -102,7 +112,6 @@ class FrmEmpresa extends React.Component {
 						  })
 						: null}
 				</select>
-				{this.renderError(meta)}
 			</div>
 		);
 	};
@@ -149,7 +158,7 @@ class FrmEmpresa extends React.Component {
 						height: '60px',
 					}}
 				>
-					<button className="ui button primary">Guardar</button>
+					<button className="ui buttonGuardar">Guardar</button>
 				</div>
 			</form>
 		);

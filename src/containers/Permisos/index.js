@@ -183,7 +183,7 @@ class Permiso extends React.Component {
 					>
 						<AddIcon />
 					</Fab>
-					<Print />
+					<Print ruta={'/Permisos/readAllPDF.php'} titulo={'Permisos'} csv={'/Permisos/readAllCSV.php'} />
 				</div>
 			);
 		} else {

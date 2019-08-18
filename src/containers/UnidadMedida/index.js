@@ -197,7 +197,11 @@ class UnidadMedida extends Component {
 					>
 						<AddIcon />
 					</Fab>
-					<Print />
+					<Print
+						ruta={'/UnidadMedida/readAllPDF.php'}
+						titulo={'Unidad_Medida'}
+						csv={'/UnidadMedida/readAllcsv.php'}
+					/>
 				</div>
 			);
 		} else {

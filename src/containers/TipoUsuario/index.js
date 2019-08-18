@@ -191,7 +191,11 @@ class TipoUsuario extends React.Component {
 					>
 						<AddIcon />
 					</Fab>
-					<Print />
+					<Print
+						ruta={'/tipoUsuario/readAllPDF.php'}
+						titulo={'tipo_usuario'}
+						csv={'/tipoUsuario/readAllCSV.php'}
+					/>
 				</div>
 			);
 		} else {

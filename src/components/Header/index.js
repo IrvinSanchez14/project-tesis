@@ -1,9 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Dropdown, Menu } from 'semantic-ui-react';
+import { Dropdown, Menu } from 'semantic-ui-react';
+
+import Button from '@material-ui/core/Button';
 import history from '../../history';
 import { logoutSuccessful } from '../../containers/Login/actions';
 import store from '../../store';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 const styles = {
 	baseButton: {
@@ -34,7 +37,7 @@ class Header extends React.Component {
 								color: 'inherit',
 							}}
 						>
-							<Button style={styles.baseButton}>Ingresar</Button>
+							<Button className="ui buttonGuardar">Ingresar</Button>
 						</Link>
 					</Menu.Item>
 				</Menu.Menu>
@@ -185,19 +188,18 @@ class Header extends React.Component {
 
 				<Menu.Menu position="right">
 					<Menu.Item>
+						<AccountCircleIcon style={{ color: 'white', marginLeft: '-32px', position: 'absolute' }} />
+					</Menu.Item>
+
+					<Menu.Item>
+						<span />
 						<label style={{ color: 'white', marginLeft: '-39px', position: 'absolute' }}>
 							{userInfo ? userInfo.Nombre : null}
 						</label>
 					</Menu.Item>
-
 					<Menu.Item>
-						<Link
-							to="/Login"
-							style={{
-								color: 'inherit',
-							}}
-						>
-							<Button style={styles.baseButton} onClick={this.cleanToken}>
+						<Link to="/Login">
+							<Button className="ui buttonGuardar" onClick={this.cleanToken}>
 								Salir
 							</Button>
 						</Link>

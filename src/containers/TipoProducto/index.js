@@ -185,7 +185,11 @@ class TipoProducto extends React.Component {
 					>
 						<AddIcon />
 					</Fab>
-					<Print />
+					<Print
+						ruta={'/TipoProducto/readAllPDF.php'}
+						titulo={'Tipo_Producto'}
+						csv={'/TipoProducto/readAllCSV.php'}
+					/>
 				</div>
 			);
 		} else {
