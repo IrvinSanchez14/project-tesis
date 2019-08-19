@@ -4,6 +4,8 @@ import { Field, reduxForm } from 'redux-form/immutable';
 import { connect } from 'react-redux';
 
 import { getFormResponse } from '../../containers/TipoUsuario/selectors';
+import { dataSucursal } from '../../containers/Sucursales/selectors';
+import { getDataBodyId } from '../../containers/Usuarios/selectors';
 
 const validate = values => {
 	// IMPORTANT: values is an Immutable.Map here!
@@ -47,6 +49,18 @@ class FrmUsuario extends React.Component {
 		}
 	}
 
+	renderNewObject(input) {
+		if (input.value === '2' || input.value === '3' || input.value === 'Gerente' || input.value === 'Supervisor') {
+			this.setState({
+				sucursal: 1,
+			});
+		} else {
+			this.setState({
+				sucursal: 0,
+			});
+		}
+	}
+
 	renderInput = ({ input, label, meta: { touched, error, warning } }) => {
 		const className = `field ${error && touched ? 'error' : ''}`;
 		return (
@@ -58,18 +72,18 @@ class FrmUsuario extends React.Component {
 		);
 	};
 
-	renderSucursal = ({ input, label, meta }) => {
+	renderSucursalExiste = ({ input, label, meta }) => {
 		const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
 		return (
 			<div className={className}>
 				<label>{label}</label>
 				<select {...input}>
 					{this.props.createData ? <option /> : null}
-					{this.props.listaTipos
-						? this.props.listaTipos.map(permiso => {
+					{this.props.dataSucursal
+						? this.props.dataSucursal.map(sucursal => {
 								return (
-									<option key={permiso.IdTipoUsuario} value={permiso.IdTipoUsuario}>
-										{permiso.Nombre}
+									<option key={sucursal.IdSucursal} value={sucursal.IdSucursal}>
+										{sucursal.Nombre}
 									</option>
 								);
 						  })
@@ -109,6 +123,7 @@ class FrmUsuario extends React.Component {
 						: null}
 				</select>
 				{this.renderError(meta)}
+				{this.renderNewObject(input)}
 			</div>
 		);
 	};
@@ -141,17 +156,51 @@ class FrmUsuario extends React.Component {
 	};
 
 	render() {
-		console.log('this.state', this.state);
 		this.validateClean();
+
+		const renderSucursal = ({ input, label, meta }) => {
+			const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
+			let arreglo = this.props.getDataBodyId;
+			let nombreSucursal;
+			nombreSucursal = this.props.dataSucursal.sort(function(a, b) {
+				if (arreglo.Sucursal === b.Nombre) {
+					return 1;
+				}
+				if (a.Nombre === arreglo.Sucursal) {
+					return -1;
+				}
+				// a must be equal to b
+				return 0;
+			});
+
+			return (
+				<div className={className}>
+					<label>{label}</label>
+					<select {...input}>
+						{this.props.createData ? <option /> : null}
+						{this.props.dataSucursal
+							? nombreSucursal.map(sucursal => {
+									return (
+										<option key={sucursal.IdSucursal} value={sucursal.IdSucursal}>
+											{sucursal.Nombre}
+										</option>
+									);
+							  })
+							: null}
+					</select>
+					{this.renderError(meta)}
+				</div>
+			);
+		};
 		return (
 			<form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
 				<Field name="Nombre" component={this.renderInput} label="Nombre" />
 				<Field name="Email" component={this.renderInput} label="Email" />
 				<Field name="Alias" component={this.renderInput} label="Alias" />
 				<Field name="IdTipoUsuario" component={this.renderSelect} label="Rol" />
-				{this.props.createData ? <Field name="Passwd" component={this.renderPassw} label="Contraseña" /> : null}
+
 				{this.state.sucursal === 1 ? (
-					<Field name="IdTipoUsuario" component={this.renderSelect} label="Rol" />
+					<Field name="IdSucursal" component={renderSucursal} label="Sucursal" />
 				) : null}
 				<div
 					style={{
@@ -170,6 +219,8 @@ class FrmUsuario extends React.Component {
 export function mapStateToProps(state, props) {
 	return {
 		getFormResponse: getFormResponse(state, props),
+		dataSucursal: dataSucursal(state, props),
+		getDataBodyId: getDataBodyId(state, props),
 	};
 }
 

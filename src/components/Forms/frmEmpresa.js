@@ -16,13 +16,13 @@ const validate = values => {
 	if (!values.get('Direccion')) {
 		errors.Direccion = 'Requerido';
 	}
-	if (!values.get('Razo_Social')) {
-		errors.Razo_Social = 'Requerido';
+	if (!values.get('Razon_Social')) {
+		errors.Razon_Social = 'Requerido';
 	}
-	if (!values.get('Email')) {
-		errors.Email = 'Requerido';
-	} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.get('Email'))) {
-		errors.Email = 'Verifique el crreo';
+	if (!values.get('Correo')) {
+		errors.Correo = 'Requerido';
+	} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.get('Correo'))) {
+		errors.Correo = 'Verifique el correo';
 	}
 	if (!values.get('Telefono')) {
 		errors.Telefono = 'Requerido';
@@ -89,10 +89,10 @@ class FrmEmpresa extends React.Component {
 		return (
 			<form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
 				<Field name="Nombre" component={this.renderInput} label="Nombre" />
-				<Field name="Razo_Social" component={this.renderInput} label="Razon Social" />
+				<Field name="Razon_Social" component={this.renderInput} label="Razon Social" />
 				<Field name="Direccion" component={this.renderInput} label="Dirección" />
 				<Field name="Telefono" component={this.renderInput} label="Teléfono" />
-				<Field name="Email" component={this.renderInput} label="Correo" />
+				<Field name="Correo" component={this.renderInput} label="Correo" />
 				<div
 					style={{
 						bottom: '0',

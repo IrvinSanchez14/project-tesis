@@ -8,6 +8,24 @@ export const getFormResponse = state => state.getIn(['porciones', 'formularioRes
 
 const unidadMedida = state => state.getIn(['unidadMedida', 'data']);
 
+export const tablaPorciones = createSelector(
+	dataPorciones,
+	porcion => {
+		let tabla;
+		if (porcion) {
+			tabla = porcion.map(data => {
+				return {
+					IdPorcion: data.IdPorcion,
+					Cantidad: data.Cantidad,
+					UnidadMedida: data.UnidadMedida,
+					Estado: data.Estado,
+				};
+			});
+		}
+		return tabla;
+	}
+);
+
 export const unidadesMedidas = createSelector(
 	unidadMedida,
 	getPorciones,
@@ -50,7 +68,7 @@ export const getDataId = createSelector(
 				if (data.IdPorcion === idPorcion) {
 					dataId.push({
 						id: data.IdPorcion,
-						estado: data.estadoTexto,
+						Estado: data.Estado,
 					});
 				}
 			});
@@ -77,6 +95,8 @@ export const getDataBodyId = createSelector(
 						IdPorcion: data.IdPorcion,
 						Cantidad: data.Cantidad,
 						UnidadMedida: data.UnidadMedida,
+						Estado: data.Estado,
+						IdUnidadMedida: data.IdUnidadMedida,
 					};
 				}
 			});

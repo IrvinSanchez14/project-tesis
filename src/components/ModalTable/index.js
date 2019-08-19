@@ -74,7 +74,6 @@ function ModalTable(Props) {
 		lista2.Sucursal = 1;
 		lista2.UsuarioCreador = id.IdUsuario;
 
-		console.log(lista2);
 		api.post('/ListaExistente/create.php', lista2).then(response => {
 			localStorage.removeItem('listaExistente');
 			setVisibleModalTable(false);

@@ -56,7 +56,6 @@ function* loginFlow(action) {
 	try {
 		const { email, password } = action;
 		const response = yield call(loginApi, email, password);
-		console.log('alejandro', response);
 		if (response.data.message !== 'Login failed.' && response.data.activacion === '0') {
 			const permisosCall = yield call(permisosRequest, response.data.user.IdUsuario);
 			localStorage['token'] = JSON.stringify(response.data.jwt);

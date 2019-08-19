@@ -32,11 +32,21 @@ class Proveedor extends React.Component {
 	}
 
 	headTable = () => {
-		let headTable;
-		this.props.dataProveedor.map(empresa => {
-			headTable = Object.keys(empresa);
-			return empresa;
-		});
+		const headTable = [
+			'ID',
+			'Nombre',
+			'Dirección',
+			'Telefono',
+			'Razon Social',
+			'Tipo',
+			'Nombre del Contacto',
+			'Correo Electronico',
+			'DUI',
+			'NIT',
+			'NRC',
+			'Estado',
+			'Fecha de Creacion',
+		];
 		return headTable;
 	};
 
@@ -88,7 +98,7 @@ class Proveedor extends React.Component {
 
 	onChangeStateButton = check => {
 		const updateState = {
-			IdEmpresa: check.id,
+			IdProveedor: check.id,
 			Estado: `${check.state}`,
 		};
 		const messageState = check.state === true ? 'Disponible' : 'Inactivo';

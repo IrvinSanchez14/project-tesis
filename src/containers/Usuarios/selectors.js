@@ -79,6 +79,7 @@ export const getDataBodyId = createSelector(
 						Email: data.Email,
 						Alias: data.Alias,
 						IdTipoUsuario: data.IdTipoUsuario,
+						Sucursal: data.Sucursal,
 						Estado: data.estadoTexto,
 						FechaCreacion: data.FechaCreacion,
 					};

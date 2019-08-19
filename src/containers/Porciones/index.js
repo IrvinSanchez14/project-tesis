@@ -14,7 +14,7 @@ import FrmPorcion from '../../components/Forms/frmPorciones';
 import { ErrorTabla } from '../../components/Error';
 
 import { fetchPorciones, idSelectedPorciones, creacionRegistro, autorizacionFormFail } from './actions';
-import { dataPorciones, getDataId, getDataBodyId, getFormResponse } from './selectors';
+import { dataPorciones, getDataId, getDataBodyId, getFormResponse, tablaPorciones } from './selectors';
 
 import { sidebarState } from '../App/actions';
 import { stateSideBarMenu } from '../App/selectors';
@@ -32,11 +32,7 @@ class Porciones extends React.Component {
 	}
 
 	headTable = () => {
-		let headTable;
-		this.props.dataPorciones.map(producto => {
-			headTable = Object.keys(producto);
-			return producto;
-		});
+		const headTable = ['ID', 'Cantidad', 'Unidad de Medida', 'Estado'];
 		return headTable;
 	};
 
@@ -97,13 +93,13 @@ class Porciones extends React.Component {
 
 	onChangeStateButton = check => {
 		const updateState = {
-			IdProducto: check.id,
+			IdPorcion: check.id,
 			Estado: `${check.state}`,
 		};
 		const messageState = check.state === true ? 'Disponible' : 'Inactivo';
 		// eslint-disable-next-line no-restricted-globals
 		if (confirm(`Esta seguro de cambiar el estado a ${messageState}`)) {
-			api.put('/Producto/updateState.php', updateState).then(data => {
+			api.put('/Porcion/updateState.php', updateState).then(data => {
 				if (data.data.message) {
 					this.props.fetchPorciones();
 					this.props.sidebarStateFalse();
@@ -125,7 +121,8 @@ class Porciones extends React.Component {
 						this.props.getDataBodyId ? this.props.getDataBodyId : undefined,
 						'IdPorcion',
 						'Cantidad',
-						'UnidadMedida'
+						'UnidadMedida',
+						'IdUnidadMedida'
 					)}
 					createData={true}
 					formResponse={this.props.getFormResponse}
@@ -140,7 +137,8 @@ class Porciones extends React.Component {
 						this.props.getDataBodyId ? this.props.getDataBodyId : undefined,
 						'IdPorcion',
 						'Cantidad',
-						'UnidadMedida'
+						'UnidadMedida',
+						'IdUnidadMedida'
 					)}
 					createData={false}
 					formResponse={this.props.getFormResponse}
@@ -151,12 +149,13 @@ class Porciones extends React.Component {
 	};
 
 	render() {
+		console.log(this.props);
 		const arr = [];
 		if (this.props.dataPorciones) {
 			arr.push(
 				<TableData
 					header={this.headTable()}
-					dataTable={this.props.dataPorciones}
+					dataTable={this.props.tablaPorciones}
 					ejemplo={this.datosTabla()}
 					getIDtable={this.getIDtable}
 					key="IdProducto"
@@ -210,6 +209,7 @@ export function mapStateToProps(state, props) {
 		getDataId: getDataId(state, props),
 		getDataBodyId: getDataBodyId(state, props),
 		getFormResponse: getFormResponse(state, props),
+		tablaPorciones: tablaPorciones(state, props),
 	};
 }
 

@@ -17,7 +17,7 @@ export const getDataId = createSelector(
 				if (data.IdEmpresa === idEmpresa) {
 					dataId.push({
 						id: data.IdEmpresa,
-						estado: data.Estado,
+						Estado: data.Estado,
 					});
 				}
 			});
@@ -50,6 +50,7 @@ export const getDataBodyId = createSelector(
 						Direccion: data.Direccion,
 						Telefono: data.Telefono,
 						Correo: data.Correo,
+						Estado: data.Estado,
 					};
 				}
 			});

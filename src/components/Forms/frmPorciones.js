@@ -80,7 +80,7 @@ class FrmPorcion extends React.Component {
 		return (
 			<form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
 				<Field name="Cantidad" component={this.renderInput} label="Cantidad" />
-				<Field name="UnidadMedida" component={this.renderSelectUnidad} label="Unidad de Medida" />
+				<Field name="IdUnidadMedida" component={this.renderSelectUnidad} label="Unidad de Medida" />
 
 				<div
 					style={{
