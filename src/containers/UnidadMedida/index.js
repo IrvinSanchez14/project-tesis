@@ -73,11 +73,15 @@ class UnidadMedida extends Component {
 		if (formValues.flag === 'create') {
 			// eslint-disable-next-line no-restricted-globals
 			if (confirm('Esta seguro de guardar la siguiente unidad de medida en la Base de Datos?')) {
-				api.post('/UnidadMedida/create.php', formValues).then(
-					data => this.props.fetchUnidadMedida(),
-					this.props.autorizacionFormFail(true),
-					this.props.sidebarStateFalse()
-				);
+				api.post('/UnidadMedida/create.php', formValues).then(response => {
+					if (response.data.flag !== 0) {
+						alert(response.data.message);
+					} else {
+						this.props.fetchUnidadMedida();
+						this.props.autorizacionFormFail(true);
+						this.props.sidebarStateFalse();
+					}
+				});
 			} else {
 				return this.props.autorizacionFormFail(false);
 			}

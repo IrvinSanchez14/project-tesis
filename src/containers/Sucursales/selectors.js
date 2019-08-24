@@ -13,6 +13,7 @@ export const getDataId = createSelector(
 		let dataId;
 		if (dataSu) {
 			dataId = [];
+
 			dataSu.forEach(data => {
 				if (data.IdSucursal === idSucursal) {
 					dataId.push({
