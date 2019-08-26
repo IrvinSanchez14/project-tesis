@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const list = [];
+let list = [];
 function Modal(Props) {
 	const { visibleModal, setVisibleModal, dataContent, title } = Props;
 	const theme = useTheme();
@@ -37,25 +37,28 @@ function Modal(Props) {
 	const [value, setValue] = useState('');
 	const [porcion, setPorcion] = useState(0);
 	const [nombrePorcion, setNombrePorcion] = useState('');
-	const [cantidadPorcion, setCantidadPorcion] = useState(0);
+	const [cantidadPorcion, setCantidadPorcion] = useState('');
 	const [lista, setLista] = useState([]);
 
 	useEffect(() => {
-		const local = JSON.parse(localStorage.getItem('listaExistente'));
-		if (local) {
-			local.map(data => {
-				list.push({
-					IdProducto: data.IdProducto,
-					IdPorcion: data.IdPorcion,
-					Cantidad: data.Cantidad,
-					edit: 0,
-					NombreProducto: title.Nombre,
-					NombrePorcion: nombrePorcion,
+		if (Props.visibleModal) {
+			const local = JSON.parse(localStorage.getItem('listaExistente'));
+			list = [];
+			if (local) {
+				local.map(data => {
+					list.push({
+						IdProducto: data.IdProducto,
+						IdPorcion: data.IdPorcion,
+						Cantidad: data.Cantidad,
+						edit: 0,
+						NombreProducto: title.Nombre,
+						NombrePorcion: nombrePorcion,
+					});
+					return data;
 				});
-				return data;
-			});
+			}
 		}
-	}, []);
+	});
 
 	function handleChange(event) {
 		setValue(event.target.value);
@@ -74,6 +77,7 @@ function Modal(Props) {
 	}
 
 	function createList() {
+		console.log(lista);
 		list.push({
 			IdProducto: title.IdProducto,
 			IdPorcion: porcion,
@@ -134,6 +138,7 @@ function Modal(Props) {
 					name="Cantidad"
 					margin="normal"
 					variant="outlined"
+					value={cantidadPorcion}
 					onChange={event => valueTextField(event)}
 				/>
 			</DialogContent>

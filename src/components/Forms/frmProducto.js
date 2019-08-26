@@ -148,9 +148,9 @@ class FrmEmpresa extends React.Component {
 			<form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
 				<Field name="Nombre" component={this.renderInput} label="Nombre" />
 				<Field name="Descripcion" component={this.renderInput} label="Descripcion" />
-				<Field name="tipoProducto" component={this.renderSelectTipo} label="Tipo Producto" />
-				<Field name="Siglas" component={this.renderSelectUnidad} label="Siglas" />
-				<Field name="Proveedor" component={this.renderSelectProveedor} label="Proveedor" />
+				<Field name="IdTipoProducto" component={this.renderSelectTipo} label="Tipo Producto" />
+				<Field name="IdUnidadMedida" component={this.renderSelectUnidad} label="Siglas" />
+				<Field name="IdProveedor" component={this.renderSelectProveedor} label="Proveedor" />
 				<div
 					style={{
 						bottom: '0',

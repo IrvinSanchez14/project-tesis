@@ -17,7 +17,7 @@ export const getDataId = createSelector(
 				if (data.IdPermiso === idPermiso) {
 					dataId.push({
 						id: data.IdPermiso,
-						estado: data.Estado,
+						Estado: data.Estado,
 					});
 				}
 			});
@@ -46,6 +46,7 @@ export const getDataBodyId = createSelector(
 						Nombre: data.Nombre,
 						Descripcion: data.Descripcion,
 						FechaCreacion: data.FechaCreacion,
+						Estado: data.Estado,
 					};
 				}
 			});

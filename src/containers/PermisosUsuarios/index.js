@@ -87,14 +87,14 @@ class PermisosUsuarios extends React.Component {
 	onChangeStateButton = check => {
 		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 		const updateState = {
-			IdTipoUsuario: check.id,
+			IdUsuario: check.id,
 			Estado: `${check.state}`,
 			UsuarioActualiza: userInfo.IdUsuario,
 		};
 		const messageState = check.state === true ? 'Disponible' : 'Inactivo';
 		// eslint-disable-next-line no-restricted-globals
 		if (confirm(`Esta seguro de cambiar el estado a ${messageState}`)) {
-			api.put('/tipoUsuario/updateState.php', updateState).then(data => {
+			api.put('/permisoUsuario/updateState.php', updateState).then(data => {
 				if (data.data.message) {
 					this.props.fetchPermisosUsuarios();
 					this.props.sidebarStateFalse();

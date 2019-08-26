@@ -15,7 +15,7 @@ import FrmProducto from '../../components/Forms/frmProducto';
 import { ErrorTabla } from '../../components/Error';
 
 import { fetchProducto, idSelectedProducto, creacionRegistro, autorizacionFormFail } from './actions';
-import { dataProducto, getDataId, getDataBodyId, getFormResponse } from './selectors';
+import { dataProducto, getDataId, getDataBodyId, getFormResponse, tablaProducto } from './selectors';
 
 import { sidebarState } from '../App/actions';
 import { stateSideBarMenu } from '../App/selectors';
@@ -38,11 +38,7 @@ class Productos extends React.Component {
 	}
 
 	headTable = () => {
-		let headTable;
-		this.props.dataProducto.map(producto => {
-			headTable = Object.keys(producto);
-			return producto;
-		});
+		const headTable = ['ID', 'Nombre', 'Descripción', 'Tipo de Producto', 'Siglas', 'Proveedor', 'Estado'];
 		return headTable;
 	};
 
@@ -138,7 +134,10 @@ class Productos extends React.Component {
 						'Descripcion',
 						'tipoProducto',
 						'Siglas',
-						'Proveedor'
+						'Proveedor',
+						'IdTipoProducto',
+						'IdUnidadMedida',
+						'IdProveedor'
 					)}
 					createData={true}
 					formResponse={this.props.getFormResponse}
@@ -156,7 +155,10 @@ class Productos extends React.Component {
 						'Descripcion',
 						'tipoProducto',
 						'Siglas',
-						'Proveedor'
+						'Proveedor',
+						'IdTipoProducto',
+						'IdUnidadMedida',
+						'IdProveedor'
 					)}
 					createData={false}
 					formResponse={this.props.getFormResponse}
@@ -172,7 +174,7 @@ class Productos extends React.Component {
 			arr.push(
 				<TableData
 					header={this.headTable()}
-					dataTable={this.props.dataProducto}
+					dataTable={this.props.tablaProducto}
 					ejemplo={this.datosTabla()}
 					getIDtable={this.getIDtable}
 					key="IdProducto"
@@ -227,6 +229,7 @@ export function mapStateToProps(state, props) {
 		getDataId: getDataId(state, props),
 		getDataBodyId: getDataBodyId(state, props),
 		getFormResponse: getFormResponse(state, props),
+		tablaProducto: tablaProducto(state, props),
 	};
 }
 

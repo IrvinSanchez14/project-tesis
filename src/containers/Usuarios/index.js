@@ -25,6 +25,7 @@ import { dataUsuarios, getDataId, getDataBodyId, getFormResponse, listaTipos } f
 import { sidebarState } from '../App/actions';
 import { stateSideBarMenu } from '../App/selectors';
 import { fetchTipoUsuario } from '../TipoUsuario/actions';
+import { fetchSucursal } from '../Sucursales/actions';
 
 import { permisosVerUsuarios } from '../../helpers/permisos';
 
@@ -36,6 +37,7 @@ class Usuarios extends React.Component {
 		}
 		this.props.fetchUsuarios();
 		this.props.fetchTipoUsuario();
+		this.props.fetchSucursal();
 	}
 
 	headTable = () => {
@@ -123,7 +125,8 @@ class Usuarios extends React.Component {
 						'Nombre',
 						'Email',
 						'Alias',
-						'IdTipoUsuario'
+						'IdTipoUsuario',
+						'Sucursal'
 					)}
 					createData={true}
 					formResponse={this.props.getFormResponse}
@@ -141,7 +144,8 @@ class Usuarios extends React.Component {
 						'Nombre',
 						'Email',
 						'Alias',
-						'IdTipoUsuario'
+						'IdTipoUsuario',
+						'Sucursal'
 					)}
 					createData={false}
 					formResponse={this.props.getFormResponse}
@@ -225,6 +229,7 @@ export const actions = {
 	sidebarStateFalse,
 	creacionRegistro,
 	autorizacionFormFail,
+	fetchSucursal,
 };
 
 Usuarios.propTypes = {

@@ -146,7 +146,7 @@ class SideBarMenu extends React.Component {
 							}}
 							onClick={this.handleSidebarHide}
 						>
-							<i class="far fa-times-circle" />
+							<i className="far fa-times-circle" />
 						</div>
 					</div>
 					<Menu.Item

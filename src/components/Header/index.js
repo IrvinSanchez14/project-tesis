@@ -8,12 +8,57 @@ import { logoutSuccessful } from '../../containers/Login/actions';
 import store from '../../store';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
-const styles = {
-	baseButton: {
-		backgroundColor: '#9ACD32',
-		color: '#FFF',
+const listaMenus = [
+	{
+		url: '/Empresa',
+		texto: 'Empresas',
 	},
-};
+	{
+		url: '/Estados',
+		texto: 'Estados',
+	},
+	{
+		url: '/Permisos',
+		texto: 'Permisos',
+	},
+	{
+		url: '/Productos',
+		texto: 'Productos',
+	},
+	{
+		url: '/Proveedores',
+		texto: 'Proveedores',
+	},
+
+	{
+		url: '/Sucursales',
+		texto: 'Sucursales',
+	},
+	{
+		url: '/TipoProducto',
+		texto: 'Tipos de Productos',
+	},
+	{
+		url: '/TipoUsuario',
+		texto: 'Tipos de Usuarios',
+	},
+	{
+		url: '/UnidadMedida',
+		texto: 'Unidades de Medidas',
+	},
+	{
+		url: '/PermisosUsuarios',
+		texto: 'Permisos de los Usuarios',
+	},
+	{
+		url: '/Usuarios',
+		texto: 'Usuarios',
+	},
+	{
+		url: '/Porciones',
+		texto: 'Porciones',
+	},
+];
 
 class Header extends React.Component {
 	cleanToken = () => {
@@ -44,7 +89,6 @@ class Header extends React.Component {
 			</Menu>
 		);
 		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-		console.log('el raus', userInfo ? userInfo.Nombre : null);
 
 		const menu = (
 			<Menu
@@ -66,102 +110,29 @@ class Header extends React.Component {
 				{this.props.tipoUsuario === '1' ? (
 					<Dropdown item text="Administracion" style={{ color: '#fff' }}>
 						<Dropdown.Menu>
-							<Link
-								to="/Empresa"
-								style={{
-									color: 'inherit',
-								}}
-							>
-								<Dropdown.Item>Empresas</Dropdown.Item>
-							</Link>
-							<Link
-								to="/Estados"
-								style={{
-									color: 'inherit',
-								}}
-							>
-								<Dropdown.Item>Estados</Dropdown.Item>
-							</Link>
-							<Link
-								to="/Permisos"
-								style={{
-									color: 'inherit',
-								}}
-							>
-								<Dropdown.Item>Permisos</Dropdown.Item>
-							</Link>
-							<Link
-								to="/Productos"
-								style={{
-									color: 'inherit',
-								}}
-							>
-								<Dropdown.Item>Productos</Dropdown.Item>
-							</Link>
-							<Link
-								to="/Proveedores"
-								style={{
-									color: 'inherit',
-								}}
-							>
-								<Dropdown.Item>Proveedores</Dropdown.Item>
-							</Link>
-							<Link
-								to="/Sucursales"
-								style={{
-									color: 'inherit',
-								}}
-							>
-								<Dropdown.Item>Sucursales</Dropdown.Item>
-							</Link>
-							<Link
-								to="/TipoProducto"
-								style={{
-									color: 'inherit',
-								}}
-							>
-								<Dropdown.Item>Tipos de Productos</Dropdown.Item>
-							</Link>
-							<Link
-								to="/TipoUsuario"
-								style={{
-									color: 'inherit',
-								}}
-							>
-								<Dropdown.Item>Tipos de Usuarios</Dropdown.Item>
-							</Link>
-							<Link
-								to="/UnidadMedida"
-								style={{
-									color: 'inherit',
-								}}
-							>
-								<Dropdown.Item>Unidades de Medidas</Dropdown.Item>
-							</Link>
-							<Link
-								to="/PermisosUsuarios"
-								style={{
-									color: 'inherit',
-								}}
-							>
-								<Dropdown.Item>Permisos de los Usuarios</Dropdown.Item>
-							</Link>
-							<Link
-								to="/Usuarios"
-								style={{
-									color: 'inherit',
-								}}
-							>
-								<Dropdown.Item>Usuarios</Dropdown.Item>
-							</Link>
-							<Link
-								to="/Porciones"
-								style={{
-									color: 'inherit',
-								}}
-							>
-								<Dropdown.Item>Porciones</Dropdown.Item>
-							</Link>
+							{listaMenus
+								.sort(function(a, b) {
+									if (a.texto > b.texto) {
+										return 1;
+									}
+									if (a.texto < b.texto) {
+										return -1;
+									}
+									return 0;
+								})
+								.map(menus => {
+									return (
+										<Link
+											key={menus.url}
+											to={menus.url}
+											style={{
+												color: 'inherit',
+											}}
+										>
+											<Dropdown.Item>{menus.texto}</Dropdown.Item>
+										</Link>
+									);
+								})}
 						</Dropdown.Menu>
 					</Dropdown>
 				) : null}

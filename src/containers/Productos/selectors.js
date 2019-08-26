@@ -10,6 +10,27 @@ const getTipoProducto = state => state.getIn(['tipoProducto', 'data']);
 const getUnidadMedida = state => state.getIn(['unidadMedida', 'data']);
 const getProveedor = state => state.getIn(['proveedor', 'data']);
 
+export const tablaProducto = createSelector(
+	dataProducto,
+	producto => {
+		let tabla;
+		if (producto) {
+			tabla = producto.map(data => {
+				return {
+					IdProducto: data.IdProducto,
+					Nombre: data.Nombre,
+					Descripcion: data.Descripcion,
+					tipoProducto: data.tipoProducto,
+					Siglas: data.Siglas,
+					Proveedor: data.Proveedor,
+					Estado: data.Estado,
+				};
+			});
+		}
+		return tabla;
+	}
+);
+
 export const tiposProductos = createSelector(
 	getTipoProducto,
 	getProducto,
@@ -114,7 +135,7 @@ export const getDataId = createSelector(
 				if (data.IdProducto === idProducto) {
 					dataId.push({
 						id: data.IdProducto,
-						estado: data.Estado,
+						Estado: data.Estado,
 					});
 				}
 			});
@@ -147,6 +168,10 @@ export const getDataBodyId = createSelector(
 						tipoProducto: data.tipoProducto,
 						Siglas: data.Siglas,
 						Proveedor: data.Proveedor,
+						Estado: data.Estado,
+						IdTipoProducto: data.IdTipoProducto,
+						IdUnidadMedida: data.IdUnidadMedida,
+						IdProveedor: data.IdProveedor,
 					};
 				}
 			});

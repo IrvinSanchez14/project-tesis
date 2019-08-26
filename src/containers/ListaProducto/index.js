@@ -62,7 +62,6 @@ class ListaProducto extends React.Component {
 	};
 
 	getIDtable = id => {
-		console.log('irvin', this.props.getDataId);
 		this.props.sidebarState();
 		this.props.idSelectedListadoProductos(id);
 		this.props.autorizacionFormFail(false);
@@ -160,7 +159,6 @@ class ListaProducto extends React.Component {
 	};
 
 	render() {
-		console.log('eduardo', this.props);
 		const arr = [];
 		if (this.props.dataLecturaProducto) {
 			arr.push(
