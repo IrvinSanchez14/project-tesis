@@ -89,3 +89,89 @@
 .button-table:hover {
 	background-color: #4f8d1e;
 }
+
+#login-box {
+	position: relative;
+	margin: 5% auto;
+	width: 300px;
+	height: 400px;
+	background: #fff;
+	border-radius: 2px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.left-login {
+	position: absolute;
+	top: 0;
+	left: 0;
+	box-sizing: border-box;
+	padding: 40px;
+	width: 300px;
+	height: 400px;
+}
+
+.input-login {
+	display: block;
+	box-sizing: border-box;
+	margin-bottom: 20px;
+	padding: 4px;
+	width: 220px;
+	height: 32px;
+	border: none;
+	border-bottom: 1px solid #aaa;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 400;
+	font-size: 15px;
+	transition: 0.2s ease;
+}
+
+.input-login:focus {
+	border-bottom: 2px solid #16a085;
+	color: #16a085;
+	transition: 0.2s ease;
+}
+
+.button-login {
+	margin-top: 28px;
+	width: 120px;
+	height: 32px;
+	background: #16a085;
+	border: none;
+	border-radius: 2px;
+	color: #fff;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 500;
+	text-transform: uppercase;
+	transition: 0.1s ease;
+	cursor: pointer;
+}
+
+.button-login:hover {
+	opacity: 0.8;
+	background-color: #ff5722;
+	box-shadow: 0 2px 4px #fda68c;
+	transition: 0.1s ease;
+}
+
+.button-login:active {
+	opacity: 1;
+	box-shadow: 0 1px 2px #ff5722;
+	transition: 0.6s ease;
+}
+
+.forgotPassword {
+	margin-right: -127px;
+	font-size: 12px;
+}
+
+.makeStyles-appBar-30 {
+	position: inherit;
+}
+
+.button-table {
+	background-color: #66b727;
+}
+
+.button-table:hover {
+	background-color: #4f8d1e;
+}

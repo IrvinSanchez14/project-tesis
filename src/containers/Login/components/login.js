@@ -12,15 +12,18 @@ export class Login extends React.Component {
 		return (
 			<div>
 				<div id="login-box">
-					<div className="left">
+					<div className="left-login">
 						<h1>Ingresar</h1>
-						<form onSubmit={handleSubmit(onSubmit)}>
+						<form
+							onSubmit={handleSubmit(onSubmit)}
+							style={{ top: '11px', position: 'relative', right: '16px' }}
+						>
 							<div className="container">
 								<Field
 									name="email"
 									type="text"
 									id="email"
-									className="email"
+									className="input-login"
 									label="Correo"
 									placeholder="Correo"
 									component="input"
@@ -32,12 +35,12 @@ export class Login extends React.Component {
 									name="password"
 									type="password"
 									id="password"
-									className="password"
+									className="input-login"
 									label="Contraseña"
 									placeholder="Contraseña"
 									component="input"
 								/>
-								<input type="submit" name="signin_submit" value="Ingresar" />
+								<input type="submit" className="button-login" name="signin_submit" value="Ingresar" />
 							</div>
 						</form>
 					</div>

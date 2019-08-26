@@ -23,6 +23,7 @@ import Usuarios from '../Usuarios';
 import Porciones from '../Porciones';
 import ListaProducto from '../ListaProducto';
 import CambioPass from '../CambioPass';
+import Checkout from '../RecepcionProducto';
 
 const App = () => {
 	const local = JSON.parse(localStorage.getItem('userInfo'));
@@ -51,6 +52,7 @@ const App = () => {
 				<Route path="/Usuarios" exact component={Usuarios} />
 				<Route path="/Porciones" exact component={Porciones} />
 				<Route path="/ListaProducto" exact component={ListaProducto} />
+				<Route path="/RecepcionProducto" exact component={Checkout} />
 				<Route
 					path="/CambioPassword"
 					exact

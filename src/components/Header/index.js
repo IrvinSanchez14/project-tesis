@@ -8,13 +8,6 @@ import { logoutSuccessful } from '../../containers/Login/actions';
 import store from '../../store';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
-const styles = {
-	baseButton: {
-		backgroundColor: '#9ACD32',
-		color: '#FFF',
-	},
-};
-
 const listaMenus = [
 	{
 		url: '/Empresa',

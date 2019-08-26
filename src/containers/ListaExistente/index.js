@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
-import Fab from '@material-ui/core/Fab';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
@@ -9,7 +8,6 @@ import Modal from '../../components/Modal';
 import ModalTable from '../../components/ModalTable';
 import Typography from '@material-ui/core/Typography';
 import { ErrorTabla } from '../../components/Error';
-import { Input } from 'semantic-ui-react';
 
 import { fetchListadoProductos } from '../ListaProducto/actions';
 import { fetchProducto } from '../Productos/actions';
@@ -23,7 +21,7 @@ const useStyles = makeStyles({
 	card: {
 		maxWidth: 345,
 		margin: '15px',
-		width: '241px',
+		width: '339px',
 		background: '#F2F2F2',
 		borderLeft: '3px solid #5AA226',
 		boxShadow: '0px 1px 3px 0px rgba(0,0,0,0), 0px 1px 1px 0px rgba(0,0,0,0.0), 0px 2px 1px -1px rgba(0,0,0,0.0)',
@@ -66,9 +64,9 @@ function ListaExistente(Props) {
 
 	return permisoVerListaExistente() ? (
 		<div style={{ margin: '20px' }}>
-			<div style={{ marginLeft: '16px' }}>
+			<div style={{ marginLeft: '15px' }}>
 				<h1 style={{ fontFamily: 'Open Sans', fontSize: '28px', fontWeight: 600 }}>Productos Existentes</h1>
-				<div style={{ display: 'flex', flexFlow: 'row wrap' }}>
+				<div style={{ display: 'flex', flexFlow: 'row wrap', marginLeft: '-8px' }}>
 					<div style={{ flex: 1, margin: '10px' }}>
 						<button
 							className="button-table"
@@ -89,7 +87,7 @@ function ListaExistente(Props) {
 						</button>
 					</div>
 					<div style={{ margin: '10px' }}>
-						<div className="ui left icon input">
+						<div className="ui left icon input" style={{ marginRight: '9px' }}>
 							<input type="text" placeholder="Buscar producto" style={{ border: '2px solid #f2f2f2' }} />
 							<i className="search icon" />
 						</div>
