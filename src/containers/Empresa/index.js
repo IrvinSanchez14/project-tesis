@@ -78,11 +78,15 @@ class Empresa extends React.Component {
 		if (formValues.flag === 'create') {
 			// eslint-disable-next-line no-restricted-globals
 			if (confirm('Esta seguro de guardar la siguiente Empresa en la Base de Datos?')) {
-				api.post('/Empresas/create.php', formValues).then(
-					data => this.props.fetchEmpresa(),
-					this.props.autorizacionFormFail(true),
-					this.props.sidebarStateFalse()
-				);
+				api.post('/Empresas/create.php', formValues).then(response => {
+					if (response.data.flag !== 0) {
+						alert(response.data.message);
+					} else {
+						this.props.fetchProducto();
+						this.props.autorizacionFormFail(true);
+						this.props.sidebarStateFalse();
+					}
+				});
 			} else {
 				return;
 			}

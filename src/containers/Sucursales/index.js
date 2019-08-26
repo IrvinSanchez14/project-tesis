@@ -76,11 +76,15 @@ class Sucursales extends Component {
 		if (formValues.flag === 'create') {
 			// eslint-disable-next-line no-restricted-globals
 			if (confirm('Esta seguro de guardar la siguiente sucursal en la Base de Datos?')) {
-				api.post('/Sucursales/create.php', formValues).then(
-					data => this.props.fetchSucursal(),
-					this.props.autorizacionFormFail(true),
-					this.props.sidebarStateFalse()
-				);
+				api.post('/Sucursales/create.php', formValues).then(response => {
+					if (response.data.flag !== 0) {
+						alert(response.data.message);
+					} else {
+						this.props.fetchSucursal();
+						this.props.autorizacionFormFail(true);
+						this.props.sidebarStateFalse();
+					}
+				});
 			} else {
 				return this.props.autorizacionFormFail(false);
 			}

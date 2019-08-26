@@ -59,11 +59,15 @@ class Estados extends React.Component {
 		if (formValues.flag === 'create') {
 			// eslint-disable-next-line no-restricted-globals
 			if (confirm('Esta seguro de guardar el siguiente estado en la Base de Datos?')) {
-				api.post('/Estado/create.php', formValues).then(
-					data => this.props.fetchEstados(),
-					this.props.autorizacionFormFail(true),
-					this.props.sidebarStateFalse()
-				);
+				api.post('/Estado/create.php', formValues).then(response => {
+					if (response.data.flag !== 0) {
+						alert(response.data.message);
+					} else {
+						this.props.fetchProducto();
+						this.props.autorizacionFormFail(true);
+						this.props.sidebarStateFalse();
+					}
+				});
 			} else {
 				return this.props.autorizacionFormFail(false);
 			}
