@@ -175,3 +175,25 @@
 .button-table:hover {
 	background-color: #4f8d1e;
 }
+
+.tabla-factura:hover {
+	background-color: #ffff99;
+	cursor: pointer;
+}
+
+hr {
+	display: block;
+	height: 1px;
+	border: 0;
+	border-top: 1px solid #000;
+	margin: 1em 0;
+	padding: 0;
+}
+
+.container22 {
+	display: flex;
+}
+.container22 > div {
+	flex: 1; /*grow*/
+	margin-right: 8px;
+}

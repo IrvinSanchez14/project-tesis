@@ -1,18 +1,21 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import DateFnsUtils from '@date-io/date-fns';
+
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 
 import { checkCabeceraFactura } from '../../FacturaStore/actions';
 import { revisarCabecera } from '../../FacturaStore/selectors';
+import esLocale from 'date-fns/locale/es';
 
 function AddressForm(Props) {
 	const { revisarCabecera, checkCabeceraFactura } = Props;
-	const [selectedDate, setSelectedDate] = React.useState(new Date('2019-01-01T21:11:54'));
+	const [selectedDate, setSelectedDate] = React.useState(new Date());
 	const [numeroFactura, setNumeroFactura] = React.useState('');
 	const [proveedor, setProveedor] = React.useState('');
 	const [tipoFactura, setTipoFactura] = React.useState('');
@@ -46,12 +49,13 @@ function AddressForm(Props) {
 	useEffect(() => {
 		if (revisarCabecera) {
 			const cabeceraFactura = {
-				Fecha: selectedDate,
+				Fecha: moment(selectedDate).format('MM/DD/YYYY'),
 				NumeroFactura: numeroFactura,
 				Proveedor: proveedor,
 				TipoFactura: tipoFactura,
 				SinIva: sinIva,
 				IVA: iva,
+				UsuarioCreador: 1,
 			};
 			checkCabeceraFactura(cabeceraFactura, true);
 		}
@@ -64,7 +68,7 @@ function AddressForm(Props) {
 			</Typography>
 			<Grid container spacing={3}>
 				<Grid item xs={12}>
-					<MuiPickersUtilsProvider utils={DateFnsUtils}>
+					<MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
 						<KeyboardDatePicker
 							margin="normal"
 							id="date-picker-dialog"

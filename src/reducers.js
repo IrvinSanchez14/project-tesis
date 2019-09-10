@@ -19,6 +19,7 @@ import porciones from './containers/Porciones/reducer';
 import listadoProducto from './containers/ListaProducto/reducer';
 import listaExistente from './containers/ListaExistente/reducer';
 import factura from './FacturaStore/reducer';
+import facturaInformacion from './containers/CentroProduccion/reducer';
 
 const appReducer = combineReducers({
 	form: reduxFormReducer,
@@ -41,6 +42,7 @@ const appReducer = combineReducers({
 	listadoProducto,
 	listaExistente,
 	factura,
+	facturaInformacion,
 });
 
 export default appReducer;

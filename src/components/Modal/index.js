@@ -77,7 +77,6 @@ function Modal(Props) {
 	}
 
 	function createList() {
-		console.log(lista);
 		list.push({
 			IdProducto: title.IdProducto,
 			IdPorcion: porcion,
@@ -89,6 +88,7 @@ function Modal(Props) {
 		setLista(list);
 		setVisibleModal(false);
 		localStorage.setItem('listaExistente', JSON.stringify(list));
+		console.log(lista);
 	}
 
 	return (

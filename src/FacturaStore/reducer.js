@@ -7,7 +7,6 @@ const initialState = fromJS({
 });
 
 export default function(state = initialState, action) {
-	console.log(action);
 	switch (action.type) {
 		case ACTIONS.CLICK_FACTURA: {
 			return state.set('revisarFactura', action.estado);

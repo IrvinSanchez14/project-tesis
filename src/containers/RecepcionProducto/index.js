@@ -9,13 +9,14 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import api from '../../api';
 
 import AddressForm from './AddressForm';
 import PaymentForm from './PaymentForm';
 import Review from './Review';
 
 import { clickFactura, removeBanderaCabecera } from '../../FacturaStore/actions';
-import { checkCorrecto } from '../../FacturaStore/selectors';
+import { checkCorrecto, Cabecera, listaDetalleFactura } from '../../FacturaStore/selectors';
 
 const useStyles = makeStyles(theme => ({
 	appBar: {
@@ -73,7 +74,7 @@ function getStepContent(step) {
 }
 
 function Checkout(Props) {
-	const { clickFactura, checkCorrecto, removeBanderaCabecera } = Props;
+	const { clickFactura, checkCorrecto, removeBanderaCabecera, Cabecera, listaDetalleFactura } = Props;
 	const classes = useStyles();
 	const [activeStep, setActiveStep] = React.useState(0);
 	const [p, setP] = React.useState(false);
@@ -97,14 +98,15 @@ function Checkout(Props) {
 		setActiveStep(activeStep - 1);
 	};
 
+	function sendFactura() {
+		api.post('/Factura/create.php', { Cabecera: Cabecera, Detalle: listaDetalleFactura }).then(response => {});
+	}
+
 	useEffect(() => {
 		if (p) {
 			handleNext();
 		}
 	});
-
-	const detalleFactura = JSON.parse(localStorage.getItem('detalleFactura'));
-	console.log(detalleFactura);
 
 	return (
 		<div>
@@ -150,17 +152,29 @@ function Checkout(Props) {
 											Atras
 										</Button>
 									) : null}
-									{console.log('activeStep', activeStep)}
-									<Button
-										variant="contained"
-										color="primary"
-										onClick={() => {
-											click();
-										}}
-										className={classes.button}
-									>
-										{activeStep === steps.length - 1 ? 'Terminar Factura' : 'Siguiente'}
-									</Button>
+									{activeStep === steps.length - 1 ? (
+										<Button
+											variant="contained"
+											color="primary"
+											onClick={() => {
+												sendFactura();
+											}}
+											className={classes.button}
+										>
+											Terminar Factura
+										</Button>
+									) : (
+										<Button
+											variant="contained"
+											color="primary"
+											onClick={() => {
+												click();
+											}}
+											className={classes.button}
+										>
+											Siguiente
+										</Button>
+									)}
 								</div>
 							</React.Fragment>
 						)}
@@ -174,6 +188,8 @@ function Checkout(Props) {
 export function mapStateToProps(state, props) {
 	return {
 		checkCorrecto: checkCorrecto(state, props),
+		Cabecera: Cabecera(state, props),
+		listaDetalleFactura: listaDetalleFactura(state, props),
 	};
 }
 

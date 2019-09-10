@@ -148,7 +148,6 @@ class Porciones extends React.Component {
 	};
 
 	render() {
-		console.log(this.props);
 		const arr = [];
 		if (this.props.dataPorciones) {
 			arr.push(

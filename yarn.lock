@@ -921,6 +921,13 @@
     lerna "^3.10.2"
     typescript "^3.2.2"
 
+"@date-io/luxon@^1.3.9":
+  version "1.3.9"
+  resolved "https://registry.yarnpkg.com/@date-io/luxon/-/luxon-1.3.9.tgz#539841db463b355c665392697986286024334784"
+  integrity sha512-i2cMq6gZ7rR3kiF8lf2niFaJNPZvH1GgwD26gYvN2un79TZ3bAFouYGip3H+Ze7nDWLLzLFbAijGcBl4Mdot1g==
+  dependencies:
+    "@date-io/core" "^1.3.9"
+
 "@date-io/moment@1.3.5":
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/@date-io/moment/-/moment-1.3.5.tgz#e5bf3837cbd3f5f5f5d7f49d8549e4118ea75f8d"
@@ -8832,7 +8839,7 @@ modify-values@^1.0.0:
   resolved "https://registry.yarnpkg.com/modify-values/-/modify-values-1.0.1.tgz#b3939fa605546474e3e3e3c63d64bd43b4ee6022"
   integrity sha512-xV2bxeN6F7oYjZWTe/YPAy6MN2M+sL4u/Rlm2AHCIVGfo2p1yGmBHQ6vHehl4bRTZBdHu3TSkWdYgkwpYzAGSw==
 
-moment@2.24.0, moment@^2.10.2:
+moment@2.24.0, moment@^2.10.2, moment@^2.24.0:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==

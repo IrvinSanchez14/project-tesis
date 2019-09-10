@@ -52,30 +52,24 @@ export default function CustomizedMenus(Props) {
 	}
 
 	function callApiPDF() {
-		//console.log('Props', Props);
 		api.get(`${Props.ruta}`, { responseType: 'blob' }).then(response => {
-			//console.log('response', response.data);
 			const url = window.URL.createObjectURL(new Blob([response.data]));
 			const link = document.createElement('a');
 			link.href = url;
 			link.setAttribute('download', `${Props.titulo}.pdf`);
 			document.body.appendChild(link);
 			link.click();
-			//Response.data;
 		});
 	}
 
 	function callApiCSV() {
-		//console.log('Props', Props);
 		api.get(`${Props.csv}`, { responseType: 'blob' }).then(response => {
-			console.log(response);
 			const url = window.URL.createObjectURL(new Blob([response.data]));
 			const link = document.createElement('a');
 			link.href = url;
 			link.setAttribute('download', `${Props.titulo}.csv`);
 			document.body.appendChild(link);
 			link.click();
-			//Response.data;
 		});
 	}
 
