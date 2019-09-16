@@ -135,6 +135,7 @@ class FrmUsuario extends React.Component {
 			data = fromJS({
 				flag: 'create',
 				UsuarioCreador: userInfo.IdUsuario,
+				IdSucursal: 3,
 			});
 		} else {
 			data = fromJS({
@@ -162,7 +163,7 @@ class FrmUsuario extends React.Component {
 			const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
 			let arreglo = this.props.getDataBodyId;
 			let nombreSucursal;
-			nombreSucursal = this.props.dataSucursal.sort(function(a, b) {
+			/*nombreSucursal = this.props.dataSucursal.sort(function(a, b) {
 				if (arreglo.Sucursal === b.Nombre) {
 					return 1;
 				}
@@ -171,7 +172,7 @@ class FrmUsuario extends React.Component {
 				}
 				// a must be equal to b
 				return 0;
-			});
+			});*/
 
 			return (
 				<div className={className}>
@@ -179,7 +180,7 @@ class FrmUsuario extends React.Component {
 					<select {...input}>
 						{this.props.createData ? <option /> : null}
 						{this.props.dataSucursal
-							? nombreSucursal.map(sucursal => {
+							? this.props.dataSucursal.map(sucursal => {
 									return (
 										<option key={sucursal.IdSucursal} value={sucursal.IdSucursal}>
 											{sucursal.Nombre}
@@ -192,6 +193,8 @@ class FrmUsuario extends React.Component {
 				</div>
 			);
 		};
+		console.log('this.props', this.props);
+		console.log('this.state', this.state);
 		return (
 			<form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
 				<Field name="Nombre" component={this.renderInput} label="Nombre" />

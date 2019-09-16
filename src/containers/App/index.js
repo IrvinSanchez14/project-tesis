@@ -25,6 +25,8 @@ import ListaProducto from '../ListaProducto';
 import CambioPass from '../CambioPass';
 import Checkout from '../RecepcionProducto';
 import CentroProduccion from '../CentroProduccion';
+import Produccion from '../CentroProduccion/Produccion';
+import NotaEnvio from '../CentroProduccion/NotaEnvio';
 
 const App = () => {
 	const local = JSON.parse(localStorage.getItem('userInfo'));
@@ -38,6 +40,7 @@ const App = () => {
 			<Header stateLogin={isLoggedIn()} tipoUsuario={tipo} />
 			<Switch>
 				<Route path="/" exact render={() => (isLoggedIn() ? <Welcome /> : <Login />)} />
+				<Route path="/restaurantesivar.com" exact render={() => (isLoggedIn() ? <Welcome /> : <Login />)} />
 				<Route path="/TipoUsuario" exact component={TipoUsuario} />
 				<Route path="/Empresa" exact component={Empresa} />
 				<Route path="/ListaExistente" exact component={ListaExistente} />
@@ -55,6 +58,8 @@ const App = () => {
 				<Route path="/ListaProducto" exact component={ListaProducto} />
 				<Route path="/RecepcionProducto" exact component={Checkout} />
 				<Route path="/ListaCP" exact component={CentroProduccion} />
+				<Route path="/Produccion" exact component={Produccion} />
+				<Route path={`/Produccion/NotaEnvio`} exact component={NotaEnvio} />
 				<Route
 					path="/CambioPassword"
 					exact

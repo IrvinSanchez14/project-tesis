@@ -16,6 +16,7 @@ class CentroProduccion extends React.Component {
 	}
 	render() {
 		const { dataFactura } = this.props;
+		console.log(this.props);
 		if (this.props.dataFactura) {
 			return (
 				<div>

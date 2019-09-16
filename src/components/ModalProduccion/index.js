@@ -11,13 +11,11 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 import { Table, Form } from 'semantic-ui-react';
 
-import { fetchListadoProductos } from '../../containers/ListaProducto/actions';
-import { dataPorciones } from '../../containers/Porciones/selectors';
-import { dataListadoProducto } from '../../containers/ListaProducto/selectors';
+import { fetchSucursal } from '../../containers/Sucursales/actions';
+import { dataSucursal } from '../../containers/Sucursales/selectors';
+import { dataDetalleProduccion } from '../../containers/CentroProduccion/selectors';
+import { updateDetalleCantidad } from '../../containers/CentroProduccion/actions';
 
-import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
-import esLocale from 'date-fns/locale/es';
-import DateFnsUtils from '@date-io/date-fns';
 import api from '../../api';
 
 const styles = {
@@ -36,24 +34,29 @@ const styles = {
 };
 
 let list = [];
-function ModalFactura(Props) {
-	const { visibleModal, setVisibleModal, arrays, detalles, dataListadoProducto, dataPorciones } = Props;
+function ModalProduccion(Props) {
+	const {
+		visibleModal,
+		setVisibleModal,
+		arrays,
+		fetchSucursal,
+		dataSucursal,
+		dataDetalleProduccion,
+		updateDetalleCantidad,
+	} = Props;
 	const theme = useTheme();
 	const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 	const [available, setAvailable] = useState(false);
-	const [listPorcion, setListPorcion] = useState([]);
+	const [sucursal, setSucursal] = useState([]);
 	const [porcionAdd, setPorcionAdd] = useState([]);
 	const [inputCantidad, setInputCantidad] = useState(0);
-	const [selectPorcion, setSelectPorcion] = useState(0);
+	const [nombreSucursal, setNombreSucursal] = useState(0);
 	const [showList, setShowList] = useState(false);
 	const [nombreProducto, setNombreProducto] = useState('');
 	const [nombrePorcion, setNombrePorcion] = useState('');
-	const [selectedDate, setSelectedDate] = React.useState(new Date());
-	const [idProducto, setIdProducto] = useState(0);
-
-	function handleDateChange(date) {
-		setSelectedDate(date);
-	}
+	const [idProduccion, setIdProduccion] = useState(0);
+	const [index, setIndex] = useState(0);
+	const [cantidadRedux, setCantidadRedux] = useState(0);
 
 	function handleClose() {
 		setVisibleModal(false);
@@ -61,21 +64,14 @@ function ModalFactura(Props) {
 		setInputCantidad(0);
 	}
 
-	function crearPorcion(nameProduct, id) {
-		let newList;
-		const names = [];
-		dataListadoProducto.map(list => {
-			if (list.NombreProducto === nameProduct) {
-				names.push(list.IdPorcion);
-			}
-			return names;
-		});
-
-		newList = dataPorciones.filter(PNA => names.includes(PNA.IdPorcion));
-		setListPorcion(newList);
+	function crearPorcion(nameProduct, id, porcion, indice, cantidadOriginal) {
+		fetchSucursal();
+		setIdProduccion(id);
+		setNombrePorcion(porcion);
 		setAvailable(true);
 		setNombreProducto(nameProduct);
-		setIdProducto(id);
+		setCantidadRedux(cantidadOriginal);
+		setIndex(indice);
 	}
 
 	useEffect(() => {
@@ -86,26 +82,35 @@ function ModalFactura(Props) {
 
 	function createPorcionAdd() {
 		list.push({
-			IdProducto: idProducto,
 			Cantidad: inputCantidad,
-			IdPorcion: selectPorcion,
+			IdProduccion: idProduccion,
 			nombreProducto: nombreProducto,
 			nombrePorcion: nombrePorcion,
-			FechaVencimiento: moment(selectedDate).format('YYYY-MM-DD'),
+			nombreSucursal: nombreSucursal,
+			IdSucursal: sucursal,
+			UsuarioCreador: 1,
 		});
 		setPorcionAdd(list);
+		setCantidadRedux(dataDetalleProduccion[index].Cantidad);
 		setShowList(true);
 	}
 
 	function handleChangeCantidad(e) {
-		setInputCantidad(e.target.value);
-		setShowList(false);
+		const cantidadIngresada = e.target.value;
+		const total = cantidadRedux - cantidadIngresada;
+		if (total < 0) {
+			console.log('valor mayor que original', total);
+		} else {
+			setInputCantidad(e.target.value);
+			updateDetalleCantidad(total, index);
+			setShowList(false);
+		}
 	}
 	function handleSelect(e) {
 		const index = e.nativeEvent.target.selectedIndex;
 		const name = e.nativeEvent.target[index].text;
-		setSelectPorcion(e.target.value);
-		setNombrePorcion(name);
+		setSucursal(e.target.value);
+		setNombreSucursal(name);
 		setShowList(false);
 	}
 
@@ -121,17 +126,14 @@ function ModalFactura(Props) {
 
 	function sendListaProduccion() {
 		console.log('enviando...');
-		console.log(arrays);
-		const cabecera = {
-			lote: arrays.Lote,
-			IdCP: arrays.IdCP,
-			UsuarioCreador: 1,
-		};
-		api.post('/Produccion/create.php', { Cabecera: cabecera, Detalle: list })
-			.then(response => {})
-			.catch(error => {
-				console.log(error);
-			});
+		console.log(list);
+		api.post('/Produccion/createNotaEnvio.php', {  Detalle: list })
+		.then(response => {
+			console.log(response)
+		})
+		.catch(error => {
+			console.log(error);
+		});
 	}
 
 	return (
@@ -148,36 +150,50 @@ function ModalFactura(Props) {
 					color: '#FFF',
 				}}
 			>
-				{`Lote: ${arrays.Lote}`}
+				{`Lote: ${arrays.lote}`}
 			</DialogTitle>
 			<DialogContent>
 				<Table padded>
 					<Table.Header>
 						<Table.Row>
 							<Table.HeaderCell>ID</Table.HeaderCell>
-							<Table.HeaderCell>Nombre</Table.HeaderCell>
+							<Table.HeaderCell>Producto</Table.HeaderCell>
 							<Table.HeaderCell>Cantidad</Table.HeaderCell>
-							<Table.HeaderCell>Unidad de medida</Table.HeaderCell>
+							<Table.HeaderCell>Porcion</Table.HeaderCell>
+							<Table.HeaderCell>Fecha de Vencimiento</Table.HeaderCell>
 						</Table.Row>
 					</Table.Header>
 
 					<Table.Body>
-						{detalles.map(detalle => {
-							return (
-								<Table.Row
-									key={detalle.IdCPdetalle}
-									onClick={() => {
-										crearPorcion(detalle.Nombre, detalle.IdProducto);
-									}}
-									className="tabla-factura"
-								>
-									<Table.Cell>{detalle.IdCPdetalle}</Table.Cell>
-									<Table.Cell>{detalle.Nombre}</Table.Cell>
-									<Table.Cell>{detalle.Cantidad}</Table.Cell>
-									<Table.Cell>{detalle.NombreUnidad}</Table.Cell>
-								</Table.Row>
-							);
-						})}
+						{dataDetalleProduccion
+							? dataDetalleProduccion.map((detalle, index) => {
+									return (
+										<Table.Row
+											key={detalle.IdProduccion}
+											onClick={() => {
+												crearPorcion(
+													detalle.NombreProducto,
+													detalle.IdProduccion,
+													detalle.NombrePorcion,
+													index,
+													detalle.Cantidad
+												);
+											}}
+											className="tabla-factura"
+										>
+											<Table.Cell>{detalle.IdProduccion}</Table.Cell>
+											<Table.Cell>{detalle.NombreProducto}</Table.Cell>
+											<Table.Cell>{detalle.Cantidad}</Table.Cell>
+											<Table.Cell>{detalle.NombrePorcion}</Table.Cell>
+											<Table.Cell>
+												{moment(detalle.FechaVencimiento)
+													.utc()
+													.format('YYYY-MM-DD')}
+											</Table.Cell>
+										</Table.Row>
+									);
+							  })
+							: null}
 					</Table.Body>
 				</Table>
 				<hr />
@@ -187,13 +203,13 @@ function ModalFactura(Props) {
 							<div>
 								<div>
 									<div>
-										{listPorcion ? (
+										{dataSucursal ? (
 											<select onChange={e => handleSelect(e)}>
-												{listPorcion.map(list => {
+												{dataSucursal.map(sucursal => {
 													return (
-														<option key={list.IdPorcion} value={list.IdPorcion}>{`${
-															list.Cantidad
-														} ${list.UnidadMedida}`}</option>
+														<option key={sucursal.IdSucursal} value={sucursal.IdSucursal}>
+															{sucursal.Nombre}
+														</option>
 													);
 												})}
 											</select>
@@ -208,19 +224,6 @@ function ModalFactura(Props) {
 											onChange={e => handleChangeCantidad(e)}
 										/>
 									</div>
-									<MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
-										<KeyboardDatePicker
-											margin="normal"
-											id="date-picker-dialog"
-											label="Fecha de recepcion"
-											format="MM/dd/yyyy"
-											value={selectedDate}
-											onChange={handleDateChange}
-											KeyboardButtonProps={{
-												'aria-label': 'change date',
-											}}
-										/>
-									</MuiPickersUtilsProvider>
 								</div>
 							</div>
 							<div
@@ -249,8 +252,10 @@ function ModalFactura(Props) {
 													<div style={styles.liDiv}>
 														<span style={styles.liSpan}>{result.nombreProducto}</span>
 														<span style={styles.liSpan}>{result.Cantidad}</span>
+														<span style={styles.liSpan}>Porciones de :</span>
 														<span style={styles.liSpan}>{result.nombrePorcion}</span>
-														<span style={styles.liSpan}>{result.FechaVencimiento}</span>
+														<span style={styles.liSpan}>Enviado a :</span>
+														<span style={styles.liSpan}>{result.nombreSucursal}</span>
 														<i
 															style={styles.liIcon}
 															className="fas fa-times"
@@ -266,8 +271,10 @@ function ModalFactura(Props) {
 													<div style={styles.liDiv}>
 														<span style={styles.liSpan}>{result.nombreProducto}</span>
 														<span style={styles.liSpan}>{result.Cantidad}</span>
+														<span style={styles.liSpan}>Porciones de :</span>
 														<span style={styles.liSpan}>{result.nombrePorcion}</span>
-														<span style={styles.liSpan}>{result.FechaVencimiento}</span>
+														<span style={styles.liSpan}>Enviado a :</span>
+														<span style={styles.liSpan}>{result.nombreSucursal}</span>
 														<i
 															style={styles.liIcon}
 															className="fas fa-times"
@@ -297,16 +304,17 @@ function ModalFactura(Props) {
 
 export function mapStateToProps(state, props) {
 	return {
-		dataListadoProducto: dataListadoProducto(state, props),
-		dataPorciones: dataPorciones(state, props),
+		dataDetalleProduccion: dataDetalleProduccion(state, props),
+		dataSucursal: dataSucursal(state, props),
 	};
 }
 
 export const actions = {
-	fetchListadoProductos,
+	fetchSucursal,
+	updateDetalleCantidad,
 };
 
 export default connect(
 	mapStateToProps,
 	actions
-)(ModalFactura);
+)(ModalProduccion);

@@ -37,7 +37,7 @@ export default function* rootSaga() {
 		PorcionSagas,
 		...ListaProductoSagas,
 		ListaExistenteSagas,
-		FacturaInformacion,
+		...FacturaInformacion,
 	];
 	for (let i = 0; i < allSagas.length; i += 1) {
 		yield fork(allSagas[i]);
