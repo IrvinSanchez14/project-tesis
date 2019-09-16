@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { MDBBtn, MDBCard, MDBCardBody, MDBCardTitle, MDBInput, MDBCol } from 'mdbreact';
+import { MDBBtn, MDBCard, MDBCardBody, MDBCardTitle, MDBInput, MDBCol, MDBNotification } from 'mdbreact';
 import api from '../../../api';
 
 import './stylesForReg.css';
-import Notification from '../../../components/Notification';
 
 export class Register extends React.Component {
-	state = { Email: '', loading: '', notification: false, mensajeNotificacion: '', status: 0 };
+	state = { Email: '', loading: '', notification: false, messageServer: '', colorserver: 0 };
 
 	handleChange = e => {
 		this.setState({
@@ -20,23 +19,25 @@ export class Register extends React.Component {
 			loading: true,
 			notification: false,
 		});
-		api.post('/user/recuperacion.php', { Email: this.state.Email }).then(respuesta => {
-			if (respuesta.data.server === 'Ok') {
+		api.post('/user/recuperacion.php', { Email: this.state.Email })
+			.then(respuesta => {
+				console.log(respuesta);
 				this.setState({
 					loading: false,
 					notification: true,
-					mensajeNotificacion: respuesta.data.message,
-					status: 0,
+					messageServer: respuesta.data.message,
+					colorserver: 1,
 				});
-			} else {
+			})
+			.catch(error => {
+				console.log(error.response.data.Error);
 				this.setState({
 					loading: false,
 					notification: true,
-					mensajeNotificacion: respuesta.data.error,
-					status: 1,
+					messageServer: error.response.data.Error,
+					colorserver: 2,
 				});
-			}
-		});
+			});
 	};
 
 	render() {
@@ -73,7 +74,25 @@ export class Register extends React.Component {
 					) : null}
 				</div>
 				{this.state.notification ? (
-					<Notification status={this.state.status} mensajeNotificacion={this.state.mensajeNotificacion} />
+					<MDBNotification
+						show
+						fade
+						iconClassName={
+							this.state.colorserver === 1
+								? 'text-primary'
+								: this.state.colorserver === 2
+								? 'red-text'
+								: 'green-text'
+						}
+						title="Servidor"
+						message={this.state.messageServer}
+						style={{
+							position: 'initial',
+							top: '10px',
+							right: '10px',
+							zIndex: 9999,
+						}}
+					/>
 				) : null}
 			</div>
 		);
