@@ -157,6 +157,19 @@ class Header extends React.Component {
 					</Dropdown.Menu>
 				</Dropdown>
 
+				<Dropdown item text="CP" style={{ color: '#fff' }}>
+					<Dropdown.Menu>
+						<Link
+							to="/RecepcionProducto"
+							style={{
+								color: 'inherit',
+							}}
+						>
+							<Dropdown.Item>Ingreso factura proveedor</Dropdown.Item>
+						</Link>
+					</Dropdown.Menu>
+				</Dropdown>
+
 				<Menu.Menu position="right">
 					<Menu.Item>
 						<AccountCircleIcon style={{ color: 'white', marginLeft: '-32px', position: 'absolute' }} />
