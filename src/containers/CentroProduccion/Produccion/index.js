@@ -19,7 +19,15 @@ class Produccion extends React.Component {
 		if (this.props.dataProduccion) {
 			return (
 				<div>
-					<h1>Produccion por Lote</h1>
+					<h1
+						style={{
+							marginLeft: '25px',
+							marginTop: '24px',
+							fontWeight: 'bold',
+						}}
+					>
+						Creacion de nota de envio por LOTE
+					</h1>
 					<Link
 						to={`${window.location.pathname}/NotaEnvio`}
 						style={{

@@ -27,6 +27,7 @@ import Checkout from '../RecepcionProducto';
 import CentroProduccion from '../CentroProduccion';
 import Produccion from '../CentroProduccion/Produccion';
 import NotaEnvio from '../CentroProduccion/NotaEnvio';
+import ListaPedidos from '../ListaPedidos';
 
 const App = () => {
 	const local = JSON.parse(localStorage.getItem('userInfo'));
@@ -44,6 +45,7 @@ const App = () => {
 				<Route path="/TipoUsuario" exact component={TipoUsuario} />
 				<Route path="/Empresa" exact component={Empresa} />
 				<Route path="/ListaExistente" exact component={ListaExistente} />
+				<Route path="/ListaPedidos" exact component={ListaPedidos} />
 				<Route path="/UnidadMedida" exact component={UnidadMedida} />
 				<Route path="/Sucursales" exact component={Sucursales} />
 				<Route path="/Productos" exact component={Productos} />
@@ -57,9 +59,10 @@ const App = () => {
 				<Route path="/Porciones" exact component={Porciones} />
 				<Route path="/ListaProducto" exact component={ListaProducto} />
 				<Route path="/RecepcionProducto" exact component={Checkout} />
-				<Route path="/ListaCP" exact component={CentroProduccion} />
+				<Route path="/IngresoProduccion" exact component={CentroProduccion} />
 				<Route path="/Produccion" exact component={Produccion} />
 				<Route path={`/Produccion/NotaEnvio`} exact component={NotaEnvio} />
+				<Route path={`/NotaEnvio`} exact component={NotaEnvio} />
 				<Route
 					path="/CambioPassword"
 					exact

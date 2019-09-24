@@ -127,13 +127,13 @@ function ModalProduccion(Props) {
 	function sendListaProduccion() {
 		console.log('enviando...');
 		console.log(list);
-		api.post('/Produccion/createNotaEnvio.php', {  Detalle: list })
-		.then(response => {
-			console.log(response)
-		})
-		.catch(error => {
-			console.log(error);
-		});
+		api.post('/Produccion/createNotaEnvio.php', { Detalle: list })
+			.then(response => {
+				console.log(response);
+			})
+			.catch(error => {
+				console.log(error);
+			});
 	}
 
 	return (
@@ -239,7 +239,7 @@ function ModalProduccion(Props) {
 								className="effectClick"
 								onClick={() => createPorcionAdd()}
 							>
-								<h5>ADD</h5>
+								<h5>AGREGAR</h5>
 							</div>
 						</div>
 						<hr />

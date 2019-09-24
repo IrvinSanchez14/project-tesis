@@ -197,3 +197,15 @@ hr {
 	flex: 1; /*grow*/
 	margin-right: 8px;
 }
+
+.dpdf:hover {
+	color: red;
+}
+
+.dcsv:hover {
+	color: green;
+}
+
+.lista-factura:hover {
+	background-color: #66b727;
+}

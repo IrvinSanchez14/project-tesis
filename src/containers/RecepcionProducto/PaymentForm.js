@@ -5,6 +5,8 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 
+import CustomizedSnackbars from '../../components/Toast';
+
 import { checkDetalleFactura } from '../../FacturaStore/actions';
 import { revisarCabecera } from '../../FacturaStore/selectors';
 
@@ -14,6 +16,7 @@ function PaymentForm(Props) {
 	const [producto, setProducto] = React.useState('');
 	const [cantidad, setCantidad] = React.useState(0);
 	const [unidadMedida, setUnidadMedida] = React.useState('');
+	const [visibleToast, setVisibleToast] = React.useState(false);
 
 	function handleProductoChange(e) {
 		setProducto(e.target.value);
@@ -34,7 +37,7 @@ function PaymentForm(Props) {
 			UnidadMedida: unidadMedida,
 		});
 		localStorage.setItem('detalleFactura', JSON.stringify(list));
-
+		setVisibleToast(true);
 		//checkDetalleFactura(facturaDetalle, true);
 	}
 
@@ -98,6 +101,7 @@ function PaymentForm(Props) {
 					</button>
 				</Grid>
 			</Grid>
+			<CustomizedSnackbars visibleToast={visibleToast} setVisibleToast={setVisibleToast} />
 		</React.Fragment>
 	);
 }

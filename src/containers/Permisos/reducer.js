@@ -12,7 +12,7 @@ export default function(state = initialState, action) {
 			return state.set('data', action.datos);
 		}
 		case ACTIONS.ID_SELECTED_PERMISO: {
-			return state.set('idSelected', action.id);
+			return state.set('idSelected', parseInt(action.id));
 		}
 		case ACTIONS.CREACION_REGISTRO_PERMISO: {
 			return state.set('idSelected', action.erase);

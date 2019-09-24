@@ -22,6 +22,20 @@ import { stateSideBarMenu } from '../App/selectors';
 
 import { permisosVerEmpresa } from '../../helpers/permisos';
 
+const styles = {
+	divHeader: {
+		display: 'flex',
+		flexDirection: 'row',
+		margin: '15px',
+	},
+	divTitle: {
+		flex: 1,
+	},
+	divAdd: {
+		marginRight: '20px',
+	},
+};
+
 class Empresa extends React.Component {
 	componentDidMount() {
 		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -38,24 +52,6 @@ class Empresa extends React.Component {
 			return empresa;
 		});
 		return headTable;
-	};
-
-	datosTabla = () => {
-		const dataTable = [];
-		this.props.dataEmpresa.map(empresa => {
-			dataTable.push({
-				0: empresa.IdEmpresa,
-				1: empresa.Nombre,
-				2: empresa.Razon_Social,
-				3: empresa.Direccion,
-				4: empresa.Telefono,
-				5: empresa.Correo,
-				6: empresa.Estado === '0' ? 'Disponible' : 'Inactivo',
-				7: empresa.FechaCreacion,
-			});
-			return empresa;
-		});
-		return dataTable;
 	};
 
 	getIDtable = id => {
@@ -82,7 +78,7 @@ class Empresa extends React.Component {
 					if (response.data.flag !== 0) {
 						alert(response.data.message);
 					} else {
-						this.props.fetchProducto();
+						this.props.fetchEmpresa();
 						this.props.autorizacionFormFail(true);
 						this.props.sidebarStateFalse();
 					}
@@ -174,22 +170,29 @@ class Empresa extends React.Component {
 				<TableData
 					header={this.headTable()}
 					dataTable={this.props.dataEmpresa}
-					ejemplo={this.datosTabla()}
 					getIDtable={this.getIDtable}
 					key="IdEmpresa"
 				/>
 			);
 			return (
 				<div>
-					<h1
-						style={{
-							marginLeft: '25px',
-							marginTop: '24px',
-							fontWeight: 'bold',
-						}}
-					>
-						Empresas
-					</h1>
+					<div style={styles.divHeader}>
+						<div style={styles.divTitle}>
+							<h1>Empresas</h1>
+						</div>
+						<div style={styles.divAdd}>
+							<Fab color="primary" aria-label="Add" onClick={this.crearRegistro}>
+								<AddIcon />
+							</Fab>
+						</div>
+						<div>
+							<Print
+								ruta={'/Empresas/readAllPDF.php'}
+								titulo={'Empresas'}
+								csv={'/Empresas/readAllCSV.php'}
+							/>
+						</div>
+					</div>
 
 					<SideBarMenu
 						content={arr}
@@ -200,19 +203,6 @@ class Empresa extends React.Component {
 						frmTable={this.frmTableEmpresa()}
 						onClick={this.onChangeStateButton}
 					/>
-					<Fab
-						style={{
-							right: '12px',
-							bottom: '80%',
-							position: 'fixed',
-						}}
-						color="primary"
-						aria-label="Add"
-						onClick={this.crearRegistro}
-					>
-						<AddIcon />
-					</Fab>
-					<Print ruta={'/Empresas/readAllPDF.php'} titulo={'Empresas'} csv={'/Empresas/readAllCSV.php'} />
 				</div>
 			);
 		} else {
