@@ -20,7 +20,15 @@ class CentroProduccion extends React.Component {
 		if (this.props.dataFactura) {
 			return (
 				<div>
-					<h1>Lista CP</h1>
+					<h1
+						style={{
+							marginLeft: '25px',
+							marginTop: '24px',
+							fontWeight: 'bold',
+						}}
+					>
+						Control de Produccion
+					</h1>
 					<TablaCP
 						header={['ID', 'Estado', 'Lote', 'Proveedor', 'Numero de Factura', 'Fecha de creación']}
 						dataTable={dataFactura}

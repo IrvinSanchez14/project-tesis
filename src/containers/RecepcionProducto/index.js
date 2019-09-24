@@ -14,6 +14,7 @@ import api from '../../api';
 import AddressForm from './AddressForm';
 import PaymentForm from './PaymentForm';
 import Review from './Review';
+import ModalConfirm from '../../components/ModalConfirm';
 
 import { clickFactura, removeBanderaCabecera } from '../../FacturaStore/actions';
 import { checkCorrecto, Cabecera, listaDetalleFactura } from '../../FacturaStore/selectors';
@@ -78,6 +79,7 @@ function Checkout(Props) {
 	const classes = useStyles();
 	const [activeStep, setActiveStep] = React.useState(0);
 	const [p, setP] = React.useState(false);
+	const [visibleModal, setVisibleModal] = React.useState(false);
 
 	const click = () => {
 		clickFactura(true);
@@ -143,9 +145,6 @@ function Checkout(Props) {
 											<Button onClick={handleBack} className={classes.button}>
 												Atras
 											</Button>
-											<Button onClick={handleBack} className={classes.button}>
-												Terminar
-											</Button>
 										</div>
 									) : activeStep !== 0 ? (
 										<Button onClick={handleBack} className={classes.button}>
@@ -158,6 +157,7 @@ function Checkout(Props) {
 											color="primary"
 											onClick={() => {
 												sendFactura();
+												setVisibleModal(true);
 											}}
 											className={classes.button}
 										>
@@ -176,6 +176,7 @@ function Checkout(Props) {
 										</Button>
 									)}
 								</div>
+								<ModalConfirm visibleModal={visibleModal} setVisibleModal={setVisibleModal} />
 							</React.Fragment>
 						)}
 					</React.Fragment>

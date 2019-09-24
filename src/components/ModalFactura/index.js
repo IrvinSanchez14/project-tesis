@@ -236,7 +236,7 @@ function ModalFactura(Props) {
 								className="effectClick"
 								onClick={() => createPorcionAdd()}
 							>
-								<h5>ADD</h5>
+								<h5>AGREGAR</h5>
 							</div>
 						</div>
 						<hr />

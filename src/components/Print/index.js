@@ -75,16 +75,7 @@ export default function CustomizedMenus(Props) {
 
 	return (
 		<div>
-			<Fab
-				style={{
-					right: '100px',
-					bottom: '80%',
-					position: 'fixed',
-				}}
-				color="secondary"
-				aria-label="Add"
-				onClick={handleClick}
-			>
+			<Fab color="secondary" aria-label="Add" onClick={handleClick}>
 				PRINT
 			</Fab>
 			<StyledMenu

@@ -1,0 +1,2 @@
+export const ACTUALIZACION_LISTA = 'src/containers/listaExistente/ACTUALIZACION_LISTA';
+export const LISTAEXISTENTE_CREADA = 'LISTAEXISTENTE_CREADA';

@@ -22,6 +22,20 @@ import { stateSideBarMenu } from '../App/selectors';
 import { permisosVerPermisos } from '../../helpers/permisos';
 import Print from '../../components/Print/';
 
+const styles = {
+	divHeader: {
+		display: 'flex',
+		flexDirection: 'row',
+		margin: '15px',
+	},
+	divTitle: {
+		flex: 1,
+	},
+	divAdd: {
+		marginRight: '20px',
+	},
+};
+
 class Permiso extends React.Component {
 	componentDidMount() {
 		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -64,7 +78,7 @@ class Permiso extends React.Component {
 					if (response.data.flag !== 0) {
 						alert(response.data.message);
 					} else {
-						this.props.fetchProducto();
+						this.props.fetchPermiso();
 						this.props.autorizacionFormFail(true);
 						this.props.sidebarStateFalse();
 					}
@@ -156,15 +170,23 @@ class Permiso extends React.Component {
 			);
 			return (
 				<div>
-					<h1
-						style={{
-							marginLeft: '25px',
-							marginTop: '24px',
-							fontWeight: 'bold',
-						}}
-					>
-						Permisos
-					</h1>
+					<div style={styles.divHeader}>
+						<div style={styles.divTitle}>
+							<h1>Permisos</h1>
+						</div>
+						<div style={styles.divAdd}>
+							<Fab color="primary" aria-label="Add" onClick={this.crearRegistro}>
+								<AddIcon />
+							</Fab>
+						</div>
+						<div>
+							<Print
+								ruta={'/Permisos/readAllPDF.php'}
+								titulo={'Permisos'}
+								csv={'/Permisos/readAllCSV.php'}
+							/>
+						</div>
+					</div>
 
 					<SideBarMenu
 						content={arr}
@@ -175,19 +197,6 @@ class Permiso extends React.Component {
 						frmTable={this.frmTablePermiso()}
 						onClick={this.onChangeStateButton}
 					/>
-					<Fab
-						style={{
-							right: '16px',
-							bottom: '80%',
-							position: 'fixed',
-						}}
-						color="primary"
-						aria-label="Add"
-						onClick={this.crearRegistro}
-					>
-						<AddIcon />
-					</Fab>
-					<Print ruta={'/Permisos/readAllPDF.php'} titulo={'Permisos'} csv={'/Permisos/readAllCSV.php'} />
 				</div>
 			);
 		} else {

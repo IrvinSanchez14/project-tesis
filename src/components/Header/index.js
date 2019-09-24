@@ -72,6 +72,7 @@ class Header extends React.Component {
 				size="small"
 				style={{
 					backgroundColor: '#000',
+					overflowX: 'auto',
 				}}
 			>
 				<Menu.Menu position="right">
@@ -95,6 +96,7 @@ class Header extends React.Component {
 				size="small"
 				style={{
 					backgroundColor: '#000',
+					overflowX: 'auto',
 				}}
 			>
 				<Menu.Item name="home">
@@ -154,6 +156,14 @@ class Header extends React.Component {
 						>
 							<Dropdown.Item>Lista existente sucursal</Dropdown.Item>
 						</Link>
+						<Link
+							to="/ListaPedidos"
+							style={{
+								color: 'inherit',
+							}}
+						>
+							<Dropdown.Item>Lista de pedidos sucursal</Dropdown.Item>
+						</Link>
 					</Dropdown.Menu>
 				</Dropdown>
 
@@ -167,17 +177,74 @@ class Header extends React.Component {
 						>
 							<Dropdown.Item>Ingreso factura proveedor</Dropdown.Item>
 						</Link>
+						<Link
+							to="/IngresoProduccion"
+							style={{
+								color: 'inherit',
+							}}
+						>
+							<Dropdown.Item>Ingreso produccion</Dropdown.Item>
+						</Link>
+						<Link
+							to="/Produccion"
+							style={{
+								color: 'inherit',
+							}}
+						>
+							<Dropdown.Item>Ingreso nota de envio</Dropdown.Item>
+						</Link>
+					</Dropdown.Menu>
+				</Dropdown>
+
+				<Dropdown item text="Reportes" style={{ color: '#fff' }}>
+					<Dropdown.Menu>
+						<Link
+							to="/NotaEnvio"
+							style={{
+								color: 'inherit',
+							}}
+						>
+							<Dropdown.Item>Reporte de notas de envio</Dropdown.Item>
+						</Link>
+						<Link
+							to="/NotaEnvio"
+							style={{
+								color: 'inherit',
+							}}
+						>
+							<Dropdown.Item>Reporte de lista de existente</Dropdown.Item>
+						</Link>
+						<Link
+							to="/NotaEnvio"
+							style={{
+								color: 'inherit',
+							}}
+						>
+							<Dropdown.Item>Reporte de lista de pedidos</Dropdown.Item>
+						</Link>
+						<Link
+							to="/NotaEnvio"
+							style={{
+								color: 'inherit',
+							}}
+						>
+							<Dropdown.Item>Reporte de facturas ingresadas</Dropdown.Item>
+						</Link>
+						<Link
+							to="/NotaEnvio"
+							style={{
+								color: 'inherit',
+							}}
+						>
+							<Dropdown.Item>Reporte de produccion</Dropdown.Item>
+						</Link>
 					</Dropdown.Menu>
 				</Dropdown>
 
 				<Menu.Menu position="right">
 					<Menu.Item>
-						<AccountCircleIcon style={{ color: 'white', marginLeft: '-32px', position: 'absolute' }} />
-					</Menu.Item>
-
-					<Menu.Item>
-						<span />
-						<label style={{ color: 'white', marginLeft: '-39px', position: 'absolute' }}>
+						<AccountCircleIcon style={{ color: 'white' }} />
+						<label style={{ color: '#fff', marginBottom: '2px' }}>
 							{userInfo ? userInfo.Nombre : null}
 						</label>
 					</Menu.Item>

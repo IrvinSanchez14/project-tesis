@@ -119,7 +119,6 @@ class SideBarMenu extends React.Component {
 					direction="right"
 					icon="labeled"
 					inverted
-					onHide={this.handleSidebarHide}
 					vertical
 					visible={this.props.SideBarVisible}
 					width="thin"

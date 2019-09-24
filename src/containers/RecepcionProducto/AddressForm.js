@@ -131,7 +131,7 @@ function AddressForm(Props) {
 						required
 						id="Iva"
 						name="Iva"
-						label="IVA"
+						label="Total con IVA"
 						fullWidth
 						onChange={handleIvaChange}
 						value={iva}

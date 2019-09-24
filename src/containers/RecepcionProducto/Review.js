@@ -26,6 +26,14 @@ function Review(Props) {
 	const { listaDetalleFactura, Cabecera } = Props;
 	const classes = useStyles();
 
+	function askDelete() {
+		// eslint-disable-next-line no-restricted-globals
+		if (confirm('Esta seguro de eliminar el producto de la factura?')) {
+		} else {
+			return;
+		}
+	}
+
 	return (
 		<React.Fragment>
 			<Typography variant="h6" gutterBottom>
@@ -33,7 +41,11 @@ function Review(Props) {
 			</Typography>
 			<List disablePadding>
 				{listaDetalleFactura.map(product => (
-					<ListItem onClick={() => alert('Hola')} className={classes.listItem} key={product.Producto}>
+					<ListItem
+						onClick={() => askDelete()}
+						className={`lista-factura ${classes.listItem}`}
+						key={product.Producto}
+					>
 						<ListItemText primary={product.Producto} secondary={product.UnidadMedida} />
 						<Typography variant="body2">{product.Cantidad}</Typography>
 					</ListItem>
