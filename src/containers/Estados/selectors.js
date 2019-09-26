@@ -17,7 +17,7 @@ export const getDataId = createSelector(
 				if (data.IdEstado === idEstado) {
 					dataId.push({
 						id: data.IdEstado,
-						estado: data.Estado,
+						Estado: data.Estado,
 					});
 				}
 			});

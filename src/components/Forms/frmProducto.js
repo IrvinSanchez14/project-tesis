@@ -144,24 +144,46 @@ class FrmEmpresa extends React.Component {
 
 	render() {
 		this.validateClean();
-		return (
-			<form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
-				<Field name="Nombre" component={this.renderInput} label="Nombre" />
-				<Field name="Descripcion" component={this.renderInput} label="Descripcion" />
-				<Field name="IdTipoProducto" component={this.renderSelectTipo} label="Tipo Producto" />
-				<Field name="IdUnidadMedida" component={this.renderSelectUnidad} label="Siglas" />
-				<Field name="IdProveedor" component={this.renderSelectProveedor} label="Proveedor" />
-				<div
-					style={{
-						bottom: '0',
-						width: '100%',
-						height: '60px',
-					}}
-				>
-					<button className="ui buttonGuardar">Guardar</button>
-				</div>
-			</form>
-		);
+		console.log('sistema>>>>>>>', this.props.createData);
+		if (this.props.createData) {
+			return (
+				<form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
+					<Field name="Nombre" component={this.renderInput} label="Nombre" />
+					<Field name="Descripcion" component={this.renderInput} label="Descripcion" />
+					<Field name="tipoProducto" component={this.renderSelectTipo} label="Tipo Producto" />
+					<Field name="Siglas" component={this.renderSelectUnidad} label="Siglas" />
+					<Field name="Proveedor" component={this.renderSelectProveedor} label="Proveedor" />
+					<div
+						style={{
+							bottom: '0',
+							width: '100%',
+							height: '60px',
+						}}
+					>
+						<button className="ui buttonGuardar">Guardar</button>
+					</div>
+				</form>
+			);
+		} else {
+			return (
+				<form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
+					<Field name="Nombre" component={this.renderInput} label="Nombre" />
+					<Field name="Descripcion" component={this.renderInput} label="Descripcion" />
+					<Field name="IdTipoProducto" component={this.renderSelectTipo} label="Tipo Producto" />
+					<Field name="IdUnidadMedida" component={this.renderSelectUnidad} label="Siglas" />
+					<Field name="IdProveedor" component={this.renderSelectProveedor} label="Proveedor" />
+					<div
+						style={{
+							bottom: '0',
+							width: '100%',
+							height: '60px',
+						}}
+					>
+						<button className="ui buttonGuardar">Guardar</button>
+					</div>
+				</form>
+			);
+		}
 	}
 }
 

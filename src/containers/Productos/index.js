@@ -25,6 +25,20 @@ import { fetchProveedor } from '../Proveedor/actions';
 
 import { permisosVerProductos } from '../../helpers/permisos';
 
+const styles = {
+	divHeader: {
+		display: 'flex',
+		flexDirection: 'row',
+		margin: '15px',
+	},
+	divTitle: {
+		flex: 1,
+	},
+	divAdd: {
+		marginRight: '20px',
+	},
+};
+
 class Productos extends React.Component {
 	componentDidMount() {
 		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -38,7 +52,15 @@ class Productos extends React.Component {
 	}
 
 	headTable = () => {
-		const headTable = ['ID', 'Nombre', 'Descripción', 'Tipo de Producto', 'Siglas', 'Proveedor', 'Estado'];
+		let headTable = [
+			{ label: 'ID', field: 'IdProducto' },
+			{ label: 'Nombre', field: 'Nombre' },
+			{ label: 'Descripción', field: 'Descripcion' },
+			{ label: 'Tipo de Producto', field: 'tipoProducto' },
+			{ label: 'Siglas', field: 'Siglas' },
+			{ label: 'Proveedor', field: 'Proveedor' },
+			{ label: 'Estado', field: 'Estado' },
+		];
 		return headTable;
 	};
 
@@ -182,15 +204,23 @@ class Productos extends React.Component {
 			);
 			return (
 				<div>
-					<h1
-						style={{
-							marginLeft: '25px',
-							marginTop: '24px',
-							fontWeight: 'bold',
-						}}
-					>
-						Productos
-					</h1>
+					<div style={styles.divHeader}>
+						<div style={styles.divTitle}>
+							<h1>Productos</h1>
+						</div>
+						<div style={styles.divAdd}>
+							<Fab color="primary" aria-label="Add" onClick={this.crearRegistro}>
+								<AddIcon />
+							</Fab>
+						</div>
+						<div>
+							<Print
+								ruta={'/Producto/readAllPDF.php'}
+								titulo={'Producto'}
+								csv={'/Producto/readAllCSV.php'}
+							/>
+						</div>
+					</div>
 
 					<SideBarMenu
 						content={arr}
@@ -201,19 +231,6 @@ class Productos extends React.Component {
 						frmTable={this.frmTableProducto()}
 						onClick={this.onChangeStateButton}
 					/>
-					<Fab
-						style={{
-							right: '16px',
-							bottom: '80%',
-							position: 'fixed',
-						}}
-						color="primary"
-						aria-label="Add"
-						onClick={this.crearRegistro}
-					>
-						<AddIcon />
-					</Fab>
-					<Print ruta={'/Producto/readAllPDF.php'} titulo={'Producto'} />
 				</div>
 			);
 		} else {

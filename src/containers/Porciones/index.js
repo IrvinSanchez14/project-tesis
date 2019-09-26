@@ -31,7 +31,12 @@ class Porciones extends React.Component {
 	}
 
 	headTable = () => {
-		const headTable = ['ID', 'Cantidad', 'Unidad de Medida', 'Estado'];
+		let headTable = [
+			{ label: 'ID', field: 'IdPorcion' },
+			{ label: 'Cantidad', field: 'Cantidad' },
+			{ label: 'Unidad de Medida', field: 'UnidadMedida' },
+			{ label: 'Estado', field: 'Estado' },
+		];
 		return headTable;
 	};
 

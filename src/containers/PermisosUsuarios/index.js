@@ -37,11 +37,13 @@ class PermisosUsuarios extends React.Component {
 	}
 
 	headTable = () => {
-		let headTable;
-		this.props.dataPermisosUsuarios.map(tipoUsuario => {
-			headTable = Object.keys(tipoUsuario);
-			return tipoUsuario;
-		});
+		let headTable = [
+			{ label: 'ID', field: 'IdUsuario' },
+			{ label: 'Correo Electronico', field: 'Email' },
+			{ label: 'Nombre de Usuario', field: 'NombreUsuario' },
+			{ label: 'Tipo de Usuario', field: 'NombreTipo' },
+			{ label: 'Estado', field: 'estadoTexto' },
+		];
 		return headTable;
 	};
 
@@ -57,32 +59,6 @@ class PermisosUsuarios extends React.Component {
 	getDataTable = () => {
 		return this.props.fetchPermisosUsuarios();
 	};
-
-	/*onSubmit = formValues => {
-		if (formValues.flag === 'create') {
-			// eslint-disable-next-line no-restricted-globals
-			if (confirm('Esta seguro de guardar el siguiente Tipo de Usuario en la Base de Datos?')) {
-				api.post('/tipoUsuario/create.php', formValues).then(
-					data => this.props.fetchPermisosUsuarios(),
-					this.props.autorizacionFormFail(true),
-					this.props.sidebarStateFalse()
-				);
-			} else {
-				return this.props.autorizacionFormFail(false);
-			}
-		} else {
-			// eslint-disable-next-line no-restricted-globals
-			if (confirm('Esta seguro de actualizar el siguiente registro de la tabla Tipo de Usuario?')) {
-				api.put('/tipoUsuario/update.php', formValues).then(
-					data => this.props.fetchPermisosUsuarios(),
-					this.props.autorizacionFormFail(true),
-					this.props.sidebarStateFalse()
-				);
-			} else {
-				return this.props.autorizacionFormFail(false);
-			}
-		}
-	};*/
 
 	onChangeStateButton = check => {
 		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -114,6 +90,7 @@ class PermisosUsuarios extends React.Component {
 					initialValues={_.pick(
 						this.props.getDataBodyId ? this.props.getDataBodyId : undefined,
 						'IdUsuario',
+						'Email',
 						'NombreUsuario',
 						'NombreTipo',
 						'estadoTexto'
@@ -129,6 +106,7 @@ class PermisosUsuarios extends React.Component {
 					initialValues={_.pick(
 						this.props.getDataBodyId ? this.props.getDataBodyId : undefined,
 						'IdUsuario',
+						'Email',
 						'NombreUsuario',
 						'NombreTipo',
 						'estadoTexto'
@@ -167,7 +145,6 @@ class PermisosUsuarios extends React.Component {
 					<SideBarMenu
 						content={arr}
 						SideBarVisible={this.props.stateSideBarMenu}
-						headSide={this.props.getDataId ? this.props.getDataId : undefined}
 						bodySide={this.props.getDataBodyId ? this.props.getDataBodyId : undefined}
 						saveButton={this.getDataTable}
 						frmTable={this.props.getDataBodyId ? this.frmTableTipo() : undefined}

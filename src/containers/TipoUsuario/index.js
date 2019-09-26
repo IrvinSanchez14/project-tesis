@@ -38,11 +38,12 @@ class TipoUsuario extends React.Component {
 	}
 
 	headTable = () => {
-		let headTable;
-		this.props.dataTipoUsuario.map(tipoUsuario => {
-			headTable = Object.keys(tipoUsuario);
-			return tipoUsuario;
-		});
+		let headTable = [
+			{ label: 'ID', field: 'IdPorcion' },
+			{ label: 'Nombre', field: 'Nombre' },
+			{ label: 'Descripción', field: 'Descripcion' },
+			{ label: 'Estado', field: 'Estado' },
+		];
 		return headTable;
 	};
 

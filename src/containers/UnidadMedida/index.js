@@ -30,11 +30,13 @@ class UnidadMedida extends Component {
 	}
 
 	headTable = () => {
-		let headTable;
-		this.props.dataUnidadMedida.map(unidadMedida => {
-			headTable = Object.keys(unidadMedida);
-			return unidadMedida;
-		});
+		let headTable = [
+			{ label: 'ID', field: 'IdPorcion' },
+			{ label: 'Siglas', field: 'Siglas' },
+			{ label: 'Nombre', field: 'Nombre' },
+			{ label: 'Estado', field: 'Estado' },
+			{ label: 'Fecha de Creación', field: 'FechaCreacion' },
+		];
 		return headTable;
 	};
 

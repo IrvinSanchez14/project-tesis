@@ -21,6 +21,20 @@ import { stateSideBarMenu } from '../App/selectors';
 
 import { permisosVerEstados } from '../../helpers/permisos';
 
+const styles = {
+	divHeader: {
+		display: 'flex',
+		flexDirection: 'row',
+		margin: '15px',
+	},
+	divTitle: {
+		flex: 1,
+	},
+	divAdd: {
+		marginRight: '20px',
+	},
+};
+
 class Estados extends React.Component {
 	componentDidMount() {
 		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -31,11 +45,13 @@ class Estados extends React.Component {
 	}
 
 	headTable = () => {
-		let headTable;
-		this.props.dataEstados.map(empresa => {
-			headTable = Object.keys(empresa);
-			return empresa;
-		});
+		let headTable = [
+			{ label: 'ID', field: 'IdEstado' },
+			{ label: 'Nombre', field: 'Nombre' },
+			{ label: 'Descripción', field: 'Descripcion' },
+			{ label: 'Estado', field: 'Estado' },
+			{ label: 'Fecha de Creación', field: 'FechaCreacion' },
+		];
 		return headTable;
 	};
 
@@ -63,7 +79,7 @@ class Estados extends React.Component {
 					if (response.data.flag !== 0) {
 						alert(response.data.message);
 					} else {
-						this.props.fetchProducto();
+						this.props.fetchEstados();
 						this.props.autorizacionFormFail(true);
 						this.props.sidebarStateFalse();
 					}
@@ -87,7 +103,7 @@ class Estados extends React.Component {
 
 	onChangeStateButton = check => {
 		const updateState = {
-			IdEmpresa: check.id,
+			IdEstado: check.id,
 			Estado: `${check.state}`,
 		};
 		const messageState = check.state === true ? 'Disponible' : 'Inactivo';
@@ -116,8 +132,7 @@ class Estados extends React.Component {
 						'IdEstado',
 						'Nombre',
 						'Descripcion',
-						'IdEstadoAnterior',
-						'IdEstadoSiguiente'
+						'Estado'
 					)}
 					createData={true}
 					formResponse={this.props.getFormResponse}
@@ -133,8 +148,7 @@ class Estados extends React.Component {
 						'IdEstado',
 						'Nombre',
 						'Descripcion',
-						'IdEstadoAnterior',
-						'IdEstadoSiguiente'
+						'Estado'
 					)}
 					createData={false}
 					formResponse={this.props.getFormResponse}
@@ -157,15 +171,17 @@ class Estados extends React.Component {
 			);
 			return (
 				<div>
-					<h1
-						style={{
-							marginLeft: '25px',
-							marginTop: '24px',
-							fontWeight: 'bold',
-						}}
-					>
-						Estados
-					</h1>
+					<div style={styles.divHeader}>
+						<div style={styles.divTitle}>
+							<h1>Estados del Sistema</h1>
+						</div>
+						<div style={styles.divAdd}>
+							<Fab color="primary" aria-label="Add" onClick={this.crearRegistro}>
+								<AddIcon />
+							</Fab>
+						</div>
+						<div />
+					</div>
 
 					<SideBarMenu
 						content={arr}
@@ -176,18 +192,6 @@ class Estados extends React.Component {
 						frmTable={this.frmTableEstados()}
 						onClick={this.onChangeStateButton}
 					/>
-					<Fab
-						style={{
-							right: '12px',
-							bottom: '80%',
-							position: 'fixed',
-						}}
-						color="primary"
-						aria-label="Add"
-						onClick={this.crearRegistro}
-					>
-						<AddIcon />
-					</Fab>
 				</div>
 			);
 		} else {

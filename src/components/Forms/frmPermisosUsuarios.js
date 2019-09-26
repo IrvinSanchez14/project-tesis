@@ -14,6 +14,21 @@ import {
 import { fetchUsuarioPermiso } from '../../containers/PermisosUsuarios/actions';
 import './estilos.css';
 
+const styles = {
+	liDiv: {
+		display: 'flex',
+		flexDirection: 'row',
+		margin: '5px',
+	},
+	liSpan: {
+		padding: '5px',
+	},
+	liIcon: {
+		padding: '8px',
+		cursor: 'pointer',
+	},
+};
+
 class FrmPermisosUsuarios extends React.Component {
 	componentDidUpdate() {
 		if (this.props.getPermisosUsuario) {
@@ -123,11 +138,13 @@ class FrmPermisosUsuarios extends React.Component {
 								})
 								.map(registro => {
 									return (
-										<li
-											key={registro.IdPermiso}
-											onClick={() => this.deleteUsuarioPermido(registro.IdPermisosusuario)}
-										>
-											{registro.Nombre}
+										<li key={registro.IdPermiso} style={{ cursor: 'default' }}>
+											<span style={styles.liSpan}>{registro.Nombre}</span>
+											<i
+												style={styles.liIcon}
+												className="fas fa-times"
+												onClick={() => this.deleteUsuarioPermido(registro.IdPermisosusuario)}
+											/>
 										</li>
 									);
 								})
@@ -140,6 +157,7 @@ class FrmPermisosUsuarios extends React.Component {
 		};
 		return (
 			<form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
+				<Field name="Email" component={this.renderInput} label="Correo Electronico" />
 				<Field name="NombreUsuario" component={this.renderInput} label="Usuario" />
 				<Field name="NombreTipo" component={this.renderInput} label="TipoUsuario" />
 				<Field name="IdPermiso" component={this.renderSelect} label="lista de permisos" />

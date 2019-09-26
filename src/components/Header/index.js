@@ -72,7 +72,6 @@ class Header extends React.Component {
 				size="small"
 				style={{
 					backgroundColor: '#000',
-					overflowX: 'auto',
 				}}
 			>
 				<Menu.Menu position="right">
@@ -96,7 +95,6 @@ class Header extends React.Component {
 				size="small"
 				style={{
 					backgroundColor: '#000',
-					overflowX: 'auto',
 				}}
 			>
 				<Menu.Item name="home">

@@ -46,11 +46,16 @@ class Empresa extends React.Component {
 	}
 
 	headTable = () => {
-		let headTable;
-		this.props.dataEmpresa.map(empresa => {
-			headTable = Object.keys(empresa);
-			return empresa;
-		});
+		let headTable = [
+			{ label: 'ID', field: 'IdEmpresa' },
+			{ label: 'Nombre', field: 'Nombre' },
+			{ label: 'Razon Social', field: 'Razon_Social' },
+			{ label: 'Dirección', field: 'Direccion' },
+			{ label: 'Telefono', field: 'Telefono' },
+			{ label: 'Correo Electronico', field: 'Correo' },
+			{ label: 'Estado', field: 'Estado' },
+			{ label: 'Fecha de Creación', field: 'FechaCreacion' },
+		];
 		return headTable;
 	};
 

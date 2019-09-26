@@ -46,11 +46,13 @@ class Permiso extends React.Component {
 	}
 
 	headTable = () => {
-		let headTable;
-		this.props.dataPermiso.map(empresa => {
-			headTable = Object.keys(empresa);
-			return empresa;
-		});
+		let headTable = [
+			{ label: 'ID', field: 'IdPermiso' },
+			{ label: 'Nombre', field: 'Nombre' },
+			{ label: 'Descripción', field: 'Descripcion' },
+			{ label: 'Estado', field: 'Estado' },
+			{ label: 'Fecha de Creación', field: 'FechaCreacion' },
+		];
 		return headTable;
 	};
 
