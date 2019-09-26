@@ -15,7 +15,7 @@ export default function(state = initialState, action) {
 			return state.set('infoPermisos', action.data);
 		}
 		case ACTIONS.ID_SELECTED_PERMISOSUSUARIOS: {
-			return state.set('idSelected', action.id);
+			return state.set('idSelected', parseInt(action.id));
 		}
 		case ACTIONS.CREACION_REGISTRO_PERMISOSUSUARIOS: {
 			return state.set('idSelected', action.erase);

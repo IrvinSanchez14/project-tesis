@@ -6,13 +6,14 @@ const hash = Base64.encode(tok);
 const Basic = 'Basic ' + hash;
 
 export default axios.create({
-	baseURL: 'http://192.168.1.2/tesis/api-jws/api',
+	baseURL: 'http://localhost/tesis/api-jws/api',
 
 	headers: { 'Content-Type': 'application/json', Authorization: Basic },
 });
 
-export const conn = 'http://192.168.1.2/tesis/api-jws/api';
+export const conn = 'http://localhost/tesis/api-jws/api';
 
+// http://api-lapizzeria.restaurantesivar.com/api
 // http://45.79.35.9/api-jws/api
 // http://localhost/tesis/api-jws/api
 // http://localhost:8080/Tesis/api-jws/api

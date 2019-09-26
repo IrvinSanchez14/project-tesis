@@ -78,8 +78,6 @@ class FrmEstados extends React.Component {
 			<form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
 				<Field name="Nombre" component={this.renderInput} label="Nombre" />
 				<Field name="Descripcion" component={this.renderInput} label="Descripción" />
-				<Field name="IdEstadoAnterior" component={this.renderInput} label="Estado Anterior" />
-				<Field name="IdEstadoSiguiente" component={this.renderInput} label="Estado Siguiente" />
 				<div
 					style={{
 						bottom: '0',

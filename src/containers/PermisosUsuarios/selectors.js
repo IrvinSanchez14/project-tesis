@@ -16,7 +16,7 @@ export const permisosDisponibles = createSelector(
 	(permisosUsuario, permisos) => {
 		let permisosOn;
 		if (permisosUsuario) {
-			const permisoUsuarioIDs = permisosUsuario.map(us => us.IdPermiso);
+			const permisoUsuarioIDs = permisosUsuario.map(us => parseInt(us.IdPermiso));
 			permisosOn = permisos.filter(PNA => !permisoUsuarioIDs.includes(PNA.IdPermiso));
 		}
 		return permisosOn;
@@ -54,11 +54,13 @@ export const getDataBodyId = createSelector(
 			dataTipo.forEach(data => {
 				if (data.IdUsuario === idUsuario) {
 					dataBody.push({
+						Email: data.Email,
 						NombreUsuario: data.NombreUsuario,
 						NombreTipo: data.NombreTipo,
 					});
 					d = {
 						IdUsuario: data.IdUsuario,
+						Email: data.Email,
 						NombreUsuario: data.NombreUsuario,
 						NombreTipo: data.NombreTipo,
 						Estado: data.estadoTexto,

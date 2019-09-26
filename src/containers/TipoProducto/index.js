@@ -32,11 +32,13 @@ class TipoProducto extends React.Component {
 	}
 
 	headTable = () => {
-		let headTable;
-		this.props.dataTipoProducto.map(empresa => {
-			headTable = Object.keys(empresa);
-			return empresa;
-		});
+		let headTable = [
+			{ label: 'ID', field: 'IdPorcion' },
+			{ label: 'Nombre', field: 'Nombre' },
+			{ label: 'Descripcion', field: 'Descripcion' },
+			{ label: 'Estado', field: 'Estado' },
+			{ label: 'Fecha de Creación', field: 'FechaCreacion' },
+		];
 		return headTable;
 	};
 

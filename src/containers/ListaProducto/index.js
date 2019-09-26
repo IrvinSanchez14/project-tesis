@@ -33,10 +33,10 @@ class ListaProducto extends React.Component {
 		if (userInfo === null) {
 			this.props.history.push('/');
 		}
-		this.props.fetchListadoProductos();
 		this.props.fetchProducto();
 		this.props.fetchPorciones();
 		this.props.fetchLecturaProducto();
+		this.props.fetchListadoProductos();
 	}
 
 	headTable = () => {

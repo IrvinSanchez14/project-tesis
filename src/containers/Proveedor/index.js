@@ -32,20 +32,20 @@ class Proveedor extends React.Component {
 	}
 
 	headTable = () => {
-		const headTable = [
-			'ID',
-			'Nombre',
-			'Dirección',
-			'Telefono',
-			'Razon Social',
-			'Tipo',
-			'Nombre del Contacto',
-			'Correo Electronico',
-			'DUI',
-			'NIT',
-			'NRC',
-			'Estado',
-			'Fecha de Creacion',
+		let headTable = [
+			{ label: 'ID', field: 'IdSucursal' },
+			{ label: 'Nombre', field: 'Nombre' },
+			{ label: 'Dirección', field: 'Direccion' },
+			{ label: 'Telefono', field: 'Telefono' },
+			{ label: 'Razon Social', field: 'Razon Social' },
+			{ label: 'Tipo', field: 'Tipo' },
+			{ label: 'Nombre del Contacto', field: 'Nombre del Contacto' },
+			{ label: 'TipCorreo Electronicoo', field: 'Correo Electronico' },
+			{ label: 'DUI', field: 'DUI' },
+			{ label: 'NIT', field: 'NIT' },
+			{ label: 'NRC', field: 'NRC' },
+			{ label: 'Estado', field: 'Estado' },
+			{ label: 'Fecha de Creacion', field: 'Fecha de Creacion' },
 		];
 		return headTable;
 	};

@@ -40,13 +40,14 @@ export const productoLista = createSelector(
 		return selectTipo;
 	}
 );
- 
+
 export const getDataId = createSelector(
 	dataLecturaProducto,
 	getListadoProducto,
 	(dataPro, idListaPP) => {
 		let dataId;
 		if (dataPro) {
+			console.log('dataPro', dataPro);
 			dataId = [];
 			dataPro.forEach(data => {
 				if (data.IdListaPP === idListaPP) {
@@ -69,7 +70,7 @@ export const listaPorcion = createSelector(
 	getDataId,
 	(porcion, lista, id) => {
 		let selectTipo;
-		if (id) {
+		if (lista !== undefined) {
 			const nobreProductoLista = id.map(GB => GB.NombreProducto);
 			const l = lista.filter(PNA => nobreProductoLista.includes(PNA.NombreProducto));
 			const f = l.map(a => a.IdPorcion);
@@ -86,9 +87,11 @@ export const listaPProducto = createSelector(
 	dataListadoProducto,
 	(bodyid, lista) => {
 		let productoPorcion;
-		if (bodyid) {
-			const nobreProductoLista = bodyid.map(GB => GB.NombreProducto);
-			productoPorcion = lista.filter(PNA => nobreProductoLista.includes(PNA.NombreProducto));
+		if (bodyid !== undefined) {
+			if (bodyid.length > 0) {
+				const nobreProductoLista = bodyid.map(GB => GB.NombreProducto);
+				productoPorcion = lista.filter(PNA => nobreProductoLista.includes(PNA.NombreProducto));
+			}
 		}
 		return productoPorcion;
 	}

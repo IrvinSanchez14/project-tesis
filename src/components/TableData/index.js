@@ -44,14 +44,15 @@ class TableData extends React.Component {
 		const hey = {};
 		hey.columns = this.props.header.map((titulos, key) => {
 			const prueba = {
-				label: titulos,
-				field: titulos,
+				label: titulos.label,
+				field: titulos.field,
 				sort: 'asc',
 				width: 150,
 			};
 			return prueba;
 		});
 		hey.rows = this.props.dataTable;
+		console.log('hey', this.props.header);
 		return (
 			<div>
 				<MDBDataTable
