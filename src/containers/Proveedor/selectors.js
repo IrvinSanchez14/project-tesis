@@ -41,13 +41,11 @@ export const getDataBodyId = createSelector(
 						Direccion: data.Direccion,
 						Telefono: data.Telefono,
 						Razo_Social: data.Razo_Social,
-						Tipo: data.Tipo,
 						Nombre_Contacto: data.Nombre_Contacto,
 						Email: data.Email,
 						DUI: data.DUI,
 						NIT: data.NIT,
 						NRC: data.NRC,
-						Estado: data.Estado,
 						FechaCreacion: data.FechaCreacion,
 					});
 					d = {
@@ -56,13 +54,11 @@ export const getDataBodyId = createSelector(
 						Direccion: data.Direccion,
 						Telefono: data.Telefono,
 						Razo_Social: data.Razo_Social,
-						Tipo: data.Tipo,
 						Nombre_Contacto: data.Nombre_Contacto,
 						Email: data.Email,
 						DUI: data.DUI,
 						NIT: data.NIT,
 						NRC: data.NRC,
-						Estado: data.Estado,
 						FechaCreacion: data.FechaCreacion,
 					};
 				}

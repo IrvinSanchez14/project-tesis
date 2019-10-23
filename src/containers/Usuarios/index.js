@@ -42,13 +42,13 @@ class Usuarios extends React.Component {
 
 	headTable = () => {
 		let headTable = [
-			{ label: 'ID', field: 'IdPorcion' },
+			{ label: 'ID', field: 'IdUsuario' },
 			{ label: 'Nombre', field: 'Nombre' },
 			{ label: 'Correo Electronico', field: 'Email' },
 			{ label: 'Alias', field: 'Alias' },
-			{ label: 'Tipo de Usuario', field: 'TipoUsuario' },
+			{ label: 'Tipo de Usuario', field: 'IdTipoUsuario' },
 			{ label: 'Sucursal', field: 'Sucursal' },
-			{ label: 'Estado', field: 'Estado' },
+			{ label: 'Estado', field: 'estadoTexto' },
 			{ label: 'Fecha de Creación', field: 'FechaCreacion' },
 		];
 		return headTable;
@@ -84,7 +84,7 @@ class Usuarios extends React.Component {
 			}
 		} else {
 			// eslint-disable-next-line no-restricted-globals
-			if (confirm('Esta seguro de actualizar el siguiente registro de la tabla Tipo de Usuario?')) {
+			if (confirm('Esta seguro de actualizar el siguiente registro de la tabla usuario?')) {
 				api.put('/user/update.php', formValues).then(
 					data => this.props.fetchUsuarios(),
 					this.props.autorizacionFormFail(true),

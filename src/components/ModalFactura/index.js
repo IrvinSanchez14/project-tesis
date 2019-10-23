@@ -66,12 +66,13 @@ function ModalFactura(Props) {
 		const names = [];
 		dataListadoProducto.map(list => {
 			if (list.NombreProducto === nameProduct) {
-				names.push(list.IdPorcion);
+				names.push(parseInt(list.IdPorcion));
 			}
 			return names;
 		});
 
 		newList = dataPorciones.filter(PNA => names.includes(PNA.IdPorcion));
+		console.log('newList', names);
 		setListPorcion(newList);
 		setAvailable(true);
 		setNombreProducto(nameProduct);

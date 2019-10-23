@@ -13,8 +13,8 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormLabel from '@material-ui/core/FormLabel';
 import TextField from '@material-ui/core/TextField';
 import { useTheme } from '@material-ui/core/styles';
-
-///////keypad////////
+import CustomizedSnackbars from '../../components/Toast';
+import _ from 'lodash';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -38,7 +38,9 @@ function Modal(Props) {
 	const [porcion, setPorcion] = useState(0);
 	const [nombrePorcion, setNombrePorcion] = useState('');
 	const [cantidadPorcion, setCantidadPorcion] = useState('');
-	const [lista, setLista] = useState([]);
+	const [visibleToast, setVisibleToast] = useState(false);
+	const [messageError, setMessageError] = useState('');
+	const [variant, setVariant] = useState('success');
 
 	useEffect(() => {
 		if (Props.visibleModal) {
@@ -51,8 +53,8 @@ function Modal(Props) {
 						IdPorcion: data.IdPorcion,
 						Cantidad: data.Cantidad,
 						edit: 0,
-						NombreProducto: title.Nombre,
-						NombrePorcion: nombrePorcion,
+						NombreProducto: data.NombreProducto,
+						NombrePorcion: data.NombrePorcion,
 					});
 					return data;
 				});
@@ -77,18 +79,22 @@ function Modal(Props) {
 	}
 
 	function createList() {
-		list.push({
-			IdProducto: title.IdProducto,
-			IdPorcion: porcion,
-			Cantidad: cantidadPorcion,
-			edit: 0,
-			NombreProducto: title.Nombre,
-			NombrePorcion: nombrePorcion,
-		});
-		setLista(list);
-		setVisibleModal(false);
-		localStorage.setItem('listaExistente', JSON.stringify(list));
-		console.log(lista);
+		if (_.isEmpty(value) || _.isEmpty(cantidadPorcion)) {
+			setMessageError('Debe seleccionar una porcion y cantidad porfavor');
+			setVariant('error');
+			setVisibleToast(true);
+		} else {
+			list.push({
+				IdProducto: title.IdProducto,
+				IdPorcion: porcion,
+				Cantidad: cantidadPorcion,
+				edit: 0,
+				NombreProducto: title.Nombre,
+				NombrePorcion: nombrePorcion,
+			});
+			setVisibleModal(false);
+			localStorage.setItem('listaExistente', JSON.stringify(list));
+		}
 	}
 
 	return (
@@ -134,7 +140,7 @@ function Modal(Props) {
 					//label="Cantidad"
 					className={classes.textField}
 					type="number"
-					inputmode="numeric"
+					inputMode="numeric"
 					name="Cantidad"
 					margin="normal"
 					variant="outlined"
@@ -150,6 +156,12 @@ function Modal(Props) {
 					Agregar
 				</Button>
 			</DialogActions>
+			<CustomizedSnackbars
+				visibleToast={visibleToast}
+				setVisibleToast={setVisibleToast}
+				messageToast={messageError}
+				variant={variant}
+			/>
 		</Dialog>
 	);
 }

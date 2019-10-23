@@ -22,6 +22,20 @@ import { stateSideBarMenu } from '../App/selectors';
 
 import { permisosVerProveedor } from '../../helpers/permisos';
 
+const styles = {
+	divHeader: {
+		display: 'flex',
+		flexDirection: 'row',
+		margin: '15px',
+	},
+	divTitle: {
+		flex: 1,
+	},
+	divAdd: {
+		marginRight: '20px',
+	},
+};
+
 class Proveedor extends React.Component {
 	componentDidMount() {
 		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -33,19 +47,18 @@ class Proveedor extends React.Component {
 
 	headTable = () => {
 		let headTable = [
-			{ label: 'ID', field: 'IdSucursal' },
+			{ label: 'ID', field: 'IdProveedor' },
 			{ label: 'Nombre', field: 'Nombre' },
 			{ label: 'Dirección', field: 'Direccion' },
 			{ label: 'Telefono', field: 'Telefono' },
-			{ label: 'Razon Social', field: 'Razon Social' },
-			{ label: 'Tipo', field: 'Tipo' },
-			{ label: 'Nombre del Contacto', field: 'Nombre del Contacto' },
-			{ label: 'TipCorreo Electronicoo', field: 'Correo Electronico' },
+			{ label: 'Razon Social', field: 'Razo_Social' },
+			{ label: 'Nombre del Contacto', field: 'Nombre_Contacto' },
+			{ label: 'TipCorreo Electronicoo', field: 'Email' },
 			{ label: 'DUI', field: 'DUI' },
 			{ label: 'NIT', field: 'NIT' },
 			{ label: 'NRC', field: 'NRC' },
 			{ label: 'Estado', field: 'Estado' },
-			{ label: 'Fecha de Creacion', field: 'Fecha de Creacion' },
+			{ label: 'Fecha de Creacion', field: 'FechaCreacion' },
 		];
 		return headTable;
 	};
@@ -84,7 +97,7 @@ class Proveedor extends React.Component {
 			}
 		} else {
 			// eslint-disable-next-line no-restricted-globals
-			if (confirm('Esta seguro de actualizar el siguiente dato de la tabla Empresa?')) {
+			if (confirm('Esta seguro de actualizar el siguiente dato de la tabla Proveedores?')) {
 				api.put('/Proveedor/update.php', formValues).then(
 					data => this.props.fetchProveedor(),
 					this.props.autorizacionFormFail(true),
@@ -129,13 +142,11 @@ class Proveedor extends React.Component {
 						'Direccion',
 						'Telefono',
 						'Razo_Social',
-						'Tipo',
 						'Nombre_Contacto',
 						'Email',
 						'DUI',
 						'NIT',
 						'NRC',
-						'Estado',
 						'FechaCreacion'
 					)}
 					createData={true}
@@ -154,13 +165,11 @@ class Proveedor extends React.Component {
 						'Direccion',
 						'Telefono',
 						'Razo_Social',
-						'Tipo',
 						'Nombre_Contacto',
 						'Email',
 						'DUI',
 						'NIT',
 						'NRC',
-						'Estado',
 						'FechaCreacion'
 					)}
 					createData={false}
@@ -184,15 +193,23 @@ class Proveedor extends React.Component {
 			);
 			return (
 				<div>
-					<h1
-						style={{
-							marginLeft: '25px',
-							marginTop: '24px',
-							fontWeight: 'bold',
-						}}
-					>
-						Proveedores
-					</h1>
+					<div style={styles.divHeader}>
+						<div style={styles.divTitle}>
+							<h1>Proveedores</h1>
+						</div>
+						<div style={styles.divAdd}>
+							<Fab color="primary" aria-label="Add" onClick={this.crearRegistro}>
+								<AddIcon />
+							</Fab>
+						</div>
+						<div>
+							<Print
+								ruta={'/Proveedor/readAllPDF.php'}
+								titulo={'Proveedor'}
+								csv={'/Proveedor/readAllCSV.php'}
+							/>
+						</div>
+					</div>
 
 					<SideBarMenu
 						content={arr}
@@ -203,19 +220,6 @@ class Proveedor extends React.Component {
 						frmTable={this.frmTableProveedor()}
 						onClick={this.onChangeStateButton}
 					/>
-					<Fab
-						style={{
-							right: '16px',
-							bottom: '80%',
-							position: 'fixed',
-						}}
-						color="primary"
-						aria-label="Add"
-						onClick={this.crearRegistro}
-					>
-						<AddIcon />
-					</Fab>
-					<Print ruta={'/Proveedor/readAllPDF.php'} titulo={'Proveedor'} csv={'/Proveedor/readAllCSV.php'} />
 				</div>
 			);
 		} else {

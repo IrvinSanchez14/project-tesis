@@ -110,7 +110,7 @@ class FrmUsuario extends React.Component {
 		return (
 			<div className={className}>
 				<label>{label}</label>
-				<select {...input}>
+				<select id="pr" {...input}>
 					{this.props.createData ? <option /> : null}
 					{this.props.listaTipos
 						? this.props.listaTipos.map(permiso => {
@@ -122,6 +122,10 @@ class FrmUsuario extends React.Component {
 						  })
 						: null}
 				</select>
+				{console.log(
+					'prueba',
+					document.getElementById('pr') === null ? 'error' : document.getElementById('pr').value
+				)}
 				{this.renderError(meta)}
 				{this.renderNewObject(input)}
 			</div>
@@ -131,15 +135,21 @@ class FrmUsuario extends React.Component {
 	onSubmit = formValues => {
 		let data;
 		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+		const valueSelect = document.getElementById('pr') === null ? 'error' : document.getElementById('pr').value;
+		const valueSelectSucursal =
+			document.getElementById('pr2') === null ? 'error' : document.getElementById('pr2').value;
 		if (this.props.createData) {
 			data = fromJS({
 				flag: 'create',
 				UsuarioCreador: userInfo.IdUsuario,
+				valueSelectSucursal: valueSelectSucursal,
 				IdSucursal: 3,
 			});
 		} else {
 			data = fromJS({
 				flag: 'update',
+				valueSelect: valueSelect,
+				valueSelectSucursal: valueSelectSucursal,
 				UsuarioActualiza: userInfo.IdUsuario,
 			});
 		}
@@ -161,8 +171,6 @@ class FrmUsuario extends React.Component {
 
 		const renderSucursal = ({ input, label, meta }) => {
 			const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
-			let arreglo = this.props.getDataBodyId;
-			let nombreSucursal;
 			/*nombreSucursal = this.props.dataSucursal.sort(function(a, b) {
 				if (arreglo.Sucursal === b.Nombre) {
 					return 1;
@@ -177,7 +185,7 @@ class FrmUsuario extends React.Component {
 			return (
 				<div className={className}>
 					<label>{label}</label>
-					<select {...input}>
+					<select id="pr2" {...input}>
 						{this.props.createData ? <option /> : null}
 						{this.props.dataSucursal
 							? this.props.dataSucursal.map(sucursal => {
@@ -193,18 +201,13 @@ class FrmUsuario extends React.Component {
 				</div>
 			);
 		};
-		console.log('this.props', this.props);
-		console.log('this.state', this.state);
 		return (
 			<form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
 				<Field name="Nombre" component={this.renderInput} label="Nombre" />
 				<Field name="Email" component={this.renderInput} label="Email" />
 				<Field name="Alias" component={this.renderInput} label="Alias" />
 				<Field name="IdTipoUsuario" component={this.renderSelect} label="Rol" />
-
-				{this.state.sucursal === 1 ? (
-					<Field name="IdSucursal" component={renderSucursal} label="Sucursal" />
-				) : null}
+				<Field name="IdSucursal" component={renderSucursal} label="Sucursal" />
 				<div
 					style={{
 						bottom: '0',

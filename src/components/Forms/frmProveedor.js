@@ -21,9 +21,6 @@ const validate = values => {
 	if (!values.get('Razo_Social')) {
 		errors.Razo_Social = 'Requerido';
 	}
-	if (!values.get('Tipo')) {
-		errors.Tipo = 'Requerido';
-	}
 	if (!values.get('Nombre_Contacto')) {
 		errors.Nombre_Contacto = 'Requerido';
 	}
@@ -114,7 +111,6 @@ class FrmProveedor extends React.Component {
 				<Field name="Direccion" component={this.renderInput} label="Dirección" />
 				<Field name="Telefono" component={this.renderInput} label="Teléfono" />
 				<Field name="Razo_Social" component={this.renderInput} label="Razon Social" />
-				<Field name="Tipo" component={this.renderInput} label="Tipo" />
 				<Field name="Nombre_Contacto" component={this.renderInput} label="Nombre Contacto" />
 				<Field name="Email" component={this.renderInput} label="Correo" />
 				<Field name="DUI" component={this.renderInput} label="DUI" />

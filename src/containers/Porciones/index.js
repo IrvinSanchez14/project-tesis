@@ -83,7 +83,7 @@ class Porciones extends React.Component {
 			}
 		} else {
 			// eslint-disable-next-line no-restricted-globals
-			if (confirm('Esta seguro de actualizar el siguiente dato de la tabla Empresa?')) {
+			if (confirm('Esta seguro de actualizar el siguiente dato de la tabla Porciones?')) {
 				api.put('/Porcion/update.php', formValues).then(
 					data => this.props.fetchPorciones(),
 					this.props.autorizacionFormFail(true),

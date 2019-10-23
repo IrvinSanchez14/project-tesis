@@ -43,10 +43,10 @@ class CambioPass extends React.Component {
 						<MDBCardBody>
 							<MDBCardTitle>Cambiar Contraseña</MDBCardTitle>
 							<div style={{ marginLeft: '24px' }}>
-								<MDBInput label="Nuevo Password" onChange={this.handleChange1} />
+								<MDBInput label="Nuevo Password" type="password" onChange={this.handleChange1} />
 							</div>
 							<div style={{ marginLeft: '24px' }}>
-								<MDBInput label="Confirmar Password" onChange={this.handleChange2} />
+								<MDBInput label="Confirmar Password" type="password" onChange={this.handleChange2} />
 							</div>
 							<MDBBtn style={{ marginLeft: '83px' }} onClick={() => this.onClick()}>
 								Enviar
@@ -60,7 +60,7 @@ class CambioPass extends React.Component {
 						fade
 						iconClassName="text-primary"
 						title="Servidor"
-						message="Correo enviado exitosamente"
+						message="Contraseña modificada exitosamente"
 						style={{
 							position: 'initial',
 							top: '10px',

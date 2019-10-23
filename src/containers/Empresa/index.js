@@ -138,8 +138,7 @@ class Empresa extends React.Component {
 						'Razon_Social',
 						'Direccion',
 						'Telefono',
-						'Correo',
-						'Estado'
+						'Correo'
 					)}
 					createData={true}
 					formResponse={this.props.getFormResponse}
@@ -157,8 +156,7 @@ class Empresa extends React.Component {
 						'Razon_Social',
 						'Direccion',
 						'Telefono',
-						'Correo',
-						'Estado'
+						'Correo'
 					)}
 					createData={false}
 					formResponse={this.props.getFormResponse}

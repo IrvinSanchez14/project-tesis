@@ -46,7 +46,6 @@ export const getDataBodyId = createSelector(
 						Nombre: data.Nombre,
 						Descripcion: data.Descripcion,
 						FechaCreacion: data.FechaCreacion,
-						Estado: data.Estado,
 					};
 				}
 			});

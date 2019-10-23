@@ -111,7 +111,7 @@ class Productos extends React.Component {
 			}
 		} else {
 			// eslint-disable-next-line no-restricted-globals
-			if (confirm('Esta seguro de actualizar el siguiente dato de la tabla Empresa?')) {
+			if (confirm('Esta seguro de actualizar el siguiente dato de la tabla Productos?')) {
 				api.put('/Producto/update.php', formValues).then(
 					data => this.props.fetchProducto(),
 					this.props.autorizacionFormFail(true),

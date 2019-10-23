@@ -46,7 +46,7 @@ function Review(Props) {
 						className={`lista-factura ${classes.listItem}`}
 						key={product.Producto}
 					>
-						<ListItemText primary={product.Producto} secondary={product.UnidadMedida} />
+						<ListItemText primary={product.nombreProducto} secondary={product.nombreUnidadMedida} />
 						<Typography variant="body2">{product.Cantidad}</Typography>
 					</ListItem>
 				))}
@@ -57,13 +57,13 @@ function Review(Props) {
 						Cabecera Factura
 					</Typography>
 					<Typography variant="button" display="block" gutterBottom>{`Proveedor: ${
-						Cabecera.Proveedor
+						Cabecera.nombreProveedor
 					}`}</Typography>
 					<Typography variant="button" display="block" gutterBottom>{`Numero de Factura: ${
 						Cabecera.NumeroFactura
 					}`}</Typography>
 					<Typography variant="button" display="block" gutterBottom>{`Tipo de Factura: ${
-						Cabecera.TipoFactura
+						Cabecera.nombreTipoFactura
 					}`}</Typography>
 					<Typography variant="button" display="block" gutterBottom>{`Precio sin IVA: ${
 						Cabecera.SinIva

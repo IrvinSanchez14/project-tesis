@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -84,7 +84,6 @@ export default function CustomizedSnackbars(Props) {
 		if (reason === 'clickaway') {
 			return;
 		}
-
 		setVisibleToast(false);
 	}
 
@@ -96,14 +95,10 @@ export default function CustomizedSnackbars(Props) {
 					horizontal: 'left',
 				}}
 				open={visibleToast}
-				autoHideDuration={6000}
+				autoHideDuration={2000}
 				onClose={handleClose}
 			>
-				<MySnackbarContentWrapper
-					onClose={handleClose}
-					variant="success"
-					message="Queso Cheddar agregado correctamente a la factura"
-				/>
+				<MySnackbarContentWrapper onClose={handleClose} variant={Props.variant} message={Props.messageToast} />
 			</Snackbar>
 		</div>
 	);

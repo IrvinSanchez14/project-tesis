@@ -50,7 +50,6 @@ export const getDataBodyId = createSelector(
 						Direccion: data.Direccion,
 						Telefono: data.Telefono,
 						Correo: data.Correo,
-						Estado: data.Estado,
 					};
 				}
 			});

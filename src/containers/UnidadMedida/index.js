@@ -31,7 +31,7 @@ class UnidadMedida extends Component {
 
 	headTable = () => {
 		let headTable = [
-			{ label: 'ID', field: 'IdPorcion' },
+			{ label: 'ID', field: 'IdUnidadMedida' },
 			{ label: 'Siglas', field: 'Siglas' },
 			{ label: 'Nombre', field: 'Nombre' },
 			{ label: 'Estado', field: 'Estado' },
@@ -89,7 +89,7 @@ class UnidadMedida extends Component {
 			}
 		} else {
 			// eslint-disable-next-line no-restricted-globals
-			if (confirm('Esta seguro de actualizar el siguiente dato de la tabla Empresa?')) {
+			if (confirm('Esta seguro de actualizar el siguiente dato de la tabla unidad de medida?')) {
 				api.put('/UnidadMedida/update.php', formValues).then(
 					data => this.props.fetchUnidadMedida(),
 					this.props.autorizacionFormFail(true),
@@ -131,8 +131,7 @@ class UnidadMedida extends Component {
 						this.props.getDataBodyId ? this.props.getDataBodyId : undefined,
 						'IdUnidadMedida',
 						'Siglas',
-						'Nombre',
-						'Estado'
+						'Nombre'
 					)}
 					createData={true}
 					formResponse={this.props.getFormResponse}
@@ -147,8 +146,7 @@ class UnidadMedida extends Component {
 						this.props.getDataBodyId ? this.props.getDataBodyId : undefined,
 						'IdUnidadMedida',
 						'Siglas',
-						'Nombre',
-						'Estado'
+						'Nombre'
 					)}
 					createData={false}
 					formResponse={this.props.getFormResponse}

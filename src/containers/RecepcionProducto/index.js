@@ -81,7 +81,8 @@ function Checkout(Props) {
 	const [p, setP] = React.useState(false);
 	const [visibleModal, setVisibleModal] = React.useState(false);
 
-	const click = () => {
+	const click = activo => {
+		console.log('step', activo);
 		clickFactura(true);
 		setP(true);
 	};
@@ -168,7 +169,7 @@ function Checkout(Props) {
 											variant="contained"
 											color="primary"
 											onClick={() => {
-												click();
+												click(activeStep);
 											}}
 											className={classes.button}
 										>

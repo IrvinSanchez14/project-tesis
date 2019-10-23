@@ -17,7 +17,7 @@ export const getDataId = createSelector(
 				if (data.IdUnidadMedida === idUnidad) {
 					dataId.push({
 						id: data.IdUnidadMedida,
-						estado: data.Estado,
+						Estado: data.Estado,
 					});
 				}
 			});

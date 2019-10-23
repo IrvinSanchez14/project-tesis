@@ -15,6 +15,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import api from '../../api';
 
 import './estilo.css';
@@ -57,6 +58,7 @@ function ModalTable(Props) {
 	const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 	const classes2 = useStyles2();
 	const [valor, setValor] = useState(0);
+	const [loading, setLoading] = React.useState(false);
 
 	function handleClose() {
 		setVisibleModalTable(false);
@@ -73,9 +75,11 @@ function ModalTable(Props) {
 		lista2.lista = local;
 		lista2.Sucursal = 1;
 		lista2.UsuarioCreador = id.IdUsuario;
+		setLoading(true);
 
 		api.post('/ListaExistente/create.php', lista2).then(response => {
 			localStorage.removeItem('listaExistente');
+			setLoading(false);
 			setVisibleModalTable(false);
 		});
 	}
@@ -106,6 +110,7 @@ function ModalTable(Props) {
 			const newObjectList = Props.listaExistente.map((row, index) => {
 				if (index === arrayId) {
 					row = { ...row, edit: 1 };
+					setValor(row.Cantidad);
 				}
 				return row;
 			});
@@ -174,46 +179,51 @@ function ModalTable(Props) {
 									</TableRow>
 								</TableHead>
 								<TableBody>
-									{Props.listaExistente.map((row, index) => (
-										<StyledTableRow key={index}>
-											<StyledTableCell>{row.NombreProducto}</StyledTableCell>
-											<StyledTableCell>{row.NombrePorcion}</StyledTableCell>
-											<StyledTableCell style={{ display: 'flex' }}>
-												{row.edit === 0 ? (
-													row.Cantidad
-												) : (
-													<Fragment>
-														<input
-															type="text"
-															defaultValue={row.cantidad}
-															style={{
-																width: '52px',
-																margin: '10px',
-																textAlign: 'center',
-															}}
-															onChange={e => hey(e)}
-														/>
-														<button
-															className="waves-effect waves-light btn"
-															onClick={() => EditArrayLista(index)}
-															style={{ backgroundColor: '#26a69a', color: '#FFF' }}
-														>
-															Guardar
-														</button>
-													</Fragment>
-												)}
-											</StyledTableCell>
-											<StyledTableCell>
-												<span className="spanAction" onClick={() => activateEditInput(index)}>
-													<i class="fas fa-pen" />
-												</span>
-												{'  '}-{'  '}
-												<span className="spanAction">
-													<i class="fas fa-trash" />
-												</span>
-											</StyledTableCell>
-										</StyledTableRow>
-									))}
+									{Props.listaExistente.map((row, index) => {
+										return (
+											<StyledTableRow key={index}>
+												<StyledTableCell>{row.NombreProducto}</StyledTableCell>
+												<StyledTableCell>{row.NombrePorcion}</StyledTableCell>
+												<StyledTableCell style={{ display: 'flex' }}>
+													{row.edit === 0 ? (
+														row.Cantidad
+													) : (
+														<Fragment>
+															<input
+																type="number"
+																defaultValue={row.Cantidad}
+																style={{
+																	width: '52px',
+																	margin: '8px',
+																	textAlign: 'center',
+																}}
+																onChange={e => hey(e)}
+															/>
+															<button
+																className="waves-effect waves-light btn"
+																onClick={() => EditArrayLista(index)}
+																style={{ backgroundColor: '#26a69a', color: '#FFF' }}
+															>
+																Guardar
+															</button>
+														</Fragment>
+													)}
+												</StyledTableCell>
+												<StyledTableCell>
+													<span
+														className="spanAction"
+														onClick={() => activateEditInput(index)}
+													>
+														<i className="fas fa-pen" />
+													</span>
+													{'  '}-{'  '}
+													<span className="spanAction">
+														<i className="fas fa-trash" />
+													</span>
+												</StyledTableCell>
+											</StyledTableRow>
+										);
+									})}
 								</TableBody>
 							</Table>
 						</Paper>
@@ -222,9 +232,16 @@ function ModalTable(Props) {
 						<Button onClick={handleClose} className="ui buttonCancelar" color="primary">
 							Cancelar
 						</Button>
-						<Button onClick={listaEnviada} color="primary" className="ui buttonGuardar" autoFocus>
+						<Button
+							onClick={listaEnviada}
+							color="primary"
+							className="ui buttonGuardar"
+							disabled={loading}
+							autoFocus
+						>
 							Enviar Lista
 						</Button>
+						<div>{loading && <CircularProgress size={24} />}</div>
 					</DialogActions>
 				</Dialog>
 			) : null}
