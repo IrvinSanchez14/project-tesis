@@ -47,7 +47,6 @@ export const getDataId = createSelector(
 	(dataPro, idListaPP) => {
 		let dataId;
 		if (dataPro) {
-			console.log('dataPro', dataPro);
 			dataId = [];
 			dataPro.forEach(data => {
 				if (data.IdListaPP === idListaPP) {

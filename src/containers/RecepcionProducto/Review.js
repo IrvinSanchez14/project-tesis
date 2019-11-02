@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -8,6 +8,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Grid from '@material-ui/core/Grid';
 
+import { actualizacionListaFacturaDetalle } from '../../FacturaStore/actions';
 import { listaDetalleFactura, Cabecera } from '../../FacturaStore/selectors';
 
 const useStyles = makeStyles(theme => ({
@@ -23,7 +24,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Review(Props) {
-	const { listaDetalleFactura, Cabecera } = Props;
+	const { listaDetalleFactura, Cabecera, actualizacionListaFacturaDetalle } = Props;
+	const [valor, setValor] = useState(0);
+	const [cantidadVal, setCantidadVal] = useState(0);
 	const classes = useStyles();
 
 	function askDelete() {
@@ -34,20 +37,90 @@ function Review(Props) {
 		}
 	}
 
+	function activateEditInput(arrayId) {
+		// eslint-disable-next-line no-restricted-globals
+		if (confirm(`Esta seguro `)) {
+			const newObjectList = listaDetalleFactura.map((row, index) => {
+				if (index === arrayId) {
+					row = { ...row, editValue: true };
+					setValor(row.Cantidad);
+				}
+				return row;
+			});
+			localStorage.setItem('detalleFactura', JSON.stringify(newObjectList));
+			actualizacionListaFacturaDetalle();
+		} else {
+			return;
+		}
+	}
+
+	/*useEffect(() => {
+		if (Cabecera !== undefined) {
+			setNumeroFactura(Cabecera.NumeroFactura);
+			setProveedor(Cabecera.Proveedor);
+			setTipoFactura(Cabecera.TipoFactura);
+			setSinIva(Cabecera.SinIva);
+			setIva(Cabecera.IVA);
+			setNombreProveedor(nombreProveedor);
+			setNombreTipoFactura(nombreTipoFactura);
+		}
+	}, []);*/
+
+	function handleChangeCantidad(e) {
+		setCantidadVal(e.target.value);
+		return cantidadVal;
+	}
+
+	const handleKeyDown = (e, arrayId) => {
+		if (e.key === 'Enter') {
+			console.log('do validate');
+			const newObjectList = listaDetalleFactura.map((row, index) => {
+				if (index === arrayId) {
+					row = { ...row, Cantidad: cantidadVal, editValue: false };
+				}
+				return row;
+			});
+			localStorage.setItem('detalleFactura', JSON.stringify(newObjectList));
+			actualizacionListaFacturaDetalle();
+		}
+	};
+
 	return (
 		<React.Fragment>
 			<Typography variant="h6" gutterBottom>
 				Factura Vista
 			</Typography>
 			<List disablePadding>
-				{listaDetalleFactura.map(product => (
-					<ListItem
-						onClick={() => askDelete()}
-						className={`lista-factura ${classes.listItem}`}
-						key={product.Producto}
-					>
+				{listaDetalleFactura.map((product, index) => (
+					<ListItem key={index}>
 						<ListItemText primary={product.nombreProducto} secondary={product.nombreUnidadMedida} />
-						<Typography variant="body2">{product.Cantidad}</Typography>
+						<Typography variant="body2">
+							{product.editValue ? (
+								<input
+									style={{
+										width: '42px',
+										border: '0px',
+									}}
+									type="number"
+									onChange={handleChangeCantidad}
+									defaultValue={product.Cantidad}
+									onKeyDown={e => handleKeyDown(e, index)}
+									disabled={false}
+								/>
+							) : (
+								product.Cantidad
+							)}
+						</Typography>
+						<Typography style={{ margin: '10px' }} variant="body2">
+							{' '}
+							<span className="spanAction" onClick={() => activateEditInput(index)}>
+								<i className="fas fa-pen" />
+							</span>
+							{'  '}-{'  '}
+							<span className="spanAction">
+								<i className="fas fa-trash" />
+							</span>
+						</Typography>
 					</ListItem>
 				))}
 			</List>
@@ -56,21 +129,31 @@ function Review(Props) {
 					<Typography variant="h6" gutterBottom className={classes.title}>
 						Cabecera Factura
 					</Typography>
-					<Typography variant="button" display="block" gutterBottom>{`Proveedor: ${
-						Cabecera.nombreProveedor
-					}`}</Typography>
-					<Typography variant="button" display="block" gutterBottom>{`Numero de Factura: ${
-						Cabecera.NumeroFactura
-					}`}</Typography>
-					<Typography variant="button" display="block" gutterBottom>{`Tipo de Factura: ${
-						Cabecera.nombreTipoFactura
-					}`}</Typography>
-					<Typography variant="button" display="block" gutterBottom>{`Precio sin IVA: ${
-						Cabecera.SinIva
-					}`}</Typography>
-					<Typography variant="button" display="block" gutterBottom>{`Precio con IVA: ${
-						Cabecera.IVA
-					}`}</Typography>
+					<Typography
+						variant="button"
+						display="block"
+						gutterBottom
+					>{`Proveedor: ${Cabecera.nombreProveedor}`}</Typography>
+					<Typography
+						variant="button"
+						display="block"
+						gutterBottom
+					>{`Numero de Factura: ${Cabecera.NumeroFactura}`}</Typography>
+					<Typography
+						variant="button"
+						display="block"
+						gutterBottom
+					>{`Tipo de Factura: ${Cabecera.nombreTipoFactura}`}</Typography>
+					<Typography
+						variant="button"
+						display="block"
+						gutterBottom
+					>{`Precio sin IVA: ${Cabecera.SinIva}`}</Typography>
+					<Typography
+						variant="button"
+						display="block"
+						gutterBottom
+					>{`Precio con IVA: ${Cabecera.IVA}`}</Typography>
 				</Grid>
 			</Grid>
 		</React.Fragment>
@@ -84,7 +167,9 @@ export function mapStateToProps(state, props) {
 	};
 }
 
-const actions = {};
+const actions = {
+	actualizacionListaFacturaDetalle,
+};
 
 export default connect(
 	mapStateToProps,

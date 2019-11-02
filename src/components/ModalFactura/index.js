@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import _ from 'lodash';
 
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -10,10 +11,13 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 import { Table, Form } from 'semantic-ui-react';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { fetchListadoProductos } from '../../containers/ListaProducto/actions';
 import { dataPorciones } from '../../containers/Porciones/selectors';
 import { dataListadoProducto } from '../../containers/ListaProducto/selectors';
+import { activateModal, activateToastConfirm, fetchFactura } from '../../containers/CentroProduccion/actions';
+import { dataFactura } from '../../containers/CentroProduccion/selectors';
 
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import esLocale from 'date-fns/locale/es';
@@ -36,8 +40,23 @@ const styles = {
 };
 
 let list = [];
+
 function ModalFactura(Props) {
-	const { visibleModal, setVisibleModal, arrays, detalles, dataListadoProducto, dataPorciones } = Props;
+	const {
+		visibleModal,
+		setVisibleModal,
+		arrays,
+		detalles,
+		dataListadoProducto,
+		dataPorciones,
+		activateModal,
+		stateModal,
+		activateToastConfirm,
+		estadoLote,
+		CP,
+		fetchFactura,
+		dataFactura,
+	} = Props;
 	const theme = useTheme();
 	const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 	const [available, setAvailable] = useState(false);
@@ -48,8 +67,9 @@ function ModalFactura(Props) {
 	const [showList, setShowList] = useState(false);
 	const [nombreProducto, setNombreProducto] = useState('');
 	const [nombrePorcion, setNombrePorcion] = useState('');
-	const [selectedDate, setSelectedDate] = React.useState(new Date());
+	const [selectedDate, setSelectedDate] = useState(new Date());
 	const [idProducto, setIdProducto] = useState(0);
+	const [loading, setLoading] = React.useState(false);
 
 	function handleDateChange(date) {
 		setSelectedDate(date);
@@ -57,6 +77,7 @@ function ModalFactura(Props) {
 
 	function handleClose() {
 		setVisibleModal(false);
+		activateModal(false);
 		setPorcionAdd([]);
 		setInputCantidad(0);
 	}
@@ -72,11 +93,19 @@ function ModalFactura(Props) {
 		});
 
 		newList = dataPorciones.filter(PNA => names.includes(PNA.IdPorcion));
-		console.log('newList', names);
 		setListPorcion(newList);
 		setAvailable(true);
 		setNombreProducto(nameProduct);
 		setIdProducto(id);
+	}
+
+	function addDataToArray() {
+		setPorcionAdd([]);
+		const informacion =
+			JSON.parse(localStorage.getItem(`${arrays.Lote}`)) === null
+				? []
+				: JSON.parse(localStorage.getItem(`${arrays.Lote}`));
+		setPorcionAdd(informacion);
 	}
 
 	useEffect(() => {
@@ -85,17 +114,61 @@ function ModalFactura(Props) {
 		}
 	});
 
+	useEffect(() => {
+		if (stateModal) {
+			addDataToArray();
+		}
+	}, []);
+
 	function createPorcionAdd() {
-		list.push({
-			IdProducto: idProducto,
-			Cantidad: inputCantidad,
-			IdPorcion: selectPorcion,
-			nombreProducto: nombreProducto,
-			nombrePorcion: nombrePorcion,
-			FechaVencimiento: moment(selectedDate).format('YYYY-MM-DD'),
-		});
-		setPorcionAdd(list);
-		setShowList(true);
+		if (estadoLote === '2') {
+			api.put('/Factura/changeState.php', { ID: CP, Estado: 4 }).then(response => {
+				console.log(response);
+				fetchFactura();
+			});
+		}
+		if (_.isEmpty(localStorage.getItem(`${arrays.Lote}`))) {
+			list = [];
+			list.push({
+				IdProducto: idProducto,
+				Cantidad: inputCantidad,
+				IdPorcion: selectPorcion,
+				nombreProducto: nombreProducto,
+				nombrePorcion: nombrePorcion,
+				FechaVencimiento: moment(selectedDate).format('YYYY-MM-DD'),
+			});
+			setPorcionAdd(list);
+			localStorage.setItem(`${arrays.Lote}`, JSON.stringify(list));
+			setShowList(true);
+		} else {
+			const local = JSON.parse(localStorage.getItem(`${arrays.Lote}`));
+			list = [];
+			if (local) {
+				local.map(data => {
+					list.push({
+						IdProducto: data.IdProducto,
+						Cantidad: data.Cantidad,
+						IdPorcion: data.IdPorcion,
+						nombreProducto: data.nombreProducto,
+						nombrePorcion: data.nombrePorcion,
+						FechaVencimiento: data.FechaVencimiento,
+					});
+					return data;
+				});
+			}
+			list.push({
+				IdProducto: idProducto,
+				Cantidad: inputCantidad,
+				IdPorcion: selectPorcion,
+				nombreProducto: nombreProducto,
+				nombrePorcion: nombrePorcion,
+				FechaVencimiento: moment(selectedDate).format('YYYY-MM-DD'),
+			});
+			setPorcionAdd(list);
+			localStorage.setItem(`${arrays.Lote}`, JSON.stringify(list));
+			setInputCantidad(0);
+			setShowList(true);
+		}
 	}
 
 	function handleChangeCantidad(e) {
@@ -114,6 +187,7 @@ function ModalFactura(Props) {
 		// eslint-disable-next-line no-restricted-globals
 		if (confirm('Esta seguro de eliminarlo de la lista?')) {
 			list.splice(index, 1);
+			localStorage.setItem(`${arrays.Lote}`, JSON.stringify(list));
 			setShowList(false);
 		} else {
 			return setShowList(false);
@@ -121,18 +195,37 @@ function ModalFactura(Props) {
 	}
 
 	function sendListaProduccion() {
-		console.log('enviando...');
-		console.log(arrays);
 		const cabecera = {
 			lote: arrays.Lote,
 			IdCP: arrays.IdCP,
 			UsuarioCreador: 1,
 		};
-		api.post('/Produccion/create.php', { Cabecera: cabecera, Detalle: list })
-			.then(response => {})
-			.catch(error => {
-				console.log(error);
-			});
+		activateToastConfirm(true);
+		setLoading(true);
+		const arrayFactura = dataFactura.filter(response => response.IdCP === CP);
+		if (arrayFactura[0].IdEstado === '4') {
+			api.put('/Factura/changeState.php', { ID: CP, Estado: 5 })
+				.then(response => {
+					api.post('/Produccion/create.php', { Cabecera: cabecera, Detalle: list })
+						.then(response => {
+							localStorage.removeItem(`${arrays.Lote}`);
+							setTimeout(() => {
+								setVisibleModal(false);
+								setLoading(false);
+								activateToastConfirm(false);
+								fetchFactura();
+							}, 2000);
+						})
+						.catch(error => {
+							console.log(error);
+						});
+				})
+				.catch(error => {
+					console.log(error);
+				});
+		}
+
+		/**/
 	}
 
 	return (
@@ -184,17 +277,27 @@ function ModalFactura(Props) {
 				<hr />
 				{available ? (
 					<div>
+						<p
+							style={{
+								textAlign: 'center',
+								fontWeight: 'bold',
+								fontSize: '17px',
+								backgroundColor: '#8acd24',
+							}}
+						>{`Producto Seleccionado: ${nombreProducto}`}</p>
 						<div className="container22">
 							<div>
 								<div>
 									<div>
 										{listPorcion ? (
 											<select onChange={e => handleSelect(e)}>
+												<option value={0}>Seleccione Porcion</option>
 												{listPorcion.map(list => {
 													return (
-														<option key={list.IdPorcion} value={list.IdPorcion}>{`${
-															list.Cantidad
-														} ${list.UnidadMedida}`}</option>
+														<option
+															key={list.IdPorcion}
+															value={list.IdPorcion}
+														>{`${list.Cantidad} ${list.UnidadMedida}`}</option>
 													);
 												})}
 											</select>
@@ -213,7 +316,7 @@ function ModalFactura(Props) {
 										<KeyboardDatePicker
 											margin="normal"
 											id="date-picker-dialog"
-											label="Fecha de recepcion"
+											label="Fecha de vencimiento"
 											format="MM/dd/yyyy"
 											value={selectedDate}
 											onChange={handleDateChange}
@@ -233,6 +336,7 @@ function ModalFactura(Props) {
 									flexDirection: 'column',
 									textAlign: 'center',
 									cursor: 'pointer',
+									height: '50px',
 								}}
 								className="effectClick"
 								onClick={() => createPorcionAdd()}
@@ -288,9 +392,16 @@ function ModalFactura(Props) {
 				<Button onClick={handleClose} className="ui buttonCancelar" color="primary">
 					Cancelar
 				</Button>
-				<Button onClick={() => sendListaProduccion()} className="ui buttonGuardar" color="primary" autoFocus>
+				<Button
+					onClick={() => sendListaProduccion()}
+					className="ui buttonGuardar"
+					color="primary"
+					disabled={loading}
+					autoFocus
+				>
 					Enviar
 				</Button>
+				<div>{loading && <CircularProgress size={24} />}</div>
 			</DialogActions>
 		</Dialog>
 	);
@@ -300,11 +411,15 @@ export function mapStateToProps(state, props) {
 	return {
 		dataListadoProducto: dataListadoProducto(state, props),
 		dataPorciones: dataPorciones(state, props),
+		dataFactura: dataFactura(state, props),
 	};
 }
 
 export const actions = {
 	fetchListadoProductos,
+	activateModal,
+	activateToastConfirm,
+	fetchFactura,
 };
 
 export default connect(

@@ -21,7 +21,6 @@ export class Register extends React.Component {
 		});
 		api.post('/user/recuperacion.php', { Email: this.state.Email })
 			.then(respuesta => {
-				console.log(respuesta);
 				this.setState({
 					loading: false,
 					notification: true,

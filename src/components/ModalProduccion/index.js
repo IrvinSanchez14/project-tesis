@@ -92,6 +92,7 @@ function ModalProduccion(Props) {
 		});
 		setPorcionAdd(list);
 		setCantidadRedux(dataDetalleProduccion[index].Cantidad);
+		setInputCantidad(0);
 		setShowList(true);
 	}
 
@@ -117,6 +118,9 @@ function ModalProduccion(Props) {
 	function removeItemArra(index) {
 		// eslint-disable-next-line no-restricted-globals
 		if (confirm('Esta seguro de eliminarlo de la lista?')) {
+			const sumatoria = parseInt(cantidadRedux) + parseInt(list[index].Cantidad);
+			updateDetalleCantidad(sumatoria, index);
+			setCantidadRedux(sumatoria);
 			list.splice(index, 1);
 			setShowList(false);
 		} else {
@@ -125,8 +129,6 @@ function ModalProduccion(Props) {
 	}
 
 	function sendListaProduccion() {
-		console.log('enviando...');
-		console.log(list);
 		api.post('/Produccion/createNotaEnvio.php', { Detalle: list })
 			.then(response => {
 				console.log(response);

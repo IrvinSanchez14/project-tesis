@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import _ from 'lodash';
 
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -55,7 +54,6 @@ function PaymentForm(Props) {
 
 	function onClick() {
 		if (producto <= 0 || cantidad <= 0 || unidadMedida <= 0) {
-			console.log('error');
 			setActivateError(true);
 			clickFactura(false);
 		} else {
@@ -65,6 +63,7 @@ function PaymentForm(Props) {
 				UnidadMedida: unidadMedida,
 				nombreProducto: nombreProducto,
 				nombreUnidadMedida: nombreUnidadMedida,
+				editValue: false,
 			});
 			localStorage.setItem('detalleFactura', JSON.stringify(list));
 			setVisibleToast(true);
@@ -91,7 +90,7 @@ function PaymentForm(Props) {
 	const productoFiltrado = () => {
 		if (dataProducto) {
 			const filterData = dataProducto.filter(data => parseInt(data.IdProveedor) === Cabecera.Proveedor);
-			filterData.map(datos => {
+			dataProducto.map(datos => {
 				listaProducto.push({
 					value: datos.IdProducto,
 					label: datos.Nombre,
@@ -174,7 +173,7 @@ function PaymentForm(Props) {
 						onChange={handleChangeUnidad('currency')}
 						fullWidth
 					>
-						<MenuItem value={0}>Seleccione Producto</MenuItem>
+						<MenuItem value={0}>Seleccione Unidad de Medida</MenuItem>
 						{listaUnidad.map(option => (
 							<MenuItem key={option.value} value={option.value} name={option.label}>
 								{option.label}

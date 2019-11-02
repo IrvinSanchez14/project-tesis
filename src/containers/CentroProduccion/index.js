@@ -16,27 +16,30 @@ class CentroProduccion extends React.Component {
 	}
 	render() {
 		const { dataFactura } = this.props;
-		console.log(this.props);
 		if (this.props.dataFactura) {
-			return (
-				<div>
-					<h1
-						style={{
-							marginLeft: '25px',
-							marginTop: '24px',
-							fontWeight: 'bold',
-						}}
-					>
-						Control de Produccion
-					</h1>
-					<TablaCP
-						header={['ID', 'Estado', 'Lote', 'Proveedor', 'Numero de Factura', 'Fecha de creación']}
-						dataTable={dataFactura}
-						getIDtable={this.getIDtable}
-						key="IdEmpresa"
-					/>
-				</div>
-			);
+			if (!dataFactura.hasOwnProperty('error')) {
+				return (
+					<div>
+						<h1
+							style={{
+								marginLeft: '25px',
+								marginTop: '24px',
+								fontWeight: 'bold',
+							}}
+						>
+							Control de Produccion
+						</h1>
+						<TablaCP
+							header={['ID', 'Estado', 'Lote', 'Proveedor', 'Numero de Factura', 'Fecha de creación']}
+							dataTable={dataFactura}
+							getIDtable={this.getIDtable}
+							key="IdEmpresa"
+						/>
+					</div>
+				);
+			} else {
+				return <p>No existe datos en este momento</p>;
+			}
 		} else {
 			return null;
 		}

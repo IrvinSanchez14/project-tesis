@@ -16,7 +16,12 @@ import PaymentForm from './PaymentForm';
 import Review from './Review';
 import ModalConfirm from '../../components/ModalConfirm';
 
-import { clickFactura, removeBanderaCabecera } from '../../FacturaStore/actions';
+import {
+	clickFactura,
+	removeBanderaCabecera,
+	checkCabeceraFactura,
+	checkDetalleFactura,
+} from '../../FacturaStore/actions';
 import { checkCorrecto, Cabecera, listaDetalleFactura } from '../../FacturaStore/selectors';
 
 const useStyles = makeStyles(theme => ({
@@ -75,14 +80,21 @@ function getStepContent(step) {
 }
 
 function Checkout(Props) {
-	const { clickFactura, checkCorrecto, removeBanderaCabecera, Cabecera, listaDetalleFactura } = Props;
+	const {
+		clickFactura,
+		checkCorrecto,
+		removeBanderaCabecera,
+		Cabecera,
+		listaDetalleFactura,
+		checkCabeceraFactura,
+		checkDetalleFactura,
+	} = Props;
 	const classes = useStyles();
 	const [activeStep, setActiveStep] = React.useState(0);
 	const [p, setP] = React.useState(false);
 	const [visibleModal, setVisibleModal] = React.useState(false);
 
 	const click = activo => {
-		console.log('step', activo);
 		clickFactura(true);
 		setP(true);
 	};
@@ -102,7 +114,14 @@ function Checkout(Props) {
 	};
 
 	function sendFactura() {
-		api.post('/Factura/create.php', { Cabecera: Cabecera, Detalle: listaDetalleFactura }).then(response => {});
+		api.post('/Factura/create.php', { Cabecera: Cabecera, Detalle: listaDetalleFactura }).then(response => {
+			localStorage.removeItem('cabeceraFactura');
+			localStorage.removeItem('detalleFactura');
+			checkCabeceraFactura([], true);
+			checkDetalleFactura([], true);
+			setActiveStep(0);
+			setVisibleModal(true);
+		});
 	}
 
 	useEffect(() => {
@@ -158,7 +177,6 @@ function Checkout(Props) {
 											color="primary"
 											onClick={() => {
 												sendFactura();
-												setVisibleModal(true);
 											}}
 											className={classes.button}
 										>
@@ -177,7 +195,11 @@ function Checkout(Props) {
 										</Button>
 									)}
 								</div>
-								<ModalConfirm visibleModal={visibleModal} setVisibleModal={setVisibleModal} />
+								<ModalConfirm
+									visibleModal={visibleModal}
+									setVisibleModal={setVisibleModal}
+									textTitle={'Factura almacenada correctamente en la base de datos'}
+								/>
 							</React.Fragment>
 						)}
 					</React.Fragment>
@@ -198,6 +220,8 @@ export function mapStateToProps(state, props) {
 const actions = {
 	clickFactura,
 	removeBanderaCabecera,
+	checkCabeceraFactura,
+	checkDetalleFactura,
 };
 
 export default connect(

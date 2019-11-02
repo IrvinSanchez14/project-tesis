@@ -29,3 +29,9 @@ export function checkDetalleFactura(array, flag) {
 		flag: flag,
 	};
 }
+
+export const actualizacionListaFacturaDetalle = () => {
+	return {
+		type: ACTIONS.ACTUALIZACION_LISTA_FACTURA_DETALLE,
+	};
+};

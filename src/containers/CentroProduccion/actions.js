@@ -47,3 +47,17 @@ export const updateDetalleCantidad = (cantidad, index) => {
 		index: index,
 	};
 };
+
+export function activateModal(flag) {
+	return {
+		type: ACTIONS.ACTIVATE_MODAL_PRODUCCION,
+		estado: flag,
+	};
+}
+
+export function activateToastConfirm(flag) {
+	return {
+		type: ACTIONS.ACTIVATE_TOAST_CONFIRM,
+		estado: flag,
+	};
+}

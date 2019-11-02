@@ -12,7 +12,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 
 import { checkCabeceraFactura, clickFactura } from '../../FacturaStore/actions';
-import { revisarCabecera } from '../../FacturaStore/selectors';
+import { revisarCabecera, Cabecera } from '../../FacturaStore/selectors';
 import { fetchProveedor } from '../Proveedor/actions';
 import { dataProveedor } from '../Proveedor/selectors';
 import esLocale from 'date-fns/locale/es';
@@ -30,7 +30,7 @@ const currencies2 = [
 ];
 
 function AddressForm(Props) {
-	const { revisarCabecera, checkCabeceraFactura, fetchProveedor, dataProveedor, clickFactura } = Props;
+	const { revisarCabecera, checkCabeceraFactura, fetchProveedor, dataProveedor, clickFactura, Cabecera } = Props;
 	const [selectedDate, setSelectedDate] = React.useState(new Date());
 	const [numeroFactura, setNumeroFactura] = React.useState('');
 	const [proveedor, setProveedor] = React.useState(0);
@@ -79,6 +79,9 @@ function AddressForm(Props) {
 
 	function handleIvaChange(e) {
 		setIva(e.target.value);
+		const numero = e.target.value;
+		const precio_sin_iva = numero / 1.13;
+		setSinIva(precio_sin_iva.toFixed(4));
 	}
 
 	useEffect(() => {
@@ -86,7 +89,6 @@ function AddressForm(Props) {
 			(_.isEmpty(numeroFactura) || proveedor <= 0 || tipoFactura <= 0 || _.isEmpty(sinIva) || _.isEmpty(iva)) &&
 			revisarCabecera
 		) {
-			console.log('error', proveedor);
 			setActivateError(true);
 			clickFactura(false);
 		} else {
@@ -103,6 +105,7 @@ function AddressForm(Props) {
 					nombreProveedor: nombreProveedor,
 				};
 				checkCabeceraFactura(cabeceraFactura, true);
+				localStorage.setItem('cabeceraFactura', JSON.stringify(cabeceraFactura));
 				setActivateError(false);
 			}
 		}
@@ -110,6 +113,16 @@ function AddressForm(Props) {
 
 	useEffect(() => {
 		fetchProveedor();
+
+		if (Cabecera !== undefined) {
+			setNumeroFactura(Cabecera.NumeroFactura);
+			setProveedor(Cabecera.Proveedor);
+			setTipoFactura(Cabecera.TipoFactura);
+			setSinIva(Cabecera.SinIva);
+			setIva(Cabecera.IVA);
+			setNombreProveedor(nombreProveedor);
+			setNombreTipoFactura(nombreTipoFactura);
+		}
 	}, []);
 
 	proveedorLista();
@@ -203,7 +216,7 @@ function AddressForm(Props) {
 				</Grid>
 				<Grid item xs={12} sm={6}>
 					<TextField
-						required
+						disabled
 						id="TotalSinIva"
 						name="TotalSinIva"
 						label="Total sin IVA"
@@ -246,6 +259,7 @@ export function mapStateToProps(state, props) {
 	return {
 		revisarCabecera: revisarCabecera(state, props),
 		dataProveedor: dataProveedor(state, props),
+		Cabecera: Cabecera(state, props),
 	};
 }
 

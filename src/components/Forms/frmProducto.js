@@ -144,7 +144,6 @@ class FrmEmpresa extends React.Component {
 
 	render() {
 		this.validateClean();
-		console.log('sistema>>>>>>>', this.props.createData);
 		if (this.props.createData) {
 			return (
 				<form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">

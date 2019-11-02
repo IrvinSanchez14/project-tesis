@@ -17,6 +17,7 @@ class Produccion extends React.Component {
 	render() {
 		const { dataProduccion } = this.props;
 		if (this.props.dataProduccion) {
+			if (!dataProduccion.hasOwnProperty('error')) { 
 			return (
 				<div>
 					<h1
@@ -45,8 +46,11 @@ class Produccion extends React.Component {
 				</div>
 			);
 		} else {
-			return null;
+			return <p>No existe datos en este momento</p>;
 		}
+	} else {
+		return null;
+	}
 	}
 }
 
