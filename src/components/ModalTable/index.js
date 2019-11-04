@@ -121,6 +121,17 @@ function ModalTable(Props) {
 		}
 	}
 
+	function removeItemArra(index) {
+		// eslint-disable-next-line no-restricted-globals
+		if (confirm('Esta seguro de eliminarlo de la lista?')) {
+			Props.listaExistente.splice(index, 1);
+			localStorage.setItem('listaExistente', JSON.stringify(Props.listaExistente));
+			Props.actualizacionLista();
+		} else {
+			return;
+		}
+	}
+
 	return (
 		<div>
 			{Props.listaExistente ? (
@@ -217,7 +228,7 @@ function ModalTable(Props) {
 														<i className="fas fa-pen" />
 													</span>
 													{'  '}-{'  '}
-													<span className="spanAction">
+													<span onClick={() => removeItemArra(index)} className="spanAction">
 														<i className="fas fa-trash" />
 													</span>
 												</StyledTableCell>

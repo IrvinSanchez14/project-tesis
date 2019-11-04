@@ -194,12 +194,12 @@ function AddressForm(Props) {
 					<TextField
 						id="standard-select-currency"
 						select
-						label="Tipo de Factura"
+						label="Tipo de documento"
 						value={tipoFactura}
 						onChange={handleChangeTipo('currency')}
 						fullWidth
 					>
-						<MenuItem value={0}>Seleccion tipo de tipo de factura</MenuItem>
+						<MenuItem value={0}>Seleccion tipo de tipo de documento</MenuItem>
 						{currencies2.map(option => (
 							<MenuItem key={option.value} value={option.value} onClick={() => console.log(option.value)}>
 								{option.label}

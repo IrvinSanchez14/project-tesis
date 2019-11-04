@@ -61,3 +61,9 @@ export function activateToastConfirm(flag) {
 		estado: flag,
 	};
 }
+
+export function updateTabla() {
+	return {
+		type: ACTIONS.UPDATE_TABLA_PRODUCCION,
+	};
+}

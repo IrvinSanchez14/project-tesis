@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import moment from 'moment';
 
 import { Table, Popup, Tab } from 'semantic-ui-react';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -9,6 +10,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import Button from '@material-ui/core/Button';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import esLocale from 'date-fns/locale/es';
+import api from '../../../api';
 
 const styles = {
 	cardBase: {
@@ -88,6 +90,7 @@ function NotaEnvio(Props) {
 	const [selectedDateDe, setSelectedDateDe] = React.useState(new Date());
 	const [selectedDateHasta, setSelectedDateHasta] = React.useState(new Date());
 	const [consulta, setConsulta] = useState(false);
+	const [arrayFecha, setArrayFecha] = useState([]);
 	const [values, setValues] = React.useState({
 		name: 'Cat in the Hat',
 		age: '',
@@ -110,6 +113,14 @@ function NotaEnvio(Props) {
 
 	function handleDateHastaChange(date) {
 		setSelectedDateHasta(date);
+	}
+
+	function verReporteFecha() {
+		api.post('/Reporteria/nota_envio_fecha.php', { fecha: '2019-11-03', id_sucursal: 2 }).then(response => {
+			setArrayFecha(response.data);
+			console.log(response.data.map(D => D.nombreSucursal));
+			setConsulta(true);
+		});
 	}
 
 	const panes = [
@@ -157,7 +168,7 @@ function NotaEnvio(Props) {
 								variant="contained"
 								style={{ backgroundColor: '#66b727', color: '#FFF' }}
 								className={classes.button}
-								onClick={() => setConsulta(true)}
+								onClick={() => verReporteFecha()} // setConsulta(true)
 							>
 								Consultar
 							</Button>
@@ -194,8 +205,8 @@ function NotaEnvio(Props) {
 									position="top center"
 								/>
 
-								<div className="header">LP Volcan</div>
-								<div className="meta">2019-09-17</div>
+								<div className="header">{values.currency}</div>
+								<div className="meta">{moment(selectedDateDe).format('MM/DD/YYYY')}</div>
 								<div className="description">
 									<Table padded>
 										<Table.Header>
@@ -209,55 +220,17 @@ function NotaEnvio(Props) {
 										</Table.Header>
 
 										<Table.Body>
-											<Table.Row>
-												<Table.Cell>003</Table.Cell>
-												<Table.Cell>Pollo</Table.Cell>
-												<Table.Cell>3.00 ONZ </Table.Cell>
-												<Table.Cell>89 </Table.Cell>
-												<Table.Cell>2019-10-20</Table.Cell>
-											</Table.Row>
-											<Table.Row>
-												<Table.Cell>003</Table.Cell>
-												<Table.Cell>Queso Mozzarella</Table.Cell>
-												<Table.Cell>3.00 ONZ </Table.Cell>
-												<Table.Cell>350 </Table.Cell>
-												<Table.Cell>2019-10-25</Table.Cell>
-											</Table.Row>
-											<Table.Row>
-												<Table.Cell>003</Table.Cell>
-												<Table.Cell>Queso Mozzarella</Table.Cell>
-												<Table.Cell>2.00 ONZ </Table.Cell>
-												<Table.Cell>360 </Table.Cell>
-												<Table.Cell>2019-10-25</Table.Cell>
-											</Table.Row>
-											<Table.Row>
-												<Table.Cell>003</Table.Cell>
-												<Table.Cell>Carne</Table.Cell>
-												<Table.Cell>1.50 ONZ </Table.Cell>
-												<Table.Cell>68 </Table.Cell>
-												<Table.Cell>2019-10-15</Table.Cell>
-											</Table.Row>
-											<Table.Row>
-												<Table.Cell>003</Table.Cell>
-												<Table.Cell>Camaron</Table.Cell>
-												<Table.Cell>3.00 ONZ </Table.Cell>
-												<Table.Cell>70 </Table.Cell>
-												<Table.Cell>2019-09-25</Table.Cell>
-											</Table.Row>
-											<Table.Row>
-												<Table.Cell>003</Table.Cell>
-												<Table.Cell>Camaron</Table.Cell>
-												<Table.Cell>2.00 ONZ </Table.Cell>
-												<Table.Cell>260 </Table.Cell>
-												<Table.Cell>2019-09-25</Table.Cell>
-											</Table.Row>
-											<Table.Row>
-												<Table.Cell>003</Table.Cell>
-												<Table.Cell>Pulpo</Table.Cell>
-												<Table.Cell>3.00 ONZ </Table.Cell>
-												<Table.Cell>74 </Table.Cell>
-												<Table.Cell>2019-09-30</Table.Cell>
-											</Table.Row>
+											{arrayFecha.map((AF, index) => {
+												return (
+													<Table.Row key={index}>
+														<Table.Cell>{AF.lote}</Table.Cell>
+														<Table.Cell>{AF.nombreProducto}</Table.Cell>
+														<Table.Cell>{AF.porcionNombre}</Table.Cell>
+														<Table.Cell>{AF.Cantidad}</Table.Cell>
+														<Table.Cell>{AF.FechaVencimiento}</Table.Cell>
+													</Table.Row>
+												);
+											})}
 										</Table.Body>
 									</Table>
 								</div>

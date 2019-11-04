@@ -129,12 +129,16 @@ function ListaExistente(Props) {
 							);
 					  })
 					: null}
-				<Modal
-					visibleModal={visibleModal}
-					setVisibleModal={setVisibleModal}
-					dataContent={arrayData}
-					title={nameProducto}
-				/>
+				{visibleModal ? (
+					<Modal
+						visibleModal={visibleModal}
+						setVisibleModal={setVisibleModal}
+						dataContent={arrayData}
+						title={nameProducto}
+					/>
+				) : (
+					undefined
+				)}
 				<ModalTable visibleModalTable={visibleModalTable} setVisibleModalTable={setVisibleModalTable} />
 			</div>
 		</div>

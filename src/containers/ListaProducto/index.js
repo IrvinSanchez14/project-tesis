@@ -36,15 +36,16 @@ class ListaProducto extends React.Component {
 		this.props.fetchProducto();
 		this.props.fetchPorciones();
 		this.props.fetchLecturaProducto();
-		this.props.fetchListadoProductos();
+		//this.props.fetchListadoProductos();
 	}
 
 	headTable = () => {
-		let headTable;
-		this.props.dataLecturaProducto.map(producto => {
-			headTable = Object.keys(producto);
-			return producto;
-		});
+		let headTable = [
+			{ label: 'ID', field: 'IdEmpresa' },
+			{ label: 'Nombre', field: 'NombreProducto' },
+			{ label: 'Porcion', field: 'Porcion' },
+			{ label: 'Estado', field: 'estadoTexto' },
+		];
 		return headTable;
 	};
 
@@ -68,7 +69,7 @@ class ListaProducto extends React.Component {
 	};
 
 	getDataTable = () => {
-		return this.props.fetchListadoProductos();
+		return this.props.fetchLecturaProducto();
 	};
 
 	crearRegistro = () => {
@@ -82,7 +83,7 @@ class ListaProducto extends React.Component {
 			// eslint-disable-next-line no-restricted-globals
 			if (confirm('Esta seguro de guardar la siguiente lista de producto en la Base de Datos?')) {
 				api.post('/ProductoPorcion/create.php', formValues).then(
-					data => this.props.fetchListadoProductos(),
+					data => this.props.fetchLecturaProducto(),
 					this.props.autorizacionFormFail(true),
 					this.props.sidebarStateFalse()
 				);
@@ -93,7 +94,7 @@ class ListaProducto extends React.Component {
 			// eslint-disable-next-line no-restricted-globals
 			if (confirm('Esta seguro de actualizar el siguiente dato de la tabla Empresa?')) {
 				api.put('/ProductoPorcion/update.php', formValues).then(
-					data => this.props.fetchListadoProductos(),
+					data => this.props.fetchLecturaProducto(),
 					this.props.autorizacionFormFail(true),
 					this.props.sidebarStateFalse()
 				);
@@ -113,7 +114,7 @@ class ListaProducto extends React.Component {
 		if (confirm(`Esta seguro de cambiar el estado a ${messageState}`)) {
 			api.put('/Producto/updateState.php', updateState).then(data => {
 				if (data.data.message) {
-					this.props.fetchListadoProductos();
+					this.props.fetchLecturaProducto();
 					this.props.sidebarStateFalse();
 				}
 			});

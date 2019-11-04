@@ -13,7 +13,7 @@ const porciones = state => state.getIn(['porciones', 'data']);
 export const productoLista = createSelector(
 	productos,
 	getListadoProducto,
-	dataListadoProducto,
+	dataLecturaProducto,
 	(producto, id, listaP) => {
 		let selectTipo;
 		if (id) {
@@ -65,7 +65,7 @@ export const getDataId = createSelector(
 
 export const listaPorcion = createSelector(
 	porciones,
-	dataListadoProducto,
+	dataLecturaProducto,
 	getDataId,
 	(porcion, lista, id) => {
 		let selectTipo;
@@ -83,7 +83,7 @@ export const listaPorcion = createSelector(
 
 export const listaPProducto = createSelector(
 	getDataId,
-	dataListadoProducto,
+	dataLecturaProducto,
 	(bodyid, lista) => {
 		let productoPorcion;
 		if (bodyid !== undefined) {
@@ -97,7 +97,7 @@ export const listaPProducto = createSelector(
 );
 
 export const getDataBodyId = createSelector(
-	dataListadoProducto,
+	dataLecturaProducto,
 	getListadoProducto,
 	(dataPro, idListaPP) => {
 		let dataBody;

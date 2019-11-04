@@ -17,40 +17,40 @@ class Produccion extends React.Component {
 	render() {
 		const { dataProduccion } = this.props;
 		if (this.props.dataProduccion) {
-			if (!dataProduccion.hasOwnProperty('error')) { 
-			return (
-				<div>
-					<h1
-						style={{
-							marginLeft: '25px',
-							marginTop: '24px',
-							fontWeight: 'bold',
-						}}
-					>
-						Creacion de nota de envio por LOTE
-					</h1>
-					<Link
-						to={`${window.location.pathname}/NotaEnvio`}
-						style={{
-							color: 'inherit',
-						}}
-					>
-						<Button>Notas de Envio</Button>
-					</Link>
-					<TablaPC
-						header={['ID', 'Lote', 'Estado', 'Fecha de creación']}
-						dataTable={dataProduccion}
-						getIDtable={this.getIDtable}
-						key="IdProduccion"
-					/>
-				</div>
-			);
+			if (!dataProduccion.hasOwnProperty('error')) {
+				return (
+					<div>
+						<h1
+							style={{
+								marginLeft: '25px',
+								marginTop: '24px',
+								fontWeight: 'bold',
+							}}
+						>
+							Creacion de nota de envio por LOTE
+						</h1>
+						<Link
+							to={`${window.location.pathname}/NotaEnvio`}
+							style={{
+								color: 'inherit',
+							}}
+						>
+							<Button>Notas de Envio</Button>
+						</Link>
+						<TablaPC
+							header={['ID', 'Estado', 'Lote', 'Fecha de creación']}
+							dataTable={dataProduccion}
+							getIDtable={this.getIDtable}
+							key="IdProduccion"
+						/>
+					</div>
+				);
+			} else {
+				return <p>No existe datos en este momento</p>;
+			}
 		} else {
-			return <p>No existe datos en este momento</p>;
+			return null;
 		}
-	} else {
-		return null;
-	}
 	}
 }
 

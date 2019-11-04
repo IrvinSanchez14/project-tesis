@@ -2,6 +2,7 @@ import React from 'react';
 import { fromJS } from 'immutable';
 import { Field, reduxForm } from 'redux-form/immutable';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 
 import { getFormResponse } from '../../containers/TipoUsuario/selectors';
 import { dataSucursal } from '../../containers/Sucursales/selectors';
@@ -168,9 +169,24 @@ class FrmUsuario extends React.Component {
 
 	render() {
 		this.validateClean();
-
 		const renderSucursal = ({ input, label, meta }) => {
 			const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
+			let nombreSucursal;
+			if (_.isEmpty(this.props.initialValues.toJS())) {
+				console.log('vacio');
+			} else {
+				const valoresIniciales = this.props.initialValues.toJS();
+				nombreSucursal = this.props.dataSucursal.sort(function(a, b) {
+					if (valoresIniciales.Sucursal === b.Nombre) {
+						return 1;
+					}
+					if (a.Nombre === valoresIniciales.Sucursal) {
+						return -1;
+					}
+					// a must be equal to b
+					return 0;
+				});
+			}
 			/*nombreSucursal = this.props.dataSucursal.sort(function(a, b) {
 				if (arreglo.Sucursal === b.Nombre) {
 					return 1;
@@ -181,7 +197,6 @@ class FrmUsuario extends React.Component {
 				// a must be equal to b
 				return 0;
 			});*/
-
 			return (
 				<div className={className}>
 					<label>{label}</label>

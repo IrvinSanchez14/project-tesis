@@ -62,6 +62,10 @@ function Modal(Props) {
 		}
 	});
 
+	useEffect(() => {
+		setCantidadPorcion('');
+	}, []);
+
 	function handleChange(event) {
 		setValue(event.target.value);
 	}

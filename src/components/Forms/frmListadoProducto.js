@@ -2,6 +2,7 @@ import React from 'react';
 import { fromJS } from 'immutable';
 import { Field, reduxForm } from 'redux-form/immutable';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 
 import { getFormResponse, productoLista, listaPorcion, listaPProducto } from '../../containers/ListaProducto/selectors';
 
@@ -16,34 +17,29 @@ class FrmListadoProducto extends React.Component {
 		}
 	}
 
-	renderInput = ({ input, label, meta }) => {
-		const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
-		return (
-			<div className={className}>
-				<label>{label}</label>
-				<select {...input}>
-					{this.props.createData ? <option /> : null}
-					{this.props.productoLista
-						? this.props.productoLista.map(P => {
-								return (
-									<option key={P.IdProducto} value={P.IdProducto}>
-										{P.Nombre}
-									</option>
-								);
-						  })
-						: null}
-				</select>
-				{this.renderError(meta)}
-			</div>
-		);
-	};
-
 	renderSelectUnidad = ({ input, label, meta }) => {
 		const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
+		let nombrePorcion;
+		if (_.isEmpty(this.props.initialValues.toJS())) {
+			console.log('vacio');
+		} else {
+			const valoresIniciales = this.props.initialValues.toJS();
+			const cambioString = valoresIniciales.Porcion.split(' ');
+			nombrePorcion = this.props.listaPorcion.sort(function(a, b) {
+				if (cambioString[0] === b.Cantidad) {
+					return 1;
+				}
+				if (a.UnidadMedida === cambioString[1]) {
+					return -1;
+				}
+				// a must be equal to b
+				return 0;
+			});
+		}
 		return (
 			<div className={className}>
 				<label>{label}</label>
-				<select {...input}>
+				<select id="pr2" {...input}>
 					{this.props.createData ? <option /> : null}
 					{this.props.listaPorcion
 						? this.props.listaPorcion.map(lp => {
@@ -63,6 +59,9 @@ class FrmListadoProducto extends React.Component {
 	onSubmit = formValues => {
 		let data;
 		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+		const valueSelect = document.getElementById('pr') === null ? 'error' : document.getElementById('pr').value;
+		const valueSelectSucursal =
+			document.getElementById('pr2') === null ? 'error' : document.getElementById('pr2').value;
 		if (this.props.createData) {
 			data = fromJS({
 				flag: 'create',
@@ -72,6 +71,8 @@ class FrmListadoProducto extends React.Component {
 			data = fromJS({
 				flag: 'update',
 				UsuarioActualiza: userInfo.IdUsuario,
+				valueSelect: valueSelect,
+				valueSelectSucursal: valueSelectSucursal,
 			});
 		}
 
@@ -116,11 +117,48 @@ class FrmListadoProducto extends React.Component {
 				</div>
 			);
 		};
+
+		const renderInput = ({ input, label, meta }) => {
+			const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
+			let nombreProducto;
+			if (_.isEmpty(this.props.initialValues.toJS())) {
+				console.log('vacio');
+			} else {
+				const valoresIniciales = this.props.initialValues.toJS();
+				nombreProducto = this.props.productoLista.sort(function(a, b) {
+					if (valoresIniciales.NombreProducto === b.Nombre) {
+						return 1;
+					}
+					if (a.Nombre === valoresIniciales.NombreProducto) {
+						return -1;
+					}
+					// a must be equal to b
+					return 0;
+				});
+			}
+			return (
+				<div className={className}>
+					<label>{label}</label>
+					<select id="pr" {...input}>
+						{this.props.createData ? <option /> : null}
+						{this.props.productoLista
+							? this.props.productoLista.map(P => {
+									return (
+										<option key={P.IdProducto} value={P.IdProducto}>
+											{P.Nombre}
+										</option>
+									);
+							  })
+							: null}
+					</select>
+					{this.renderError(meta)}
+				</div>
+			);
+		};
 		return (
 			<form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
-				<Field name="NombreProducto" component={this.renderInput} label="Nombre Producto" />
+				<Field name="NombreProducto" component={renderInput} label="Nombre Producto" />
 				<Field name="Porcion" component={this.renderSelectUnidad} label="Porcion" />
-				<Field name="Lista" component={renderLista} label="Lista de porciones asignadas al producto" />
 				<div
 					style={{
 						bottom: '0',

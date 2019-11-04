@@ -29,9 +29,12 @@ function Review(Props) {
 	const [cantidadVal, setCantidadVal] = useState(0);
 	const classes = useStyles();
 
-	function askDelete() {
+	function askDelete(index) {
 		// eslint-disable-next-line no-restricted-globals
 		if (confirm('Esta seguro de eliminar el producto de la factura?')) {
+			listaDetalleFactura.splice(index, 1);
+			localStorage.setItem('detalleFactura', JSON.stringify(listaDetalleFactura));
+			actualizacionListaFacturaDetalle();
 		} else {
 			return;
 		}
@@ -73,7 +76,6 @@ function Review(Props) {
 
 	const handleKeyDown = (e, arrayId) => {
 		if (e.key === 'Enter') {
-			console.log('do validate');
 			const newObjectList = listaDetalleFactura.map((row, index) => {
 				if (index === arrayId) {
 					row = { ...row, Cantidad: cantidadVal, editValue: false };
@@ -85,44 +87,48 @@ function Review(Props) {
 		}
 	};
 
+	console.log('listaDetalleFactura', listaDetalleFactura);
+
 	return (
 		<React.Fragment>
 			<Typography variant="h6" gutterBottom>
 				Factura Vista
 			</Typography>
 			<List disablePadding>
-				{listaDetalleFactura.map((product, index) => (
-					<ListItem key={index}>
-						<ListItemText primary={product.nombreProducto} secondary={product.nombreUnidadMedida} />
-						<Typography variant="body2">
-							{product.editValue ? (
-								<input
-									style={{
-										width: '42px',
-										border: '0px',
-									}}
-									type="number"
-									onChange={handleChangeCantidad}
-									defaultValue={product.Cantidad}
-									onKeyDown={e => handleKeyDown(e, index)}
-									disabled={false}
-								/>
-							) : (
-								product.Cantidad
-							)}
-						</Typography>
-						<Typography style={{ margin: '10px' }} variant="body2">
-							{' '}
-							<span className="spanAction" onClick={() => activateEditInput(index)}>
-								<i className="fas fa-pen" />
-							</span>
-							{'  '}-{'  '}
-							<span className="spanAction">
-								<i className="fas fa-trash" />
-							</span>
-						</Typography>
-					</ListItem>
-				))}
+				{listaDetalleFactura !== null
+					? listaDetalleFactura.map((product, index) => (
+							<ListItem key={index}>
+								<ListItemText primary={product.nombreProducto} secondary={product.nombreUnidadMedida} />
+								<Typography variant="body2">
+									{product.editValue ? (
+										<input
+											style={{
+												width: '42px',
+												border: '0px',
+											}}
+											type="number"
+											onChange={handleChangeCantidad}
+											defaultValue={product.Cantidad}
+											onKeyDown={e => handleKeyDown(e, index)}
+											disabled={false}
+										/>
+									) : (
+										product.Cantidad
+									)}
+								</Typography>
+								<Typography style={{ margin: '10px' }} variant="body2">
+									{' '}
+									<span className="spanAction" onClick={() => activateEditInput(index)}>
+										<i className="fas fa-pen" />
+									</span>
+									{'  '}-{'  '}
+									<span onClick={() => askDelete(index)} className="spanAction">
+										<i className="fas fa-trash" />
+									</span>
+								</Typography>
+							</ListItem>
+					  ))
+					: undefined}
 			</List>
 			<Grid container spacing={2}>
 				<Grid item xs={12} sm={6}>
@@ -143,7 +149,7 @@ function Review(Props) {
 						variant="button"
 						display="block"
 						gutterBottom
-					>{`Tipo de Factura: ${Cabecera.nombreTipoFactura}`}</Typography>
+					>{`Tipo de Documento: ${Cabecera.nombreTipoFactura}`}</Typography>
 					<Typography
 						variant="button"
 						display="block"
