@@ -18,8 +18,13 @@ export default function(state = initialState, action) {
 			return state.set('detalleProduccion', action.datos);
 		}
 		case ACTIONS.UPDATE_DETALLE_CANTIDAD: {
-			console.log('action', action);
 			return state.setIn(['detalleProduccion', action.index, 'Cantidad'], action.cantidad);
+		}
+		case ACTIONS.ACTIVATE_MODAL_PRODUCCION: {
+			return state.set('activateModal', action.estado);
+		}
+		case ACTIONS.ACTIVATE_TOAST_CONFIRM: {
+			return state.set('activateToast', action.estado);
 		}
 		default:
 			return state;

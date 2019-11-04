@@ -17,6 +17,7 @@ import PorcionSagas from './containers/Porciones/sagas';
 import ListaProductoSagas from './containers/ListaProducto/sagas';
 import ListaExistenteSagas from './containers/ListaExistente/sagas';
 import FacturaInformacion from './containers/CentroProduccion/sagas';
+import FacturaDetalle from './FacturaStore/sagas';
 
 export default function* rootSaga() {
 	const allSagas = [
@@ -38,6 +39,7 @@ export default function* rootSaga() {
 		...ListaProductoSagas,
 		ListaExistenteSagas,
 		...FacturaInformacion,
+		FacturaDetalle,
 	];
 	for (let i = 0; i < allSagas.length; i += 1) {
 		yield fork(allSagas[i]);

@@ -1,17 +1,34 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import { Table, Label } from 'semantic-ui-react';
 import ModalFactura from '../../components/ModalFactura';
+import CustomizedSnackbars from '../../components/Toast';
 import api from '../../api';
+import { activateModal, activateToastConfirm } from './actions';
+import { stateModal, stateToast } from './selectors';
 
 function TablaCP(Props) {
-	const { dataTable } = Props;
+	const { dataTable, activateModal, stateModal, stateToast, activateToastConfirm } = Props;
 	const [visibleModal, setVisibleModal] = useState(false);
+	const [visibleToast, setVisibleToast] = useState(false);
 	const [array, setArray] = useState([]);
 	const [detalles, setDetalles] = useState([]);
+	const [numeroLote, setNumeroLote] = useState('');
+	const [estadoLote, setEstadoLote] = useState('');
+	const [idCP, setIdCP] = useState('');
+	const [colorToast, setColorToast] = useState('');
+	const [messageToast, setMessageToast] = useState('');
+
+	useEffect(() => {
+		activateModal(false);
+		activateToastConfirm(false);
+	}, []);
 
 	function callApi(id) {
+		activateModal(true);
 		api.post('/Factura/readDetalleLote.php', { IdCP: id })
 			.then(response => {
+				console.log(visibleToast);
 				setDetalles(response.data);
 			})
 			.catch(error => {
@@ -19,6 +36,23 @@ function TablaCP(Props) {
 			});
 	}
 
+	function clickRow(data) {
+		if (data.IdEstado === '5') {
+			console.log('producto finalizado');
+			activateToastConfirm(true);
+			setColorToast('error');
+			setMessageToast('La producción de este lote a finalizado');
+		} else {
+			setVisibleModal(true);
+			setArray(data);
+			callApi(data.IdCP);
+			setNumeroLote(data.Lote);
+			setEstadoLote(data.IdEstado);
+			setIdCP(data.IdCP);
+			setColorToast('success');
+			setMessageToast(`Producción del lote ${numeroLote} almacenada correctamente en la base de datos`);
+		}
+	}
 	return (
 		<Fragment>
 			<Table singleLine>
@@ -35,9 +69,7 @@ function TablaCP(Props) {
 						return (
 							<Table.Row
 								onClick={() => {
-									setVisibleModal(true);
-									setArray(data);
-									callApi(data.IdCP);
+									clickRow(data);
 								}}
 								className="tabla-factura"
 								key={data.IdCP}
@@ -48,7 +80,7 @@ function TablaCP(Props) {
 									<Label
 										as="a"
 										color={
-											data.IdEstado === '2' ? 'yellow' : data.IdEstado === '4' ? 'teal' : 'green'
+											data.IdEstado === '2' ? 'yellow' : data.IdEstado === '4' ? 'teal' : 'red'
 										}
 										tag
 									>
@@ -64,14 +96,46 @@ function TablaCP(Props) {
 					})}
 				</Table.Body>
 			</Table>
-			<ModalFactura
-				visibleModal={visibleModal}
-				setVisibleModal={setVisibleModal}
-				arrays={array}
-				detalles={detalles}
-			/>
+			{visibleModal ? (
+				<ModalFactura
+					visibleModal={visibleModal}
+					setVisibleModal={setVisibleModal}
+					arrays={array}
+					detalles={detalles}
+					stateModal={stateModal}
+					estadoLote={estadoLote}
+					CP={idCP}
+				/>
+			) : (
+				undefined
+			)}
+			{stateToast ? (
+				<CustomizedSnackbars
+					visibleToast={stateToast}
+					setVisibleToast={activateToastConfirm}
+					messageToast={messageToast}
+					variant={colorToast}
+				/>
+			) : (
+				undefined
+			)}
 		</Fragment>
 	);
 }
 
-export default TablaCP;
+export function mapStateToProps(state, props) {
+	return {
+		stateModal: stateModal(state, props),
+		stateToast: stateToast(state, props),
+	};
+}
+
+export const actions = {
+	activateModal,
+	activateToastConfirm,
+};
+
+export default connect(
+	mapStateToProps,
+	actions
+)(TablaCP);

@@ -35,7 +35,7 @@ function ModalConfirm(Props) {
 				Confirmacion
 			</DialogTitle>
 			<DialogContent>
-				<h5>Lote 005 finalizado y almacenado correctamente en la base de datos.</h5>
+				<h5>{Props.textTitle}</h5>
 			</DialogContent>
 			<DialogActions className="dialogo">
 				<Button onClick={handleClose} className="ui buttonGuardar" color="primary" autoFocus>

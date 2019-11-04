@@ -22,6 +22,20 @@ import { stateSideBarMenu } from '../App/selectors';
 
 import { permisosVerTipoProducto } from '../../helpers/permisos';
 
+const styles = {
+	divHeader: {
+		display: 'flex',
+		flexDirection: 'row',
+		margin: '15px',
+	},
+	divTitle: {
+		flex: 1,
+	},
+	divAdd: {
+		marginRight: '20px',
+	},
+};
+
 class TipoProducto extends React.Component {
 	componentDidMount() {
 		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -33,7 +47,7 @@ class TipoProducto extends React.Component {
 
 	headTable = () => {
 		let headTable = [
-			{ label: 'ID', field: 'IdPorcion' },
+			{ label: 'ID', field: 'IdTipoProducto' },
 			{ label: 'Nombre', field: 'Nombre' },
 			{ label: 'Descripcion', field: 'Descripcion' },
 			{ label: 'Estado', field: 'Estado' },
@@ -66,7 +80,7 @@ class TipoProducto extends React.Component {
 					if (response.data.flag !== 0) {
 						alert(response.data.message);
 					} else {
-						this.props.fetchProducto();
+						this.props.fetchTipoProducto();
 						this.props.autorizacionFormFail(true);
 						this.props.sidebarStateFalse();
 					}
@@ -76,7 +90,7 @@ class TipoProducto extends React.Component {
 			}
 		} else {
 			// eslint-disable-next-line no-restricted-globals
-			if (confirm('Esta seguro de actualizar el siguiente dato de la tabla Empresa?')) {
+			if (confirm('Esta seguro de actualizar el siguiente dato de la tabla tipo de productos?')) {
 				api.put('/TipoProducto/update.php', formValues).then(
 					data => this.props.fetchTipoProducto(),
 					this.props.autorizacionFormFail(true),
@@ -90,7 +104,7 @@ class TipoProducto extends React.Component {
 
 	onChangeStateButton = check => {
 		const updateState = {
-			IdEmpresa: check.id,
+			IdTipoProducto: check.id,
 			Estado: `${check.state}`,
 		};
 		const messageState = check.state === true ? 'Disponible' : 'Inactivo';
@@ -160,15 +174,23 @@ class TipoProducto extends React.Component {
 			);
 			return (
 				<div>
-					<h1
-						style={{
-							marginLeft: '25px',
-							marginTop: '24px',
-							fontWeight: 'bold',
-						}}
-					>
-						Tipos de Productos
-					</h1>
+					<div style={styles.divHeader}>
+						<div style={styles.divTitle}>
+							<h1> Tipos de Productos</h1>
+						</div>
+						<div style={styles.divAdd}>
+							<Fab color="primary" aria-label="Add" onClick={this.crearRegistro}>
+								<AddIcon />
+							</Fab>
+						</div>
+						<div>
+							<Print
+								ruta={'/TipoProducto/readAllPDF.php'}
+								titulo={'Tipo_Producto'}
+								csv={'/TipoProducto/readAllCSV.php'}
+							/>
+						</div>
+					</div>
 
 					<SideBarMenu
 						content={arr}
@@ -178,23 +200,6 @@ class TipoProducto extends React.Component {
 						saveButton={this.getDataTable}
 						frmTable={this.frmTableEmpresa()}
 						onClick={this.onChangeStateButton}
-					/>
-					<Fab
-						style={{
-							right: '16px',
-							bottom: '80%',
-							position: 'fixed',
-						}}
-						color="primary"
-						aria-label="Add"
-						onClick={this.crearRegistro}
-					>
-						<AddIcon />
-					</Fab>
-					<Print
-						ruta={'/TipoProducto/readAllPDF.php'}
-						titulo={'Tipo_Producto'}
-						csv={'/TipoProducto/readAllCSV.php'}
 					/>
 				</div>
 			);

@@ -52,7 +52,6 @@ class TableData extends React.Component {
 			return prueba;
 		});
 		hey.rows = this.props.dataTable;
-		console.log('hey', this.props.header);
 		return (
 			<div>
 				<MDBDataTable

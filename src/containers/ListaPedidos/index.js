@@ -173,8 +173,6 @@ function ListaPedidos(Props) {
 		Props.fetchPorciones();
 	}, []);
 
-	console.log(Props.datosProductos);
-
 	return permisoVerListaExistente() ? (
 		<div style={{ margin: '20px' }}>
 			<div style={{ marginLeft: '15px' }}>
